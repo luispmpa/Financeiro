@@ -47,7 +47,6 @@ body{font-family:var(--fb);background:var(--bg);color:var(--text);min-height:100
 .bb svg{width:20px;height:20px;flex-shrink:0}
 .bb span{line-height:1}
 .bb-dot{position:absolute;top:8px;right:calc(50% - 14px);width:6px;height:6px;border-radius:50%;background:var(--danger);display:none}
-.bb.has-alert .bb-dot{display:block}
 
 /* MAIN */
 .main{margin-left:var(--sidebar);flex:1;padding:32px 36px;max-width:1080px}
@@ -55,12 +54,10 @@ body{font-family:var(--fb);background:var(--bg);color:var(--text);min-height:100
 .page.active{display:block;animation:fadeIn .2s ease}
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 
-/* PH */
 .ph{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px}
 .ph h2{font-family:var(--fh);font-size:26px;font-weight:600}
 .ph p{color:var(--muted);font-size:13px;margin-top:4px}
 
-/* BUTTONS */
 .btn{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border-radius:var(--radius-sm);font-family:var(--fb);font-size:13px;font-weight:500;cursor:pointer;border:none;transition:all .15s}
 .btn-accent{background:var(--accent);color:#0F0F0F}
 .btn-accent:hover{opacity:.88}
@@ -70,7 +67,6 @@ body{font-family:var(--fb);background:var(--bg);color:var(--text);min-height:100
 .bicon{background:none;border:none;cursor:pointer;color:var(--hint);padding:5px;border-radius:6px;font-size:15px;transition:all .15s}
 .bicon:hover{background:var(--surface2);color:var(--text)}
 
-/* METRICS */
 .metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:24px}
 .metric{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px}
 .mlabel{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--hint);margin-bottom:8px}
@@ -78,19 +74,16 @@ body{font-family:var(--fb);background:var(--bg);color:var(--text);min-height:100
 .mval.s{color:var(--success)}.mval.d{color:var(--danger)}.mval.a{color:var(--accent)}
 .msub{font-size:11px;color:var(--muted);margin-top:4px}
 
-/* CARD */
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:20px}
 .card-head{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
 .card-head h3{font-size:12px;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
 
-/* BADGE */
 .badge{display:inline-flex;align-items:center;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:500}
 .bs{background:var(--success-dim);color:var(--success)}
 .bd{background:var(--danger-dim);color:var(--danger)}
 .ba{background:var(--accent-dim);color:var(--accent)}
 .bn{background:rgba(255,255,255,0.06);color:var(--muted)}
 
-/* TABLE */
 .tblw{overflow-x:auto;-webkit-overflow-scrolling:touch}
 table{width:100%;border-collapse:collapse}
 th{padding:10px 14px;text-align:left;font-size:10px;font-weight:500;color:var(--hint);text-transform:uppercase;letter-spacing:.08em;border-bottom:1px solid var(--border);background:var(--surface2);white-space:nowrap}
@@ -105,13 +98,11 @@ tr:hover td{background:rgba(255,255,255,0.02)}
 .pf{height:100%;background:var(--accent);border-radius:2px}
 .pp{font-size:11px;color:var(--muted);min-width:26px}
 
-/* FILTROS */
 .filtros{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
 .fsel,.finp{background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius-sm);color:var(--text);font-family:var(--fb);font-size:13px;padding:7px 10px;outline:none;-webkit-appearance:none}
 .fsel:focus,.finp:focus{border-color:var(--accent)}
 .finp{width:180px}
 
-/* DEV CARDS (mobile) */
 .dcards{display:none;flex-direction:column;gap:10px;padding:12px}
 .dcard{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px}
 .dcard-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;gap:8px}
@@ -120,7 +111,6 @@ tr:hover td{background:rgba(255,255,255,0.02)}
 .dcard-info{font-size:12px;color:var(--muted);margin-top:3px}
 .dcard-bot{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
 
-/* OVERLAY / MODAL */
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:300;display:none;align-items:flex-end;justify-content:center}
 .overlay.open{display:flex}
 .modal{background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius) var(--radius) 0 0;width:100%;max-width:600px;max-height:92vh;overflow-y:auto;animation:slideUp .25s ease}
@@ -130,7 +120,6 @@ tr:hover td{background:rgba(255,255,255,0.02)}
 .mbody{padding:18px 20px}
 .mfoot{padding:12px 20px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:10px;position:sticky;bottom:0;background:var(--surface)}
 
-/* FORM */
 .fg{margin-bottom:14px}
 .fl{display:block;font-size:11px;font-weight:500;color:var(--hint);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px}
 .fi,.fs,.fta{width:100%;padding:11px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-family:var(--fb);font-size:16px;outline:none;transition:border-color .15s;-webkit-appearance:none}
@@ -139,7 +128,6 @@ tr:hover td{background:rgba(255,255,255,0.02)}
 .frow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .hbox{background:var(--accent-dim);border:1px solid var(--accent-dim2);border-radius:var(--radius-sm);padding:10px 14px;font-size:12px;color:var(--accent);margin-top:-6px;margin-bottom:12px}
 
-/* PARCELAS */
 .pt{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--border)}
 .pt:last-child{border-bottom:none}
 .pnum{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0}
@@ -151,12 +139,10 @@ tr:hover td{background:rgba(255,255,255,0.02)}
 .pdate{font-size:11px;color:var(--muted);margin-top:2px}
 .pacts{display:flex;gap:6px;flex-shrink:0}
 
-/* INFO GRID */
 .igrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:14px;margin-bottom:18px}
 .ilabel{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--hint);margin-bottom:3px}
 .ival{font-size:14px;font-weight:500}
 
-/* PENDÊNCIAS */
 .pitem{display:flex;align-items:center;gap:14px;padding:13px 18px;border-bottom:1px solid var(--border)}
 .pitem:last-child{border-bottom:none}
 .pavatar{width:36px;height:36px;border-radius:50%;background:var(--danger-dim);color:var(--danger);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;flex-shrink:0}
@@ -167,24 +153,17 @@ tr:hover td{background:rgba(255,255,255,0.02)}
 .pright{text-align:right;flex-shrink:0}
 .pvalor{font-weight:600;color:var(--danger);font-size:14px}
 
-/* CONFIG */
-.calert{background:var(--warning-dim);border:1px solid rgba(255,179,71,0.25);border-radius:var(--radius-sm);padding:14px 16px;margin-bottom:20px;font-size:13px;color:var(--warning);line-height:1.8}
-.calert strong{color:var(--text)}
-
-/* TOAST */
 .tarea{position:fixed;bottom:calc(var(--bnh) + 12px);right:16px;z-index:999;display:flex;flex-direction:column;gap:8px}
 .toast{padding:10px 16px;border-radius:var(--radius-sm);font-size:13px;animation:fadeIn .2s ease;max-width:260px;border:1px solid}
 .toast.success{background:var(--success-dim);border-color:rgba(92,255,154,0.25);color:var(--success)}
 .toast.error{background:var(--danger-dim);border-color:rgba(255,92,92,0.25);color:var(--danger)}
 .toast.info{background:var(--surface);border-color:var(--border2);color:var(--text)}
 
-/* EMPTY / LOADING */
 .empty{text-align:center;padding:48px 20px;color:var(--hint)}
 .loading{display:flex;align-items:center;gap:10px;padding:22px 18px;color:var(--muted);font-size:13px}
 .spin{width:16px;height:16px;border:2px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* MOBILE */
 @media(max-width:680px){
   .sidebar{display:none}
   .bnav{display:block}
@@ -206,7 +185,6 @@ tr:hover td{background:rgba(255,255,255,0.02)}
 <body>
 <div class="app">
 
-<!-- SIDEBAR DESKTOP -->
 <aside class="sidebar">
   <div class="logo">
     <div class="logo-mark">Financeiro</div>
@@ -231,11 +209,10 @@ tr:hover td{background:rgba(255,255,255,0.02)}
     </button>
   </nav>
   <div class="sfoot">
-    <div class="cstatus"><div class="dot" id="dot"></div><span id="dot-txt">Não configurado</span></div>
+    <div class="cstatus"><div class="dot ok" id="dot"></div><span id="dot-txt">Supabase</span></div>
   </div>
 </aside>
 
-<!-- BOTTOM NAV MOBILE -->
 <nav class="bnav">
   <div class="bnav-inner">
     <button class="bb active" id="bn-dashboard" onclick="ir('dashboard')">
@@ -267,14 +244,14 @@ tr:hover td{background:rgba(255,255,255,0.02)}
   <div class="page active" id="page-dashboard">
     <div class="ph">
       <div><h2>Dashboard</h2><p id="dash-data">—</p></div>
-      <button class="btn btn-ghost btn-sm" onclick="carregarDashboard()">↻</button>
+      <button class="btn btn-ghost btn-sm" onclick="carrDash()">↻ Atualizar</button>
     </div>
     <div class="metrics" id="dash-metrics">
-      <div class="metric"><div class="mlabel">Aguardando</div><div class="mval">—</div></div>
+      <div class="metric"><div class="mlabel">Carregando</div><div class="mval">—</div></div>
     </div>
     <div class="card">
       <div class="card-head"><h3>Devedores ativos</h3></div>
-      <div id="dash-lista"><div class="loading"><div class="spin"></div>Aguardando conexão...</div></div>
+      <div id="dash-lista"><div class="loading"><div class="spin"></div>Carregando...</div></div>
     </div>
   </div>
 
@@ -310,7 +287,7 @@ tr:hover td{background:rgba(255,255,255,0.02)}
   <div class="page" id="page-pendencias">
     <div class="ph">
       <div><h2>Pendências</h2><p>Parcelas em atraso</p></div>
-      <button class="btn btn-ghost btn-sm" onclick="carregarPendencias()">↻</button>
+      <button class="btn btn-ghost btn-sm" onclick="carrPends()">↻ Atualizar</button>
     </div>
     <div class="card">
       <div class="card-head"><h3 id="pend-count">—</h3></div>
@@ -320,24 +297,23 @@ tr:hover td{background:rgba(255,255,255,0.02)}
 
   <!-- CONFIG -->
   <div class="page" id="page-config">
-    <div class="ph"><div><h2>Configuração</h2><p>Conecte ao Google Sheets</p></div></div>
-    <div class="calert">
-      <strong>Como configurar:</strong><br>
-      1. Google Sheets → <strong>Extensões → Apps Script</strong> → cole o <code>Code.gs</code> → salve.<br>
-      2. Execute <strong>inicializarPlanilha()</strong> uma vez.<br>
-      3. <strong>Implantar → Gerenciar → editar → Nova versão → Implantar</strong>.<br>
-      4. Cole a URL abaixo e clique em Salvar.<br><br>
-      <strong>⚠ No celular:</strong> a URL fica salva apenas neste navegador. Se trocar de dispositivo, cole a URL aqui novamente.
-    </div>
+    <div class="ph"><div><h2>Configuração</h2><p>Informações do projeto</p></div></div>
     <div class="card" style="max-width:520px">
-      <div class="card-head"><h3>URL da API</h3></div>
+      <div class="card-head"><h3>Conexão Supabase</h3></div>
       <div class="mbody">
-        <div class="fg">
-          <label class="fl">URL do Web App (Apps Script)</label>
-          <input type="url" class="fi" id="api-url-inp" placeholder="https://script.google.com/macros/s/.../exec" style="font-size:13px">
+        <div style="display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid var(--border);margin-bottom:12px">
+          <div class="dot ok"></div>
+          <span style="font-size:13px">Conectado ao Supabase</span>
         </div>
-        <button class="btn btn-accent" onclick="salvarConfig()">Salvar e testar conexão</button>
-        <div id="cfg-fb" style="font-size:12px;margin-top:10px;color:var(--muted)"></div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.8">
+          <strong style="color:var(--text)">Projeto:</strong> ityrkysliksvvhpvweft.supabase.co<br>
+          <strong style="color:var(--text)">Banco:</strong> PostgreSQL (Supabase)<br>
+          <strong style="color:var(--text)">Região:</strong> South America (São Paulo)<br>
+          <strong style="color:var(--text)">Plano:</strong> Free (até 500MB)
+        </div>
+        <div style="margin-top:16px;padding:12px 14px;background:var(--surface2);border-radius:var(--radius-sm);font-size:12px;color:var(--muted);line-height:1.7">
+          Os dados ficam salvos na nuvem do Supabase e são acessíveis de qualquer dispositivo automaticamente — sem necessidade de configuração extra.
+        </div>
       </div>
     </div>
   </div>
@@ -417,125 +393,183 @@ tr:hover td{background:rgba(255,255,255,0.02)}
 <div class="tarea" id="toasts"></div>
 
 <script>
-let API = localStorage.getItem('api_url') || '';
+// ── SUPABASE CONFIG ──
+const SB_URL = 'https://ityrkysliksvvhpvweft.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml0eXJreXNsaWtzdnZocHZ3ZWZ0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU3MzAyMjMsImV4cCI6MjA5MTMwNjIyM30.mWBSzqgB-AYi1XWGmevMmxrm5xUFJ87uefMqwYC184w';
+const H = { 'Content-Type': 'application/json', 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY };
+
+// ── ESTADO ──
 let devs = [];
 let detId = null;
 
 window.onload = () => {
-  if (API) { document.getElementById('api-url-inp').value = API; setStatus('ok'); carrTudo(); }
-  else setStatus('err');
   document.getElementById('dev-data1').value = hj();
   document.getElementById('pgto-data').value = hj();
+  carrTudo();
 };
 
 function hj() { return new Date().toISOString().substring(0,10); }
 
+// ── NAVEGAÇÃO ──
 function ir(pg) {
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nb,.bb').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nb,.bb').forEach(b => b.classList.remove('active'));
   document.getElementById('page-'+pg).classList.add('active');
-  ['nav-'+pg,'bn-'+pg].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.add('active');});
-  if(pg==='dashboard') carrDash();
-  if(pg==='devedores') carrDevs();
-  if(pg==='pendencias') carrPends();
+  ['nav-'+pg,'bn-'+pg].forEach(id => { const el=document.getElementById(id); if(el) el.classList.add('active'); });
+  if (pg==='dashboard')  carrDash();
+  if (pg==='devedores')  carrDevs();
+  if (pg==='pendencias') carrPends();
 }
 
-async function api(params) {
-  if (!API) { toast('Configure a URL da API em Config.','error'); throw new Error('no api'); }
-  const r = await fetch(API+'?'+new URLSearchParams(params));
-  const d = await r.json();
-  if (d.erro) throw new Error(d.erro);
-  return d;
+// ── SUPABASE API ──
+async function sb(path, opts={}) {
+  const r = await fetch(SB_URL + '/rest/v1/' + path, { headers: H, ...opts });
+  if (!r.ok) { const e = await r.json(); throw new Error(e.message || r.statusText); }
+  if (r.status === 204) return null;
+  return r.json();
 }
 
-async function salvarConfig() {
-  const url = document.getElementById('api-url-inp').value.trim();
-  const fb = document.getElementById('cfg-fb');
-  fb.textContent='Testando…'; fb.style.color='var(--muted)';
-  try {
-    const r = await fetch(url+'?action=dashboard');
-    const d = await r.json();
-    if (d.erro) throw new Error(d.erro);
-    API=url; localStorage.setItem('api_url',url);
-    setStatus('ok'); fb.textContent='✓ Conectado!'; fb.style.color='var(--success)';
-    carrTudo();
-  } catch(e) { setStatus('err'); fb.textContent='✗ Falhou: '+e.message; fb.style.color='var(--danger)'; }
+// ── HELPERS ──
+function calcValorParcela(principal, jurosPct, n) {
+  return Math.round((principal * (1 + jurosPct/100) / n) * 100) / 100;
 }
 
-function setStatus(s) {
-  document.getElementById('dot').className='dot '+s;
-  document.getElementById('dot-txt').textContent=s==='ok'?'Conectado':'Desconectado';
+function gerarDatas(data1, n, periodicidade) {
+  const datas = [];
+  const base = new Date(data1 + 'T12:00:00');
+  for (let i = 0; i < n; i++) {
+    const d = new Date(base);
+    if      (periodicidade === 'semanal')   d.setDate(base.getDate() + i*7);
+    else if (periodicidade === 'quinzenal') d.setDate(base.getDate() + i*15);
+    else                                    d.setMonth(base.getMonth() + i);
+    datas.push(d.toISOString().substring(0,10));
+  }
+  return datas;
 }
 
+function enriquecerDevedor(dv, todasParcelas) {
+  const hoje = new Date(); hoje.setHours(0,0,0,0);
+  const parcelas = todasParcelas
+    .filter(p => p.devedor_id === dv.id)
+    .map(p => {
+      const pago = !!p.data_pagamento;
+      const vd = p.vencimento ? new Date(p.vencimento+'T12:00:00') : null;
+      const atrasado = !pago && vd && vd < hoje;
+      return { ...p, pago, atrasado };
+    })
+    .sort((a,b) => a.numero - b.numero);
+
+  const valorTotal = Math.round(dv.valor_principal * (1 + dv.juros_pct/100) * 100) / 100;
+  const valorParcela = calcValorParcela(dv.valor_principal, dv.juros_pct, dv.num_parcelas);
+  const totalPago = parcelas.filter(p=>p.pago).reduce((s,p)=>s+Number(p.valor),0);
+  const nPagas = parcelas.filter(p=>p.pago).length;
+  const nAtrasadas = parcelas.filter(p=>p.atrasado).length;
+
+  return {
+    ...dv, parcelas, valorTotal, valorParcela,
+    totalPago: Math.round(totalPago*100)/100,
+    saldoDevedor: Math.round((valorTotal-totalPago)*100)/100,
+    nPagas, nAtrasadas, quitado: nPagas === dv.num_parcelas
+  };
+}
+
+// ── CARREGAR DADOS ──
 function carrTudo() { carrDash(); carrDevs(); }
 
 async function carrDash() {
   try {
-    const d = await api({action:'dashboard'});
-    devs = d.devedores||[];
-    const ds=new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'});
-    document.getElementById('dash-data').textContent=ds.charAt(0).toUpperCase()+ds.slice(1);
-    document.getElementById('dash-metrics').innerHTML=`
-      <div class="metric"><div class="mlabel">A Receber</div><div class="mval a">${fmt(d.totalAReceber)}</div><div class="msub">${d.countDevedores} devedor(es)</div></div>
-      <div class="metric"><div class="mlabel">Recebido</div><div class="mval s">${fmt(d.totalRecebido)}</div></div>
-      <div class="metric"><div class="mlabel">Saldo</div><div class="mval">${fmt(d.saldoDevedor)}</div></div>
-      <div class="metric"><div class="mlabel">Em Atraso</div><div class="mval d">${fmt(d.totalAtrasado)}</div><div class="msub">${d.countAtrasados} com atraso</div></div>`;
-    const pd=document.getElementById('pend-dot');
-    if(pd) pd.style.display=d.countAtrasados>0?'block':'none';
-    if(!d.devedores||!d.devedores.length){document.getElementById('dash-lista').innerHTML='<div class="empty"><p>Nenhum devedor cadastrado ainda.</p></div>';return;}
-    const lista=[...d.devedores].sort((a,b)=>b.nAtrasadas-a.nAtrasadas||b.saldoDevedor-a.saldoDevedor);
-    document.getElementById('dash-lista').innerHTML=`<table>
+    const [devedoresRaw, parcelas] = await Promise.all([
+      sb('devedores?ativo=eq.true&order=criado_em.desc'),
+      sb('parcelas?select=*')
+    ]);
+    devs = devedoresRaw.map(d => enriquecerDevedor(d, parcelas));
+
+    const ds = new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'});
+    document.getElementById('dash-data').textContent = ds.charAt(0).toUpperCase()+ds.slice(1);
+
+    const totalAReceber = devs.reduce((s,d)=>s+d.valorTotal,0);
+    const totalRecebido = devs.reduce((s,d)=>s+d.totalPago,0);
+    const totalAtrasado = devs.reduce((s,d)=>s+d.parcelas.filter(p=>p.atrasado).reduce((a,p)=>a+Number(p.valor),0),0);
+    const countAtrasados = devs.filter(d=>d.nAtrasadas>0).length;
+
+    document.getElementById('dash-metrics').innerHTML = `
+      <div class="metric"><div class="mlabel">A Receber</div><div class="mval a">${fmt(totalAReceber)}</div><div class="msub">${devs.length} devedor(es)</div></div>
+      <div class="metric"><div class="mlabel">Recebido</div><div class="mval s">${fmt(totalRecebido)}</div></div>
+      <div class="metric"><div class="mlabel">Saldo</div><div class="mval">${fmt(totalAReceber-totalRecebido)}</div></div>
+      <div class="metric"><div class="mlabel">Em Atraso</div><div class="mval d">${fmt(totalAtrasado)}</div><div class="msub">${countAtrasados} com atraso</div></div>`;
+
+    const pd = document.getElementById('pend-dot');
+    if (pd) pd.style.display = countAtrasados > 0 ? 'block' : 'none';
+
+    if (!devs.length) {
+      document.getElementById('dash-lista').innerHTML = '<div class="empty"><p>Nenhum devedor cadastrado ainda.</p></div>';
+      return;
+    }
+    const lista = [...devs].sort((a,b)=>b.nAtrasadas-a.nAtrasadas||b.saldoDevedor-a.saldoDevedor);
+    document.getElementById('dash-lista').innerHTML = `<table>
       <thead><tr><th>Devedor</th><th>Total</th><th>Prog.</th><th>Status</th></tr></thead>
-      <tbody>${lista.map(dv=>{
-        const pct=dv.valorTotal>0?Math.round((dv.totalPago/dv.valorTotal)*100):0;
-        const b=dv.quitado?'<span class="badge bs">Quitado</span>':dv.nAtrasadas>0?`<span class="badge bd">${dv.nAtrasadas} atr.</span>`:'<span class="badge ba">Em dia</span>';
-        return`<tr><td><div class="dname" onclick="abrirDet('${dv.id}')">${esc(dv.nome)}</div><div class="dsub">${dv.periodicidade||''}${dv.diaSemana?' · '+dv.diaSemana:''}</div></td>
+      <tbody>${lista.map(dv => {
+        const pct = dv.valorTotal>0?Math.round((dv.totalPago/dv.valorTotal)*100):0;
+        const b = dv.quitado?'<span class="badge bs">Quitado</span>':dv.nAtrasadas>0?`<span class="badge bd">${dv.nAtrasadas} atr.</span>`:'<span class="badge ba">Em dia</span>';
+        return `<tr><td><div class="dname" onclick="abrirDet('${dv.id}')">${esc(dv.nome)}</div>
+          <div class="dsub">${dv.periodicidade||''}${dv.dia_semana?' · '+dv.dia_semana:''}</div></td>
           <td style="white-space:nowrap">${fmt(dv.valorTotal)}</td>
           <td><div class="pw"><div class="pb"><div class="pf" style="width:${pct}%"></div></div><span class="pp">${pct}%</span></div></td>
           <td>${b}</td></tr>`;
       }).join('')}</tbody></table>`;
-  } catch(e){}
+  } catch(e) { toast('Erro ao carregar dashboard: '+e.message,'error'); }
 }
 
 async function carrDevs() {
-  document.getElementById('tbl-dev').innerHTML='<div class="loading"><div class="spin"></div>Carregando...</div>';
-  document.getElementById('dev-cards').innerHTML='<div class="loading"><div class="spin"></div>Carregando...</div>';
-  try { devs=await api({action:'listar'}); aplicarFiltros(); }
-  catch(e){
-    document.getElementById('tbl-dev').innerHTML='<div class="empty"><p>Erro ao carregar.</p></div>';
-    document.getElementById('dev-cards').innerHTML='<div class="empty"><p>Erro ao carregar.</p></div>';
+  document.getElementById('tbl-dev').innerHTML = '<div class="loading"><div class="spin"></div>Carregando...</div>';
+  document.getElementById('dev-cards').innerHTML = '<div class="loading"><div class="spin"></div>Carregando...</div>';
+  try {
+    const [devedoresRaw, parcelas] = await Promise.all([
+      sb('devedores?ativo=eq.true&order=criado_em.desc'),
+      sb('parcelas?select=*')
+    ]);
+    devs = devedoresRaw.map(d => enriquecerDevedor(d, parcelas));
+    aplicarFiltros();
+  } catch(e) {
+    const msg = '<div class="empty"><p>Erro ao carregar.</p></div>';
+    document.getElementById('tbl-dev').innerHTML = msg;
+    document.getElementById('dev-cards').innerHTML = msg;
   }
 }
 
 function aplicarFiltros() {
-  const busca=(document.getElementById('f-busca').value||'').toLowerCase();
-  const st=document.getElementById('f-status').value;
-  const per=document.getElementById('f-periodo').value;
-  let lista=devs.filter(d=>{
-    if(busca&&!d.nome.toLowerCase().includes(busca))return false;
-    if(per&&d.periodicidade!==per)return false;
-    if(st==='atrasado'&&(!d.nAtrasadas||d.quitado))return false;
-    if(st==='emdia'&&(d.nAtrasadas>0||d.quitado))return false;
-    if(st==='quitado'&&!d.quitado)return false;
+  const busca = (document.getElementById('f-busca').value||'').toLowerCase();
+  const st    = document.getElementById('f-status').value;
+  const per   = document.getElementById('f-periodo').value;
+  let lista = devs.filter(d => {
+    if (busca && !d.nome.toLowerCase().includes(busca)) return false;
+    if (per   && d.periodicidade !== per) return false;
+    if (st==='atrasado' && (!d.nAtrasadas||d.quitado)) return false;
+    if (st==='emdia'    && (d.nAtrasadas>0||d.quitado)) return false;
+    if (st==='quitado'  && !d.quitado) return false;
     return true;
   });
-  document.getElementById('dev-count').textContent=lista.length+' devedor(es)';
-  document.getElementById('dev-sub').textContent=lista.length+' resultado(s)';
-  if(!lista.length){
-    document.getElementById('tbl-dev').innerHTML='<div class="empty"><p>Nenhum resultado.</p></div>';
-    document.getElementById('dev-cards').innerHTML='<div class="empty"><p>Nenhum resultado.</p></div>';
+
+  document.getElementById('dev-count').textContent = lista.length+' devedor(es)';
+  document.getElementById('dev-sub').textContent   = lista.length+' resultado(s)';
+
+  if (!lista.length) {
+    const msg = '<div class="empty"><p>Nenhum resultado.</p></div>';
+    document.getElementById('tbl-dev').innerHTML = msg;
+    document.getElementById('dev-cards').innerHTML = msg;
     return;
   }
-  document.getElementById('tbl-dev').innerHTML=`<table>
+
+  document.getElementById('tbl-dev').innerHTML = `<table>
     <thead><tr><th>Devedor</th><th>Valor</th><th>Periodicidade</th><th>Parcelas</th><th>Saldo</th><th>Status</th><th></th></tr></thead>
-    <tbody>${lista.map(dv=>{
-      const pct=dv.valorTotal>0?Math.round((dv.totalPago/dv.valorTotal)*100):0;
-      const b=dv.quitado?'<span class="badge bs">Quitado</span>':dv.nAtrasadas>0?`<span class="badge bd">${dv.nAtrasadas} em atraso</span>`:'<span class="badge ba">Em dia</span>';
-      return`<tr>
+    <tbody>${lista.map(dv => {
+      const pct = dv.valorTotal>0?Math.round((dv.totalPago/dv.valorTotal)*100):0;
+      const b = dv.quitado?'<span class="badge bs">Quitado</span>':dv.nAtrasadas>0?`<span class="badge bd">${dv.nAtrasadas} em atraso</span>`:'<span class="badge ba">Em dia</span>';
+      return `<tr>
         <td><div class="dname" onclick="abrirDet('${dv.id}')">${esc(dv.nome)}</div>${dv.observacoes?`<div class="dsub">${esc(dv.observacoes)}</div>`:''}</td>
-        <td style="white-space:nowrap">${fmt(dv.valorTotal)}<br><span style="font-size:11px;color:var(--hint)">${dv.jurosPct>0?dv.jurosPct+'% juros':''}</span></td>
-        <td style="font-size:12px;text-transform:capitalize">${dv.periodicidade||'—'}${dv.diaSemana?'<br><span style="color:var(--hint)">'+dv.diaSemana+'</span>':''}</td>
-        <td><div class="pw"><div class="pb"><div class="pf" style="width:${pct}%"></div></div><span class="pp">${dv.nPagas}/${dv.numParcelas}</span></div></td>
+        <td style="white-space:nowrap">${fmt(dv.valorTotal)}<br><span style="font-size:11px;color:var(--hint)">${dv.juros_pct>0?dv.juros_pct+'% juros':''}</span></td>
+        <td style="font-size:12px;text-transform:capitalize">${dv.periodicidade||'—'}${dv.dia_semana?'<br><span style="color:var(--hint)">'+dv.dia_semana+'</span>':''}</td>
+        <td><div class="pw"><div class="pb"><div class="pf" style="width:${pct}%"></div></div><span class="pp">${dv.nPagas}/${dv.num_parcelas}</span></div></td>
         <td style="font-weight:500;white-space:nowrap">${fmt(dv.saldoDevedor)}</td>
         <td>${b}</td>
         <td><div style="display:flex;gap:4px">
@@ -543,16 +577,17 @@ function aplicarFiltros() {
           <button class="bicon" onclick="excluirDev('${dv.id}','${esc(dv.nome)}')">🗑️</button>
         </div></td></tr>`;
     }).join('')}</tbody></table>`;
-  document.getElementById('dev-cards').innerHTML=lista.map(dv=>{
-    const pct=dv.valorTotal>0?Math.round((dv.totalPago/dv.valorTotal)*100):0;
-    const b=dv.quitado?'<span class="badge bs">Quitado</span>':dv.nAtrasadas>0?`<span class="badge bd">${dv.nAtrasadas} atr.</span>`:'<span class="badge ba">Em dia</span>';
-    return`<div class="dcard">
+
+  document.getElementById('dev-cards').innerHTML = lista.map(dv => {
+    const pct = dv.valorTotal>0?Math.round((dv.totalPago/dv.valorTotal)*100):0;
+    const b = dv.quitado?'<span class="badge bs">Quitado</span>':dv.nAtrasadas>0?`<span class="badge bd">${dv.nAtrasadas} atr.</span>`:'<span class="badge ba">Em dia</span>';
+    return `<div class="dcard">
       <div class="dcard-top">
         <div><div class="dcard-nome" onclick="abrirDet('${dv.id}')">${esc(dv.nome)}</div>
-        <div class="dcard-info">${dv.periodicidade||''} · ${dv.numParcelas}x de ${fmt(dv.valorParcela)}</div></div>
+        <div class="dcard-info">${dv.periodicidade||''} · ${dv.num_parcelas}x de ${fmt(dv.valorParcela)}</div></div>
         ${b}
       </div>
-      <div class="pw" style="margin-bottom:8px"><div class="pb"><div class="pf" style="width:${pct}%"></div></div><span class="pp">${dv.nPagas}/${dv.numParcelas}</span></div>
+      <div class="pw" style="margin-bottom:8px"><div class="pb"><div class="pf" style="width:${pct}%"></div></div><span class="pp">${dv.nPagas}/${dv.num_parcelas}</span></div>
       <div class="dcard-bot">
         <div><div style="font-size:10px;color:var(--hint);text-transform:uppercase;letter-spacing:.06em">Saldo</div>
         <div style="font-weight:600;font-size:16px">${fmt(dv.saldoDevedor)}</div></div>
@@ -566,173 +601,239 @@ function aplicarFiltros() {
 }
 
 async function carrPends() {
-  document.getElementById('lista-pend').innerHTML='<div class="loading"><div class="spin"></div>Carregando...</div>';
+  document.getElementById('lista-pend').innerHTML = '<div class="loading"><div class="spin"></div>Carregando...</div>';
   try {
-    const pends=await api({action:'pendencias'});
-    document.getElementById('pend-count').textContent=pends.length+' parcela(s) em atraso';
-    const pd=document.getElementById('pend-dot'); if(pd) pd.style.display=pends.length>0?'block':'none';
-    if(!pends.length){document.getElementById('lista-pend').innerHTML='<div class="empty"><p>✅ Nenhuma parcela em atraso!</p></div>';return;}
-    const hoj=new Date(); hoj.setHours(0,0,0,0);
-    document.getElementById('lista-pend').innerHTML=pends.map(p=>{
-      const vd=new Date(p.vencimento+'T12:00:00');
-      const dias=Math.round((hoj-vd)/86400000);
-      return`<div class="pitem">
+    const hoje = hj();
+    const [devedoresRaw, parcelas] = await Promise.all([
+      sb('devedores?ativo=eq.true'),
+      sb(`parcelas?data_pagamento=is.null&vencimento=lt.${hoje}&select=*`)
+    ]);
+    const devedoresMap = Object.fromEntries(devedoresRaw.map(d=>[d.id,d]));
+    const pends = parcelas
+      .filter(p => devedoresMap[p.devedor_id])
+      .map(p => ({ ...p, nome: devedoresMap[p.devedor_id].nome }))
+      .sort((a,b) => (a.vencimento||'').localeCompare(b.vencimento||''));
+
+    const pd = document.getElementById('pend-dot');
+    if (pd) pd.style.display = pends.length>0?'block':'none';
+    document.getElementById('pend-count').textContent = pends.length+' parcela(s) em atraso';
+
+    if (!pends.length) {
+      document.getElementById('lista-pend').innerHTML = '<div class="empty"><p>✅ Nenhuma parcela em atraso!</p></div>';
+      return;
+    }
+    const hoj = new Date(); hoj.setHours(0,0,0,0);
+    document.getElementById('lista-pend').innerHTML = pends.map(p => {
+      const vd = new Date(p.vencimento+'T12:00:00');
+      const dias = Math.round((hoj-vd)/86400000);
+      return `<div class="pitem">
         <div class="pavatar">${p.numero}</div>
         <div style="flex:1;min-width:0">
-          <div class="pnome" onclick="abrirDet('${p.devedorId}')">${esc(p.nome)}</div>
+          <div class="pnome" onclick="abrirDet('${p.devedor_id}')">${esc(p.nome)}</div>
           <div class="pdesc">Parcela ${p.numero} · Venceu ${fmtBR(p.vencimento)}</div>
           <div class="patraso">${dias} dia(s) em atraso</div>
         </div>
         <div class="pright">
           <div class="pvalor">${fmt(p.valor)}</div>
-          <button class="btn btn-ghost btn-sm" style="margin-top:6px" onclick="abrirPgto('${p.id}','${p.devedorId}','${esc(p.nome)}',${p.numero},${p.valor},'${p.vencimento}')">Receber</button>
+          <button class="btn btn-ghost btn-sm" style="margin-top:6px"
+            onclick="abrirPgto('${p.id}','${p.devedor_id}','${esc(p.nome)}',${p.numero},${p.valor},'${p.vencimento}')">Receber</button>
         </div>
       </div>`;
     }).join('');
-  } catch(e){document.getElementById('lista-pend').innerHTML='<div class="empty"><p>Erro ao carregar.</p></div>';}
+  } catch(e) {
+    document.getElementById('lista-pend').innerHTML = '<div class="empty"><p>Erro ao carregar.</p></div>';
+  }
 }
 
+// ── DETALHE ──
 async function abrirDet(id) {
-  detId=id;
-  document.getElementById('det-titulo').textContent='…';
-  document.getElementById('det-body').innerHTML='<div class="loading"><div class="spin"></div>Carregando...</div>';
+  detId = id;
+  document.getElementById('det-titulo').textContent = '…';
+  document.getElementById('det-body').innerHTML = '<div class="loading"><div class="spin"></div>Carregando...</div>';
   document.getElementById('modal-det').classList.add('open');
   try {
-    const dv=await api({action:'devedor',id});
-    document.getElementById('det-titulo').textContent=dv.nome;
-    const pct=dv.valorTotal>0?Math.round((dv.totalPago/dv.valorTotal)*100):0;
-    const sb=dv.quitado?'<span class="badge bs">Quitado</span>':dv.nAtrasadas>0?`<span class="badge bd">${dv.nAtrasadas} em atraso</span>`:'<span class="badge ba">Em dia</span>';
-    document.getElementById('det-body').innerHTML=`
+    const [dvArr, parcelas] = await Promise.all([
+      sb(`devedores?id=eq.${id}`),
+      sb(`parcelas?devedor_id=eq.${id}&order=numero.asc`)
+    ]);
+    const dv = enriquecerDevedor(dvArr[0], parcelas);
+    document.getElementById('det-titulo').textContent = dv.nome;
+    const pct = dv.valorTotal>0?Math.round((dv.totalPago/dv.valorTotal)*100):0;
+    const sb2 = dv.quitado?'<span class="badge bs">Quitado</span>':dv.nAtrasadas>0?`<span class="badge bd">${dv.nAtrasadas} em atraso</span>`:'<span class="badge ba">Em dia</span>';
+    document.getElementById('det-body').innerHTML = `
       <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px">
-        <div>${sb}</div>
+        <div>${sb2}</div>
         <div style="text-align:right">
           <div style="font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--hint)">Saldo devedor</div>
           <div style="font-family:var(--fh);font-size:20px;font-weight:600;color:${dv.saldoDevedor>0?'var(--accent)':'var(--success)'}">${fmt(dv.saldoDevedor)}</div>
         </div>
       </div>
       <div class="igrid">
-        <div><div class="ilabel">Principal</div><div class="ival">${fmt(dv.valorPrincipal)}</div></div>
-        <div><div class="ilabel">Juros</div><div class="ival">${dv.jurosPct}%</div></div>
+        <div><div class="ilabel">Principal</div><div class="ival">${fmt(dv.valor_principal)}</div></div>
+        <div><div class="ilabel">Juros</div><div class="ival">${dv.juros_pct}%</div></div>
         <div><div class="ilabel">Total</div><div class="ival">${fmt(dv.valorTotal)}</div></div>
         <div><div class="ilabel">Por parcela</div><div class="ival">${fmt(dv.valorParcela)}</div></div>
-        <div><div class="ilabel">Periodicidade</div><div class="ival" style="text-transform:capitalize">${dv.periodicidade}${dv.diaSemana?' · '+dv.diaSemana:''}</div></div>
-        <div><div class="ilabel">1ª parcela</div><div class="ival">${fmtBR(dv.dataPrimeira)}</div></div>
+        <div><div class="ilabel">Periodicidade</div><div class="ival" style="text-transform:capitalize">${dv.periodicidade}${dv.dia_semana?' · '+dv.dia_semana:''}</div></div>
+        <div><div class="ilabel">1ª parcela</div><div class="ival">${fmtBR(dv.data_primeira)}</div></div>
       </div>
       ${dv.observacoes?`<div style="background:var(--surface2);border-radius:var(--radius-sm);padding:10px 12px;font-size:13px;color:var(--muted);margin-bottom:16px">${esc(dv.observacoes)}</div>`:''}
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
-        <span style="font-size:11px;color:var(--hint)">${dv.nPagas}/${dv.numParcelas}</span>
+        <span style="font-size:11px;color:var(--hint)">${dv.nPagas}/${dv.num_parcelas}</span>
         <div class="pb" style="flex:1"><div class="pf" style="width:${pct}%"></div></div>
         <span style="font-size:11px;color:var(--muted)">${pct}%</span>
       </div>
-      <div>${dv.parcelas.map(p=>{
-        const cls=p.pago?'pago':p.atrasado?'atrasado':'pendente';
-        const lbl=p.pago?`Recebido em ${fmtBR(p.dataPagamento)}`:p.atrasado?'⚠ ATRASADO':'Pendente';
-        const btn=p.pago
+      <div>${dv.parcelas.map(p => {
+        const cls = p.pago?'pago':p.atrasado?'atrasado':'pendente';
+        const lbl = p.pago?`Recebido em ${fmtBR(p.data_pagamento)}`:p.atrasado?'⚠ ATRASADO':'Pendente';
+        const btn = p.pago
           ?`<button class="btn btn-ghost btn-sm" onclick="desfazer('${p.id}','${dv.id}')">↩</button>`
           :`<button class="btn btn-accent btn-sm" onclick="abrirPgto('${p.id}','${dv.id}','${esc(dv.nome)}',${p.numero},${p.valor},'${p.vencimento}')">Receber</button>`;
-        return`<div class="pt">
+        return `<div class="pt">
           <div class="pnum ${cls}">${p.numero}</div>
           <div class="pinfo"><div class="pval">${fmt(p.valor)}</div><div class="pdate">Vence ${fmtBR(p.vencimento)} · ${lbl}</div></div>
           <div class="pacts">${btn}</div>
         </div>`;
       }).join('')}</div>`;
-  } catch(e){document.getElementById('det-body').innerHTML=`<p style="color:var(--danger)">Erro: ${e.message}</p>`;}
+  } catch(e) {
+    document.getElementById('det-body').innerHTML = `<p style="color:var(--danger)">Erro: ${e.message}</p>`;
+  }
 }
 
-function abrirPgto(pid,did,nome,num,valor,venc){
-  document.getElementById('pgto-pid').value=pid;
-  document.getElementById('pgto-did').value=did;
-  document.getElementById('pgto-data').value=hj();
-  document.getElementById('pgto-desc').textContent=`${nome} · Parcela ${num} · ${fmt(valor)} · Venc.: ${fmtBR(venc)}`;
+// ── PAGAMENTO ──
+function abrirPgto(pid, did, nome, num, valor, venc) {
+  document.getElementById('pgto-pid').value = pid;
+  document.getElementById('pgto-did').value = did;
+  document.getElementById('pgto-data').value = hj();
+  document.getElementById('pgto-desc').textContent = `${nome} · Parcela ${num} · ${fmt(valor)} · Venc.: ${fmtBR(venc)}`;
   document.getElementById('modal-pgto').classList.add('open');
 }
 
-async function confirmarPgto(){
-  const pid=document.getElementById('pgto-pid').value;
-  const did=document.getElementById('pgto-did').value;
-  const data=document.getElementById('pgto-data').value;
-  try{
-    await api({action:'registrarPgto',parcelaId:pid,dataPagamento:data});
-    fechar('modal-pgto'); toast('Recebimento registrado!','success');
-    if(document.getElementById('modal-det').classList.contains('open')) abrirDet(did);
-    carrDevs(); carrDash();
-    if(document.getElementById('page-pendencias').classList.contains('active')) carrPends();
-  }catch(e){toast('Erro: '+e.message,'error');}
+async function confirmarPgto() {
+  const pid  = document.getElementById('pgto-pid').value;
+  const did  = document.getElementById('pgto-did').value;
+  const data = document.getElementById('pgto-data').value;
+  try {
+    await sb(`parcelas?id=eq.${pid}`, { method:'PATCH', body: JSON.stringify({ data_pagamento: data }) });
+    fechar('modal-pgto');
+    toast('Recebimento registrado!', 'success');
+    if (document.getElementById('modal-det').classList.contains('open')) abrirDet(did);
+    carrDash(); carrDevs();
+    if (document.getElementById('page-pendencias').classList.contains('active')) carrPends();
+  } catch(e) { toast('Erro: '+e.message,'error'); }
 }
 
-async function desfazer(pid,did){
-  if(!confirm('Desfazer este recebimento?'))return;
-  try{
-    await api({action:'desfazerPgto',parcelaId:pid});
-    toast('Desfeito.','info'); abrirDet(did); carrDevs(); carrDash();
-  }catch(e){toast('Erro: '+e.message,'error');}
+async function desfazer(pid, did) {
+  if (!confirm('Desfazer este recebimento?')) return;
+  try {
+    await sb(`parcelas?id=eq.${pid}`, { method:'PATCH', body: JSON.stringify({ data_pagamento: null }) });
+    toast('Desfeito.', 'info');
+    abrirDet(did); carrDash(); carrDevs();
+  } catch(e) { toast('Erro: '+e.message,'error'); }
 }
 
-function abrirNovo(){
-  document.getElementById('mdev-title').textContent='Novo Devedor';
-  document.getElementById('dev-id').value='';
-  ['dev-nome','dev-obs'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('dev-valor').value='';
-  document.getElementById('dev-juros').value='0';
-  document.getElementById('dev-nparc').value='4';
-  document.getElementById('dev-periodo').value='semanal';
-  document.getElementById('dev-data1').value=hj();
-  document.getElementById('btn-salvar').textContent='Salvar';
-  document.getElementById('prev-box').style.display='none';
+// ── CRIAR / EDITAR DEVEDOR ──
+function abrirNovo() {
+  document.getElementById('mdev-title').textContent = 'Novo Devedor';
+  document.getElementById('dev-id').value = '';
+  ['dev-nome','dev-obs'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('dev-valor').value = '';
+  document.getElementById('dev-juros').value = '0';
+  document.getElementById('dev-nparc').value = '4';
+  document.getElementById('dev-periodo').value = 'semanal';
+  document.getElementById('dev-data1').value = hj();
+  document.getElementById('btn-salvar').textContent = 'Salvar';
+  document.getElementById('prev-box').style.display = 'none';
   toggleDia();
   document.getElementById('modal-dev').classList.add('open');
 }
 
-function toggleDia(){document.getElementById('fg-dia').style.display=document.getElementById('dev-periodo').value==='semanal'?'block':'none';}
+function toggleDia() {
+  document.getElementById('fg-dia').style.display = document.getElementById('dev-periodo').value==='semanal'?'block':'none';
+}
 
-function calcPrev(){
-  const p=parseFloat(document.getElementById('dev-valor').value)||0;
-  const j=parseFloat(document.getElementById('dev-juros').value)||0;
-  const n=parseInt(document.getElementById('dev-nparc').value)||1;
-  const box=document.getElementById('prev-box');
-  if(!p){box.style.display='none';return;}
-  const t=p*(1+j/100),pc=t/n;
+function calcPrev() {
+  const p = parseFloat(document.getElementById('dev-valor').value)||0;
+  const j = parseFloat(document.getElementById('dev-juros').value)||0;
+  const n = parseInt(document.getElementById('dev-nparc').value)||1;
+  const box = document.getElementById('prev-box');
+  if (!p) { box.style.display='none'; return; }
+  const t=p*(1+j/100), pc=t/n;
   box.style.display='block';
   box.innerHTML=`Total com juros: <strong>${fmt(t)}</strong> · Por parcela: <strong>${fmt(pc)}</strong>`;
 }
 
-async function salvarDev(){
-  const id=document.getElementById('dev-id').value;
-  const nome=document.getElementById('dev-nome').value.trim();
-  const valor=parseFloat(document.getElementById('dev-valor').value);
-  const juros=parseFloat(document.getElementById('dev-juros').value)||0;
-  const nparc=parseInt(document.getElementById('dev-nparc').value)||1;
-  const per=document.getElementById('dev-periodo').value;
-  const dia=document.getElementById('dev-dia').value;
-  const data1=document.getElementById('dev-data1').value;
-  const obs=document.getElementById('dev-obs').value.trim();
-  if(!nome){toast('Informe o nome.','error');return;}
-  if(!valor||valor<=0){toast('Informe um valor válido.','error');return;}
-  if(!data1){toast('Informe a data da 1ª parcela.','error');return;}
-  const btn=document.getElementById('btn-salvar');
+async function salvarDev() {
+  const id    = document.getElementById('dev-id').value;
+  const nome  = document.getElementById('dev-nome').value.trim();
+  const valor = parseFloat(document.getElementById('dev-valor').value);
+  const juros = parseFloat(document.getElementById('dev-juros').value)||0;
+  const nparc = parseInt(document.getElementById('dev-nparc').value)||1;
+  const per   = document.getElementById('dev-periodo').value;
+  const dia   = document.getElementById('dev-dia').value;
+  const data1 = document.getElementById('dev-data1').value;
+  const obs   = document.getElementById('dev-obs').value.trim();
+
+  if (!nome)          { toast('Informe o nome.','error'); return; }
+  if (!valor||valor<=0){ toast('Informe um valor válido.','error'); return; }
+  if (!data1)          { toast('Informe a data da 1ª parcela.','error'); return; }
+
+  const btn = document.getElementById('btn-salvar');
   btn.textContent='Salvando…'; btn.disabled=true;
-  try{
-    await api(id
-      ?{action:'editar',id,nome,observacoes:obs}
-      :{action:'criar',nome,valorPrincipal:valor,jurosPct:juros,numParcelas:nparc,periodicidade:per,diaSemana:per==='semanal'?dia:'',dataPrimeira:data1,observacoes:obs});
-    fechar('modal-dev'); toast(id?'Atualizado!':'Devedor cadastrado!','success');
+
+  try {
+    if (id) {
+      await sb(`devedores?id=eq.${id}`, { method:'PATCH', body: JSON.stringify({ nome, observacoes: obs }) });
+    } else {
+      const valorParcela = calcValorParcela(valor, juros, nparc);
+      const datas = gerarDatas(data1, nparc, per);
+
+      // Inserir devedor
+      const dvRes = await sb('devedores', {
+        method:'POST',
+        headers: { ...H, 'Prefer': 'return=representation' },
+        body: JSON.stringify({
+          nome, valor_principal: valor, juros_pct: juros, num_parcelas: nparc,
+          periodicidade: per, dia_semana: per==='semanal'?dia:'',
+          data_primeira: data1, observacoes: obs, ativo: true
+        })
+      });
+      const dvId = dvRes[0].id;
+
+      // Inserir parcelas em batch
+      const parcelas = datas.map((dt, i) => ({
+        devedor_id: dvId, numero: i+1, valor: valorParcela, vencimento: dt
+      }));
+      await sb('parcelas', { method:'POST', body: JSON.stringify(parcelas) });
+    }
+    fechar('modal-dev');
+    toast(id?'Atualizado!':'Devedor cadastrado!','success');
     carrDevs(); carrDash();
-  }catch(e){toast('Erro: '+e.message,'error');}
-  finally{btn.textContent=id?'Atualizar':'Salvar';btn.disabled=false;}
+  } catch(e) {
+    toast('Erro: '+e.message,'error');
+  } finally {
+    btn.textContent=id?'Atualizar':'Salvar'; btn.disabled=false;
+  }
 }
 
-async function excluirDev(id,nome){
-  if(!confirm(`Excluir "${nome}" e todas as parcelas?`))return;
-  try{await api({action:'excluir',id});toast('Excluído.','info');carrDevs();carrDash();}
-  catch(e){toast('Erro: '+e.message,'error');}
+async function excluirDev(id, nome) {
+  if (!confirm(`Excluir "${nome}" e todas as parcelas?`)) return;
+  try {
+    await sb(`parcelas?devedor_id=eq.${id}`, { method:'DELETE' });
+    await sb(`devedores?id=eq.${id}`, { method:'DELETE' });
+    toast('Excluído.','info');
+    carrDevs(); carrDash();
+  } catch(e) { toast('Erro: '+e.message,'error'); }
 }
 
-function fechar(id){document.getElementById(id).classList.remove('open');}
-document.querySelectorAll('.overlay').forEach(el=>{el.addEventListener('click',e=>{if(e.target===el)el.classList.remove('open');});});
-function fmt(v){return'R$ '+Number(v).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});}
-function fmtBR(s){if(!s)return'—';return new Date(s+'T12:00:00').toLocaleDateString('pt-BR');}
-function esc(s){if(!s)return'';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-function toast(msg,tipo){
+// ── UTILS ──
+function fechar(id) { document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.overlay').forEach(el => {
+  el.addEventListener('click', e => { if(e.target===el) el.classList.remove('open'); });
+});
+function fmt(v) { return 'R$ '+Number(v).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function fmtBR(s) { if(!s) return '—'; return new Date(s+'T12:00:00').toLocaleDateString('pt-BR'); }
+function esc(s) { if(!s) return ''; return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function toast(msg, tipo) {
   const a=document.getElementById('toasts');
   const t=document.createElement('div');
   t.className='toast '+(tipo||'info'); t.textContent=msg;
