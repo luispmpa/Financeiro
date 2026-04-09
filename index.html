@@ -414,10 +414,17 @@ function ir(pg) {
 
 // ── SUPABASE API ──
 async function sb(path, opts={}) {
-  const r = await fetch(SB_URL + '/rest/v1/' + path, { headers: H, ...opts });
-  if (!r.ok) { const e = await r.json(); throw new Error(e.message || r.statusText); }
-  if (r.status === 204) return null;
-  return r.json();
+  const headers = { ...H, ...(opts.headers||{}) };
+  const r = await fetch(SB_URL + '/rest/v1/' + path, { ...opts, headers });
+  if (!r.ok) {
+    const txt = await r.text();
+    let msg = r.statusText;
+    try { msg = JSON.parse(txt).message || msg; } catch(e) {}
+    throw new Error(msg);
+  }
+  const txt = await r.text();
+  if (!txt) return null;
+  return JSON.parse(txt);
 }
 
 // ── HELPERS ──
@@ -791,9 +798,9 @@ async function salvarDev() {
       const datas = gerarDatas(data1, nparc, per);
 
       // Inserir devedor
-      const dvRes = await sb('devedores', {
+      const dvRes = await sb('devedores?select=id', {
         method:'POST',
-        headers: { ...H, 'Prefer': 'return=representation' },
+        headers: { 'Prefer': 'return=representation' },
         body: JSON.stringify({
           nome, valor_principal: valor, juros_pct: juros, num_parcelas: nparc,
           periodicidade: per, dia_semana: per==='semanal'?diaSemana:'',
