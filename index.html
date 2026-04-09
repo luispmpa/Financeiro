@@ -336,25 +336,16 @@ tr:hover td{background:rgba(255,255,255,0.02)}
       <div class="frow">
         <div class="fg"><label class="fl">Nº parcelas *</label><input type="number" class="fi" id="dev-nparc" value="4" min="1" max="52" inputmode="numeric" oninput="calcPrev()"></div>
         <div class="fg"><label class="fl">Periodicidade *</label>
-          <select class="fs" id="dev-periodo" onchange="toggleDia()">
+          <select class="fs" id="dev-periodo">
             <option value="semanal">Semanal</option>
             <option value="quinzenal">Quinzenal</option>
             <option value="mensal">Mensal</option>
           </select>
         </div>
       </div>
-      <div class="fg" id="fg-dia"><label class="fl">Dia da semana</label>
-        <select class="fs" id="dev-dia">
-          <option value="Segunda">Segunda-feira</option>
-          <option value="Terça">Terça-feira</option>
-          <option value="Quarta">Quarta-feira</option>
-          <option value="Quinta">Quinta-feira</option>
-          <option value="Sexta">Sexta-feira</option>
-          <option value="Sábado">Sábado</option>
-          <option value="Domingo">Domingo</option>
-        </select>
-      </div>
-      <div class="fg"><label class="fl">Data da 1ª parcela *</label><input type="date" class="fi" id="dev-data1"></div>
+      <div id="dia-preview-old" style="display:none"></div>
+      <div class="fg"><label class="fl">Data da 1ª parcela *</label><input type="date" class="fi" id="dev-data1" oninput="mostrarDia()"></div>
+      <div id="dia-preview" style="display:none;margin-top:-10px;margin-bottom:12px;font-size:12px;color:var(--accent);padding:0 2px"></div>
       <div class="fg"><label class="fl">Observações</label><textarea class="fta" id="dev-obs" placeholder="Motivo, garantias, etc."></textarea></div>
     </div>
     <div class="mfoot">
@@ -743,12 +734,23 @@ function abrirNovo() {
   document.getElementById('dev-data1').value = hj();
   document.getElementById('btn-salvar').textContent = 'Salvar';
   document.getElementById('prev-box').style.display = 'none';
-  toggleDia();
+  document.getElementById('dia-preview').style.display = 'none';
+  mostrarDia();
   document.getElementById('modal-dev').classList.add('open');
 }
 
-function toggleDia() {
-  document.getElementById('fg-dia').style.display = document.getElementById('dev-periodo').value==='semanal'?'block':'none';
+const DIAS_PT = ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
+
+function mostrarDia() {
+  const val = document.getElementById('dev-data1').value;
+  const box = document.getElementById('dia-preview');
+  if (!val) { box.style.display='none'; return; }
+  const d = new Date(val+'T12:00:00');
+  const per = document.getElementById('dev-periodo').value;
+  const nomeDia = DIAS_PT[d.getDay()];
+  const per_label = per === 'semanal' ? `· toda ${nomeDia}` : '';
+  box.style.display = 'block';
+  box.textContent = `↳ ${nomeDia}-feira ${per_label}`.replace('Sábado-feira','Sábado').replace('Domingo-feira','Domingo');
 }
 
 function calcPrev() {
@@ -769,9 +771,10 @@ async function salvarDev() {
   const juros = parseFloat(document.getElementById('dev-juros').value)||0;
   const nparc = parseInt(document.getElementById('dev-nparc').value)||1;
   const per   = document.getElementById('dev-periodo').value;
-  const dia   = document.getElementById('dev-dia').value;
   const data1 = document.getElementById('dev-data1').value;
   const obs   = document.getElementById('dev-obs').value.trim();
+  // calcula dia da semana automaticamente pela data
+  const diaSemana = data1 ? DIAS_PT[new Date(data1+'T12:00:00').getDay()] : '';
 
   if (!nome)          { toast('Informe o nome.','error'); return; }
   if (!valor||valor<=0){ toast('Informe um valor válido.','error'); return; }
@@ -793,7 +796,7 @@ async function salvarDev() {
         headers: { ...H, 'Prefer': 'return=representation' },
         body: JSON.stringify({
           nome, valor_principal: valor, juros_pct: juros, num_parcelas: nparc,
-          periodicidade: per, dia_semana: per==='semanal'?dia:'',
+          periodicidade: per, dia_semana: per==='semanal'?diaSemana:'',
           data_primeira: data1, observacoes: obs, ativo: true
         })
       });
