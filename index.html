@@ -806,7 +806,11 @@ async function salvarDev() {
       const parcelas = datas.map((dt, i) => ({
         devedor_id: dvId, numero: i+1, valor: valorParcela, vencimento: dt
       }));
-      await sb('parcelas', { method:'POST', body: JSON.stringify(parcelas) });
+      await fetch(SB_URL+'/rest/v1/parcelas', {
+        method:'POST',
+        headers: { ...H, 'Prefer': 'return=minimal' },
+        body: JSON.stringify(parcelas)
+      });
     }
     fechar('modal-dev');
     toast(id?'Atualizado!':'Devedor cadastrado!','success');
