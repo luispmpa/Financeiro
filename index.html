@@ -32,25 +32,13 @@
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: var(--font-body); background: var(--bg); color: var(--text); min-height: 100vh; font-size: 14px; }
-
-/* LAYOUT */
 .app { display: flex; min-height: 100vh; }
-
-/* SIDEBAR */
-.sidebar {
-  width: var(--sidebar); background: var(--surface); border-right: 1px solid var(--border);
-  position: fixed; top: 0; left: 0; height: 100vh; display: flex; flex-direction: column; z-index: 100;
-}
+.sidebar { width: var(--sidebar); background: var(--surface); border-right: 1px solid var(--border); position: fixed; top: 0; left: 0; height: 100vh; display: flex; flex-direction: column; z-index: 100; }
 .logo { padding: 28px 20px 24px; border-bottom: 1px solid var(--border); }
 .logo-mark { font-family: var(--font-head); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; }
 .logo h1 { font-family: var(--font-head); font-size: 17px; font-weight: 600; color: var(--text); line-height: 1.25; }
 .nav { padding: 16px 10px; flex: 1; }
-.nav-btn {
-  width: 100%; display: flex; align-items: center; gap: 10px; padding: 9px 12px;
-  border: none; background: none; color: var(--muted); font-family: var(--font-body);
-  font-size: 13px; font-weight: 400; border-radius: var(--radius-sm); cursor: pointer;
-  transition: all .15s; margin-bottom: 2px; text-align: left;
-}
+.nav-btn { width: 100%; display: flex; align-items: center; gap: 10px; padding: 9px 12px; border: none; background: none; color: var(--muted); font-family: var(--font-body); font-size: 13px; font-weight: 400; border-radius: var(--radius-sm); cursor: pointer; transition: all .15s; margin-bottom: 2px; text-align: left; }
 .nav-btn:hover { background: var(--surface2); color: var(--text); }
 .nav-btn.active { background: var(--accent-dim); color: var(--accent); font-weight: 500; }
 .nav-icon { width: 16px; height: 16px; flex-shrink: 0; opacity: .7; }
@@ -60,57 +48,38 @@ body { font-family: var(--font-body); background: var(--bg); color: var(--text);
 .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--hint); flex-shrink: 0; }
 .dot.ok { background: var(--success); box-shadow: 0 0 6px var(--success); }
 .dot.err { background: var(--danger); }
-
-/* MAIN */
 .main { margin-left: var(--sidebar); flex: 1; padding: 32px 36px; max-width: 1080px; }
 .page { display: none; }
 .page.active { display: block; animation: fadeIn .2s ease; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-
-/* PAGE HEADER */
 .ph { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 28px; }
 .ph-left h2 { font-family: var(--font-head); font-size: 26px; font-weight: 600; }
 .ph-left p { color: var(--muted); font-size: 13px; margin-top: 4px; }
-
-/* BTN */
 .btn { display: inline-flex; align-items: center; gap: 7px; padding: 9px 18px; border-radius: var(--radius-sm); font-family: var(--font-body); font-size: 13px; font-weight: 500; cursor: pointer; border: none; transition: all .15s; }
 .btn-accent { background: var(--accent); color: #0F0F0F; }
 .btn-accent:hover { opacity: .88; }
 .btn-ghost { background: transparent; color: var(--muted); border: 1px solid var(--border2); }
 .btn-ghost:hover { background: var(--surface2); color: var(--text); }
 .btn-sm { padding: 5px 12px; font-size: 12px; }
-.btn-danger-ghost { background: transparent; color: var(--danger); border: 1px solid rgba(255,92,92,0.25); font-size: 12px; padding: 5px 10px; }
-.btn-danger-ghost:hover { background: var(--danger-dim); }
 .btn-icon { background: none; border: none; cursor: pointer; color: var(--hint); padding: 5px; border-radius: 6px; font-size: 15px; transition: all .15s; }
 .btn-icon:hover { background: var(--surface2); color: var(--text); }
-
-/* METRICS */
 .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; margin-bottom: 28px; }
-.metric {
-  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 20px;
-}
+.metric { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 20px; }
 .metric-label { font-size: 10px; text-transform: uppercase; letter-spacing: .1em; color: var(--hint); margin-bottom: 10px; }
 .metric-value { font-family: var(--font-head); font-size: 22px; font-weight: 600; color: var(--text); }
 .metric-value.success { color: var(--success); }
-.metric-value.danger  { color: var(--danger); }
-.metric-value.warning { color: var(--warning); }
-.metric-value.accent  { color: var(--accent); }
+.metric-value.danger { color: var(--danger); }
+.metric-value.accent { color: var(--accent); }
 .metric-sub { font-size: 11px; color: var(--muted); margin-top: 5px; }
-
-/* CARD */
 .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 20px; }
 .card-head { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
 .card-head h3 { font-size: 13px; font-weight: 500; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
-
-/* BADGE */
 .badge { display: inline-flex; align-items: center; padding: 3px 9px; border-radius: 20px; font-size: 11px; font-weight: 500; }
 .badge-success { background: var(--success-dim); color: var(--success); }
-.badge-danger  { background: var(--danger-dim);  color: var(--danger); }
+.badge-danger { background: var(--danger-dim); color: var(--danger); }
 .badge-warning { background: var(--warning-dim); color: var(--warning); }
-.badge-accent  { background: var(--accent-dim);  color: var(--accent); }
+.badge-accent { background: var(--accent-dim); color: var(--accent); }
 .badge-neutral { background: rgba(255,255,255,0.06); color: var(--muted); }
-
-/* TABLE */
 .tbl-wrap { overflow-x: auto; }
 table { width: 100%; border-collapse: collapse; }
 th { padding: 10px 16px; text-align: left; font-size: 10px; font-weight: 500; color: var(--hint); text-transform: uppercase; letter-spacing: .08em; border-bottom: 1px solid var(--border); background: var(--surface2); }
@@ -124,17 +93,10 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 .progress-bar { flex: 1; min-width: 60px; height: 3px; background: rgba(255,255,255,0.08); border-radius: 2px; }
 .progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width .4s; }
 .progress-pct { font-size: 11px; color: var(--muted); min-width: 28px; }
-
-/* FILTROS */
 .filtros { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 16px; }
-.filter-select, .filter-input {
-  background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius-sm);
-  color: var(--text); font-family: var(--font-body); font-size: 13px; padding: 7px 12px; outline: none;
-}
+.filter-select, .filter-input { background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius-sm); color: var(--text); font-family: var(--font-body); font-size: 13px; padding: 7px 12px; outline: none; }
 .filter-select:focus, .filter-input:focus { border-color: var(--accent); }
 .filter-input { width: 200px; }
-
-/* MODAL */
 .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.65); z-index: 200; display: none; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
 .overlay.open { display: flex; }
 .modal { background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius); width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; animation: slideUp .2s ease; }
@@ -144,41 +106,26 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 .modal-head h3 { font-family: var(--font-head); font-size: 18px; font-weight: 600; }
 .modal-body { padding: 20px 24px; }
 .modal-foot { padding: 14px 24px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 10px; }
-
-/* FORM */
 .fg { margin-bottom: 16px; }
 .fl { display: block; font-size: 11px; font-weight: 500; color: var(--hint); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; }
-.fi, .fs, .fta {
-  width: 100%; padding: 10px 14px; background: var(--surface2); border: 1px solid var(--border);
-  border-radius: var(--radius-sm); color: var(--text); font-family: var(--font-body); font-size: 14px; outline: none; transition: border-color .15s;
-}
+.fi, .fs, .fta { width: 100%; padding: 10px 14px; background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text); font-family: var(--font-body); font-size: 14px; outline: none; transition: border-color .15s; }
 .fi:focus, .fs:focus, .fta:focus { border-color: var(--accent); }
 .fta { resize: vertical; min-height: 64px; }
 .frow { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-.frow3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
 .hint-box { background: var(--accent-dim); border: 1px solid var(--accent-dim2); border-radius: var(--radius-sm); padding: 10px 14px; font-size: 12px; color: var(--accent); margin-top: -8px; margin-bottom: 14px; }
-
-/* DEVEDOR DETAIL */
-.devedor-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; margin-bottom: 20px; }
-.devedor-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
-.devedor-title { font-family: var(--font-head); font-size: 22px; font-weight: 600; }
-.devedor-sub-info { color: var(--muted); font-size: 13px; margin-top: 4px; }
-.info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 16px; margin-bottom: 20px; }
-.info-item .info-label { font-size: 10px; text-transform: uppercase; letter-spacing: .08em; color: var(--hint); margin-bottom: 4px; }
-.info-item .info-val { font-size: 15px; font-weight: 500; }
-.parcelas-timeline { }
 .pt-item { display: flex; align-items: center; gap: 14px; padding: 12px 0; border-bottom: 1px solid var(--border); }
 .pt-item:last-child { border-bottom: none; }
 .pt-num { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; flex-shrink: 0; }
-.pt-num.pago    { background: var(--success-dim); color: var(--success); }
-.pt-num.atrasado { background: var(--danger-dim);  color: var(--danger); }
+.pt-num.pago { background: var(--success-dim); color: var(--success); }
+.pt-num.atrasado { background: var(--danger-dim); color: var(--danger); }
 .pt-num.pendente { background: rgba(255,255,255,0.06); color: var(--muted); }
 .pt-info { flex: 1; }
 .pt-info .pt-val { font-weight: 500; }
 .pt-info .pt-date { font-size: 11px; color: var(--muted); margin-top: 2px; }
 .pt-actions { display: flex; gap: 6px; }
-
-/* PENDENCIAS */
+.info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 16px; margin-bottom: 20px; }
+.info-item .info-label { font-size: 10px; text-transform: uppercase; letter-spacing: .08em; color: var(--hint); margin-bottom: 4px; }
+.info-item .info-val { font-size: 15px; font-weight: 500; }
 .pend-item { display: flex; align-items: center; gap: 16px; padding: 14px 20px; border-bottom: 1px solid var(--border); }
 .pend-item:last-child { border-bottom: none; }
 .pend-avatar { width: 38px; height: 38px; border-radius: 50%; background: var(--danger-dim); color: var(--danger); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; flex-shrink: 0; }
@@ -186,39 +133,25 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 .pend-nome { font-weight: 500; cursor: pointer; }
 .pend-nome:hover { color: var(--accent); }
 .pend-desc { font-size: 12px; color: var(--muted); margin-top: 2px; }
-.pend-valor { font-weight: 600; color: var(--danger); font-size: 15px; }
 .dias-atraso { font-size: 11px; color: var(--danger); margin-top: 2px; }
-
-/* CONFIG */
-.config-alert { background: var(--warning-dim); border: 1px solid rgba(255,179,71,0.25); border-radius: var(--radius-sm); padding: 14px 18px; margin-bottom: 24px; font-size: 13px; color: var(--warning); line-height: 1.6; }
+.pend-valor { font-weight: 600; color: var(--danger); font-size: 15px; }
+.config-alert { background: var(--warning-dim); border: 1px solid rgba(255,179,71,0.25); border-radius: var(--radius-sm); padding: 14px 18px; margin-bottom: 24px; font-size: 13px; color: var(--warning); line-height: 1.8; }
 .config-alert strong { color: var(--text); }
-
-/* TOAST */
 .toast-area { position: fixed; bottom: 24px; right: 24px; z-index: 999; display: flex; flex-direction: column; gap: 8px; }
 .toast { padding: 11px 18px; border-radius: var(--radius-sm); font-size: 13px; animation: fadeIn .2s ease; max-width: 280px; border: 1px solid; }
 .toast.success { background: var(--success-dim); border-color: rgba(92,255,154,0.25); color: var(--success); }
-.toast.error   { background: var(--danger-dim);  border-color: rgba(255,92,92,0.25);  color: var(--danger); }
-.toast.info    { background: var(--surface); border-color: var(--border2); color: var(--text); }
-
-/* EMPTY / LOADING */
+.toast.error { background: var(--danger-dim); border-color: rgba(255,92,92,0.25); color: var(--danger); }
+.toast.info { background: var(--surface); border-color: var(--border2); color: var(--text); }
 .empty { text-align: center; padding: 52px 20px; color: var(--hint); }
-.empty-icon { font-size: 36px; margin-bottom: 12px; opacity: .4; }
 .loading { display: flex; align-items: center; gap: 10px; padding: 24px 20px; color: var(--muted); font-size: 13px; }
 .spinner { width: 16px; height: 16px; border: 2px solid var(--border2); border-top-color: var(--accent); border-radius: 50%; animation: spin .7s linear infinite; flex-shrink: 0; }
 @keyframes spin { to { transform: rotate(360deg); } }
-.sep { height: 1px; background: var(--border); margin: 16px 0; }
-
-@media (max-width: 680px) {
-  .sidebar { display: none; }
-  .main { margin-left: 0; padding: 16px; }
-  .frow, .frow3 { grid-template-columns: 1fr; }
-}
+@media (max-width: 680px) { .sidebar { display: none; } .main { margin-left: 0; padding: 16px; } .frow { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
 <div class="app">
 
-<!-- SIDEBAR -->
 <aside class="sidebar">
   <div class="logo">
     <div class="logo-mark">Financeiro</div>
@@ -250,25 +183,22 @@ tr:hover td { background: rgba(255,255,255,0.02); }
   </div>
 </aside>
 
-<!-- MAIN -->
 <main class="main">
 
-  <!-- DASHBOARD -->
   <div class="page active" id="page-dashboard">
     <div class="ph">
       <div class="ph-left"><h2>Dashboard</h2><p id="dash-data">—</p></div>
       <button class="btn btn-ghost btn-sm" onclick="carregarDashboard()">↻ Atualizar</button>
     </div>
     <div class="metrics" id="dash-metrics">
-      <div class="metric"><div class="metric-label">Carregando</div><div class="metric-value">—</div></div>
+      <div class="metric"><div class="metric-label">Aguardando</div><div class="metric-value">—</div></div>
     </div>
     <div class="card">
       <div class="card-head"><h3>Devedores ativos</h3></div>
-      <div id="dash-lista"><div class="loading"><div class="spinner"></div>Aguardando...</div></div>
+      <div id="dash-lista"><div class="loading"><div class="spinner"></div>Aguardando conexão...</div></div>
     </div>
   </div>
 
-  <!-- DEVEDORES -->
   <div class="page" id="page-devedores">
     <div class="ph">
       <div class="ph-left"><h2>Devedores</h2><p>Gerencie todos os contratos</p></div>
@@ -293,11 +223,11 @@ tr:hover td { background: rgba(255,255,255,0.02); }
       </select>
       <select class="filter-select" onchange="aplicarFiltros()" id="f-parcelas">
         <option value="">Todas as parcelas</option>
-        <option value="2">2 parcelas</option>
-        <option value="3">3 parcelas</option>
-        <option value="4">4 parcelas</option>
-        <option value="6">6 parcelas</option>
-        <option value="12">12 parcelas</option>
+        <option value="2">2x</option>
+        <option value="3">3x</option>
+        <option value="4">4x</option>
+        <option value="6">6x</option>
+        <option value="12">12x</option>
       </select>
     </div>
     <div class="card">
@@ -306,7 +236,6 @@ tr:hover td { background: rgba(255,255,255,0.02); }
     </div>
   </div>
 
-  <!-- PENDÊNCIAS -->
   <div class="page" id="page-pendencias">
     <div class="ph">
       <div class="ph-left"><h2>Pendências</h2><p>Parcelas em atraso até hoje</p></div>
@@ -318,21 +247,20 @@ tr:hover td { background: rgba(255,255,255,0.02); }
     </div>
   </div>
 
-  <!-- CONFIG -->
   <div class="page" id="page-config">
     <div class="ph"><div class="ph-left"><h2>Configuração</h2><p>Conecte ao Google Sheets via Apps Script</p></div></div>
     <div class="config-alert">
       <strong>Como configurar:</strong><br>
-      1. No Google Sheets: <strong>Extensões → Apps Script</strong> → cole o <code>Code.gs</code>.<br>
-      2. Execute <code>inicializarPlanilha()</code> uma vez.<br>
-      3. <strong>Implantar → Nova implantação → Web App</strong> · "Executar como": sua conta · "Acesso": Qualquer pessoa.<br>
-      4. Copie a URL e cole abaixo.
+      1. Google Sheets → <strong>Extensões → Apps Script</strong> → cole o <code>Code.gs</code> → salve.<br>
+      2. Execute <strong>inicializarPlanilha()</strong> uma vez.<br>
+      3. <strong>Implantar → Gerenciar implantações → editar → Nova versão → Implantar</strong>.<br>
+      4. Cole a URL abaixo e clique em Salvar.
     </div>
     <div class="card" style="max-width:520px">
       <div class="card-head"><h3>URL da API</h3></div>
       <div class="modal-body">
         <div class="fg">
-          <label class="fl">URL do Web App (Apps Script)</label>
+          <label class="fl">URL do Web App</label>
           <input type="url" class="fi" id="api-url-inp" placeholder="https://script.google.com/macros/s/.../exec">
         </div>
         <button class="btn btn-accent" onclick="salvarConfig()">Salvar e testar conexão</button>
@@ -344,7 +272,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 </main>
 </div>
 
-<!-- MODAL NOVO/EDITAR DEVEDOR -->
+<!-- MODAL NOVO DEVEDOR -->
 <div class="overlay" id="modal-dev">
   <div class="modal">
     <div class="modal-head">
@@ -360,31 +288,31 @@ tr:hover td { background: rgba(255,255,255,0.02); }
       <div class="frow">
         <div class="fg">
           <label class="fl">Valor principal (R$) *</label>
-          <input type="number" class="fi" id="dev-valor" placeholder="1000,00" step="0.01" min="0" oninput="calcularPreview()">
+          <input type="number" class="fi" id="dev-valor" placeholder="1000" step="0.01" min="0" oninput="calcPreview()">
         </div>
         <div class="fg">
           <label class="fl">Juros (%)</label>
-          <input type="number" class="fi" id="dev-juros" placeholder="0" step="0.1" min="0" value="0" oninput="calcularPreview()">
+          <input type="number" class="fi" id="dev-juros" placeholder="0" step="0.1" min="0" value="0" oninput="calcPreview()">
         </div>
       </div>
-      <div id="preview-calc" style="display:none" class="hint-box"></div>
+      <div id="preview-box" style="display:none" class="hint-box"></div>
       <div class="frow">
         <div class="fg">
           <label class="fl">Nº de parcelas *</label>
-          <input type="number" class="fi" id="dev-nparc" placeholder="4" min="1" max="52" value="4" oninput="calcularPreview()">
+          <input type="number" class="fi" id="dev-nparc" placeholder="4" min="1" max="52" value="4" oninput="calcPreview()">
         </div>
         <div class="fg">
           <label class="fl">Periodicidade *</label>
-          <select class="fs" id="dev-periodo" onchange="toggleDiaSemana()">
+          <select class="fs" id="dev-periodo" onchange="toggleDia()">
             <option value="semanal">Semanal</option>
             <option value="quinzenal">Quinzenal</option>
             <option value="mensal">Mensal</option>
           </select>
         </div>
       </div>
-      <div class="fg" id="fg-diasemana">
+      <div class="fg" id="fg-dia">
         <label class="fl">Dia da semana</label>
-        <select class="fs" id="dev-diasemana">
+        <select class="fs" id="dev-dia">
           <option value="Segunda">Segunda-feira</option>
           <option value="Terça">Terça-feira</option>
           <option value="Quarta">Quarta-feira</option>
@@ -410,32 +338,33 @@ tr:hover td { background: rgba(255,255,255,0.02); }
   </div>
 </div>
 
-<!-- MODAL DETALHE DEVEDOR -->
-<div class="overlay" id="modal-detalhe">
+<!-- MODAL DETALHE -->
+<div class="overlay" id="modal-det">
   <div class="modal modal-lg">
     <div class="modal-head">
       <h3 id="det-titulo">—</h3>
-      <button class="btn-icon" onclick="fechar('modal-detalhe')">✕</button>
+      <button class="btn-icon" onclick="fechar('modal-det')">✕</button>
     </div>
     <div class="modal-body" id="det-body">
       <div class="loading"><div class="spinner"></div>Carregando...</div>
     </div>
     <div class="modal-foot">
-      <button class="btn btn-ghost" onclick="fechar('modal-detalhe')">Fechar</button>
+      <button class="btn btn-ghost" onclick="fechar('modal-det')">Fechar</button>
     </div>
   </div>
 </div>
 
-<!-- MODAL REGISTRAR PAGAMENTO -->
+<!-- MODAL PAGAMENTO -->
 <div class="overlay" id="modal-pgto">
   <div class="modal">
     <div class="modal-head">
-      <h3>Registrar Pagamento</h3>
+      <h3>Registrar Recebimento</h3>
       <button class="btn-icon" onclick="fechar('modal-pgto')">✕</button>
     </div>
     <div class="modal-body">
-      <p id="pgto-desc" style="color:var(--muted);font-size:13px;margin-bottom:16px"></p>
-      <input type="hidden" id="pgto-parcela-id">
+      <p id="pgto-desc" style="color:var(--muted);font-size:13px;margin-bottom:16px;line-height:1.6"></p>
+      <input type="hidden" id="pgto-pid">
+      <input type="hidden" id="pgto-devid">
       <div class="fg">
         <label class="fl">Data do recebimento</label>
         <input type="date" class="fi" id="pgto-data">
@@ -443,7 +372,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
     </div>
     <div class="modal-foot">
       <button class="btn btn-ghost" onclick="fechar('modal-pgto')">Cancelar</button>
-      <button class="btn btn-accent" onclick="confirmarPgto()">Confirmar recebimento</button>
+      <button class="btn btn-accent" onclick="confirmarPgto()">Confirmar</button>
     </div>
   </div>
 </div>
@@ -458,8 +387,6 @@ let API = localStorage.getItem('api_url') || '';
 let devedores = [];
 let devedorAtualId = null;
 
-const DIAS_SEMANA = ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
-
 // ============================================================
 // INIT
 // ============================================================
@@ -471,14 +398,11 @@ window.onload = () => {
   } else {
     setStatus('err');
   }
-  // Data de hoje no campo de data 1ª parcela
   document.getElementById('dev-data1').value = hoje();
   document.getElementById('pgto-data').value = hoje();
 };
 
-function hoje() {
-  return new Date().toISOString().substring(0,10);
-}
+function hoje() { return new Date().toISOString().substring(0,10); }
 
 // ============================================================
 // NAVEGAÇÃO
@@ -494,18 +418,12 @@ function ir(pg) {
 }
 
 // ============================================================
-// API
+// API — tudo via GET para evitar CORS
 // ============================================================
-async function apiGet(params) {
+async function api(params) {
   if (!API) { toast('Configure a URL da API primeiro.', 'error'); throw new Error('no api'); }
-  const r = await fetch(API + '?' + new URLSearchParams(params));
-  const d = await r.json();
-  if (d.erro) throw new Error(d.erro);
-  return d;
-}
-async function apiPost(body) {
-  if (!API) { toast('Configure a URL da API primeiro.', 'error'); throw new Error('no api'); }
-  const r = await fetch(API, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) });
+  const url = API + '?' + new URLSearchParams(params);
+  const r = await fetch(url);
   const d = await r.json();
   if (d.erro) throw new Error(d.erro);
   return d;
@@ -538,331 +456,253 @@ function setStatus(s) {
   document.getElementById('dot-txt').textContent = s === 'ok' ? 'Conectado' : 'Desconectado';
 }
 
-// ============================================================
-// CARREGAR
-// ============================================================
 function carregarTudo() { carregarDashboard(); carregarDevedores(); }
 
+// ============================================================
+// DASHBOARD
+// ============================================================
 async function carregarDashboard() {
   try {
-    const d = await apiGet({ action: 'dashboard' });
+    const d = await api({ action: 'dashboard' });
     devedores = d.devedores || [];
-    renderDashboard(d);
+    const ds = new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'});
+    document.getElementById('dash-data').textContent = ds.charAt(0).toUpperCase()+ds.slice(1);
+    document.getElementById('dash-metrics').innerHTML = `
+      <div class="metric"><div class="metric-label">Total a Receber</div><div class="metric-value accent">${fmt(d.totalAReceber)}</div><div class="metric-sub">${d.countDevedores} devedor(es)</div></div>
+      <div class="metric"><div class="metric-label">Já Recebido</div><div class="metric-value success">${fmt(d.totalRecebido)}</div></div>
+      <div class="metric"><div class="metric-label">Saldo Devedor</div><div class="metric-value">${fmt(d.saldoDevedor)}</div></div>
+      <div class="metric"><div class="metric-label">Em Atraso</div><div class="metric-value danger">${fmt(d.totalAtrasado)}</div><div class="metric-sub">${d.countAtrasados} com atraso</div></div>`;
+    if (!d.devedores || !d.devedores.length) {
+      document.getElementById('dash-lista').innerHTML = '<div class="empty"><p>Nenhum devedor cadastrado ainda.</p></div>';
+      return;
+    }
+    const lista = [...d.devedores].sort((a,b) => b.nAtrasadas - a.nAtrasadas || b.saldoDevedor - a.saldoDevedor);
+    document.getElementById('dash-lista').innerHTML = `<table>
+      <thead><tr><th>Devedor</th><th>Total</th><th>Parcelas</th><th>Progresso</th><th>Status</th></tr></thead>
+      <tbody>${lista.map(dv => rowDevedor(dv)).join('')}</tbody></table>`;
   } catch(e) { /* silencioso */ }
 }
 
+function rowDevedor(dv) {
+  const pct = dv.valorTotal > 0 ? Math.round((dv.totalPago / dv.valorTotal)*100) : 0;
+  const badge = dv.quitado ? '<span class="badge badge-success">Quitado</span>'
+    : dv.nAtrasadas > 0 ? `<span class="badge badge-danger">${dv.nAtrasadas} em atraso</span>`
+    : '<span class="badge badge-accent">Em dia</span>';
+  return `<tr>
+    <td><div class="devedor-nome" onclick="abrirDet('${dv.id}')">${esc(dv.nome)}</div>
+        <div class="devedor-sub">${dv.periodicidade||''}${dv.diaSemana?' · '+dv.diaSemana:''}</div></td>
+    <td>${fmt(dv.valorTotal)}<br><span style="font-size:11px;color:var(--hint)">${dv.jurosPct>0?dv.jurosPct+'% juros':'sem juros'}</span></td>
+    <td style="font-size:13px">${dv.nPagas}/${dv.numParcelas}</td>
+    <td><div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div><span class="progress-pct">${pct}%</span></div></td>
+    <td>${badge}</td></tr>`;
+}
+
+// ============================================================
+// DEVEDORES
+// ============================================================
 async function carregarDevedores() {
   document.getElementById('tbl-devedores').innerHTML = '<div class="loading"><div class="spinner"></div>Carregando...</div>';
   try {
-    const lista = await apiGet({ action: 'listar' });
-    devedores = lista;
+    devedores = await api({ action: 'listar' });
     aplicarFiltros();
   } catch(e) {
-    document.getElementById('tbl-devedores').innerHTML = '<div class="empty"><p>Erro ao carregar. Configure a API.</p></div>';
+    document.getElementById('tbl-devedores').innerHTML = '<div class="empty"><p>Erro ao carregar. Verifique a API.</p></div>';
   }
 }
 
+function aplicarFiltros() {
+  const busca  = (document.getElementById('f-busca').value||'').toLowerCase();
+  const status = document.getElementById('f-status').value;
+  const per    = document.getElementById('f-periodo').value;
+  const np     = document.getElementById('f-parcelas').value;
+  let lista = devedores.filter(d => {
+    if (busca  && !d.nome.toLowerCase().includes(busca)) return false;
+    if (per    && d.periodicidade !== per) return false;
+    if (np     && String(d.numParcelas) !== np) return false;
+    if (status === 'atrasado' && (!d.nAtrasadas || d.quitado)) return false;
+    if (status === 'emdia'    && (d.nAtrasadas > 0 || d.quitado)) return false;
+    if (status === 'quitado'  && !d.quitado) return false;
+    return true;
+  });
+  document.getElementById('dev-count').textContent = lista.length + ' devedor(es)';
+  if (!lista.length) { document.getElementById('tbl-devedores').innerHTML = '<div class="empty"><p>Nenhum resultado.</p></div>'; return; }
+  document.getElementById('tbl-devedores').innerHTML = `<div class="tbl-wrap"><table>
+    <thead><tr><th>Devedor</th><th>Valor Total</th><th>Periodicidade</th><th>Parcelas</th><th>Saldo</th><th>Status</th><th></th></tr></thead>
+    <tbody>${lista.map(dv => {
+      const pct = dv.valorTotal > 0 ? Math.round((dv.totalPago/dv.valorTotal)*100) : 0;
+      const badge = dv.quitado ? '<span class="badge badge-success">Quitado</span>'
+        : dv.nAtrasadas > 0 ? `<span class="badge badge-danger">${dv.nAtrasadas} em atraso</span>`
+        : '<span class="badge badge-accent">Em dia</span>';
+      return `<tr>
+        <td><div class="devedor-nome" onclick="abrirDet('${dv.id}')">${esc(dv.nome)}</div>${dv.observacoes?`<div class="devedor-sub">${esc(dv.observacoes)}</div>`:''}</td>
+        <td>${fmt(dv.valorTotal)}<br><span style="font-size:11px;color:var(--hint)">${dv.jurosPct>0?dv.jurosPct+'% juros':''}</span></td>
+        <td style="font-size:13px;text-transform:capitalize">${dv.periodicidade||'—'}${dv.diaSemana?'<br><span style="color:var(--hint);font-size:11px">'+dv.diaSemana+'</span>':''}</td>
+        <td><div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div><span class="progress-pct">${dv.nPagas}/${dv.numParcelas}</span></div></td>
+        <td style="font-weight:500">${fmt(dv.saldoDevedor)}</td>
+        <td>${badge}</td>
+        <td><div style="display:flex;gap:6px">
+          <button class="btn-icon" title="Detalhes" onclick="abrirDet('${dv.id}')">👁</button>
+          <button class="btn-icon" title="Excluir" onclick="excluirDev('${dv.id}','${esc(dv.nome)}')">🗑️</button>
+        </div></td></tr>`;
+    }).join('')}</tbody></table></div>`;
+}
+
+// ============================================================
+// PENDÊNCIAS
+// ============================================================
 async function carregarPendencias() {
   document.getElementById('lista-pend').innerHTML = '<div class="loading"><div class="spinner"></div>Carregando...</div>';
   try {
-    const pends = await apiGet({ action: 'pendencias' });
-    renderPendencias(pends);
+    const pends = await api({ action: 'pendencias' });
+    document.getElementById('pend-count').textContent = pends.length + ' parcela(s) em atraso';
+    if (!pends.length) {
+      document.getElementById('lista-pend').innerHTML = '<div class="empty"><p>✅ Nenhuma parcela em atraso!</p></div>';
+      return;
+    }
+    const hj = new Date(); hj.setHours(0,0,0,0);
+    document.getElementById('lista-pend').innerHTML = pends.map(p => {
+      const vd = new Date(p.vencimento + 'T12:00:00');
+      const dias = Math.round((hj - vd) / 86400000);
+      return `<div class="pend-item">
+        <div class="pend-avatar">${p.numero}</div>
+        <div class="pend-info">
+          <div class="pend-nome" onclick="abrirDet('${p.devedorId}')">${esc(p.nome)}</div>
+          <div class="pend-desc">Parcela ${p.numero} · Venceu ${fmtBR(p.vencimento)}</div>
+          <div class="dias-atraso">${dias} dia(s) em atraso</div>
+        </div>
+        <div style="text-align:right">
+          <div class="pend-valor">${fmt(p.valor)}</div>
+          <button class="btn btn-ghost btn-sm" style="margin-top:6px" onclick="abrirPgto('${p.id}','${p.devedorId}','${esc(p.nome)}',${p.numero},${p.valor},'${p.vencimento}')">Receber</button>
+        </div>
+      </div>`;
+    }).join('');
   } catch(e) {
     document.getElementById('lista-pend').innerHTML = '<div class="empty"><p>Erro ao carregar.</p></div>';
   }
 }
 
 // ============================================================
-// DASHBOARD
+// DETALHE
 // ============================================================
-function renderDashboard(d) {
-  const hoje_str = new Date().toLocaleDateString('pt-BR', { weekday:'long', day:'numeric', month:'long' });
-  document.getElementById('dash-data').textContent = hoje_str.charAt(0).toUpperCase() + hoje_str.slice(1);
-
-  document.getElementById('dash-metrics').innerHTML = `
-    <div class="metric">
-      <div class="metric-label">Total a Receber</div>
-      <div class="metric-value accent">${fmt(d.totalAReceber)}</div>
-      <div class="metric-sub">${d.countDevedores} devedor(es)</div>
-    </div>
-    <div class="metric">
-      <div class="metric-label">Já Recebido</div>
-      <div class="metric-value success">${fmt(d.totalRecebido)}</div>
-    </div>
-    <div class="metric">
-      <div class="metric-label">Saldo Pendente</div>
-      <div class="metric-value">${fmt(d.saldoDevedor)}</div>
-    </div>
-    <div class="metric">
-      <div class="metric-label">Em Atraso</div>
-      <div class="metric-value danger">${fmt(d.totalAtrasado)}</div>
-      <div class="metric-sub">${d.countAtrasados} devedor(es) com atraso</div>
-    </div>
-  `;
-
-  if (!d.devedores || !d.devedores.length) {
-    document.getElementById('dash-lista').innerHTML = '<div class="empty"><div class="empty-icon">👤</div><p>Nenhum devedor cadastrado</p></div>';
-    return;
-  }
-
-  const lista = [...d.devedores].sort((a,b) => b.nAtrasadas - a.nAtrasadas || b.saldoDevedor - a.saldoDevedor);
-  document.getElementById('dash-lista').innerHTML = `
-    <table>
-      <thead><tr><th>Devedor</th><th>Total</th><th>Parcelas</th><th>Progresso</th><th>Status</th></tr></thead>
-      <tbody>${lista.map(dv => renderDevedorRow(dv)).join('')}</tbody>
-    </table>`;
-}
-
-function renderDevedorRow(dv) {
-  const pct = dv.valorTotal > 0 ? Math.round((dv.totalPago / dv.valorTotal) * 100) : 0;
-  const badge = dv.quitado ? '<span class="badge badge-success">Quitado</span>'
-    : dv.nAtrasadas > 0 ? `<span class="badge badge-danger">${dv.nAtrasadas} atrasada(s)</span>`
-    : '<span class="badge badge-accent">Em dia</span>';
-  const periodo = dv.periodicidade || '';
-  return `<tr>
-    <td>
-      <div class="devedor-nome" onclick="abrirDetalhe('${dv.id}')">${esc(dv.nome)}</div>
-      <div class="devedor-sub">${periodo}${dv.diaSemana ? ' · ' + dv.diaSemana : ''}</div>
-    </td>
-    <td>${fmt(dv.valorTotal)}<br><span style="font-size:11px;color:var(--hint)">${dv.jurosPct > 0 ? dv.jurosPct + '% juros' : 'sem juros'}</span></td>
-    <td style="font-size:13px">${dv.nPagas}/${dv.numParcelas}</td>
-    <td>
-      <div class="progress-wrap">
-        <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
-        <span class="progress-pct">${pct}%</span>
-      </div>
-    </td>
-    <td>${badge}</td>
-  </tr>`;
-}
-
-// ============================================================
-// DEVEDORES — FILTROS E TABELA
-// ============================================================
-function aplicarFiltros() {
-  const busca   = (document.getElementById('f-busca').value || '').toLowerCase();
-  const status  = document.getElementById('f-status').value;
-  const periodo = document.getElementById('f-periodo').value;
-  const nparc   = document.getElementById('f-parcelas').value;
-
-  let lista = devedores.filter(d => {
-    if (busca   && !d.nome.toLowerCase().includes(busca)) return false;
-    if (periodo && d.periodicidade !== periodo) return false;
-    if (nparc   && String(d.numParcelas) !== nparc) return false;
-    if (status === 'atrasado' && (d.nAtrasadas === 0 || d.quitado)) return false;
-    if (status === 'emdia'    && (d.nAtrasadas > 0 || d.quitado))  return false;
-    if (status === 'quitado'  && !d.quitado) return false;
-    return true;
-  });
-
-  document.getElementById('dev-count').textContent = lista.length + ' devedor(es)';
-  if (!lista.length) {
-    document.getElementById('tbl-devedores').innerHTML = '<div class="empty"><div class="empty-icon">🔍</div><p>Nenhum resultado</p></div>';
-    return;
-  }
-  document.getElementById('tbl-devedores').innerHTML = `
-    <div class="tbl-wrap"><table>
-      <thead><tr><th>Devedor</th><th>Valor Total</th><th>Periodicidade</th><th>Parcelas</th><th>Saldo</th><th>Status</th><th></th></tr></thead>
-      <tbody>${lista.map(dv => {
-        const pct = dv.valorTotal > 0 ? Math.round((dv.totalPago / dv.valorTotal) * 100) : 0;
-        const badge = dv.quitado ? '<span class="badge badge-success">Quitado</span>'
-          : dv.nAtrasadas > 0 ? `<span class="badge badge-danger">${dv.nAtrasadas} em atraso</span>`
-          : '<span class="badge badge-accent">Em dia</span>';
-        return `<tr>
-          <td>
-            <div class="devedor-nome" onclick="abrirDetalhe('${dv.id}')">${esc(dv.nome)}</div>
-            ${dv.observacoes ? `<div class="devedor-sub">${esc(dv.observacoes)}</div>` : ''}
-          </td>
-          <td>${fmt(dv.valorTotal)}<br><span style="font-size:11px;color:var(--hint)">${dv.jurosPct > 0 ? dv.jurosPct + '% juros' : ''}</span></td>
-          <td style="font-size:13px;text-transform:capitalize">${dv.periodicidade || '—'}${dv.diaSemana ? '<br><span style="color:var(--hint);font-size:11px">'+dv.diaSemana+'</span>' : ''}</td>
-          <td>
-            <div class="progress-wrap">
-              <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
-              <span class="progress-pct">${dv.nPagas}/${dv.numParcelas}</span>
-            </div>
-          </td>
-          <td style="font-weight:500">${fmt(dv.saldoDevedor)}</td>
-          <td>${badge}</td>
-          <td>
-            <div style="display:flex;gap:6px">
-              <button class="btn-icon" title="Ver detalhes" onclick="abrirDetalhe('${dv.id}')">👁</button>
-              <button class="btn-icon" title="Excluir" onclick="excluirDevedor('${dv.id}','${esc(dv.nome)}')">🗑️</button>
-            </div>
-          </td>
-        </tr>`;
-      }).join('')}</tbody>
-    </table></div>`;
-}
-
-// ============================================================
-// PENDÊNCIAS
-// ============================================================
-function renderPendencias(pends) {
-  document.getElementById('pend-count').textContent = pends.length + ' pendência(s) em atraso';
-  if (!pends.length) {
-    document.getElementById('lista-pend').innerHTML = '<div class="empty"><div class="empty-icon">✅</div><p>Nenhuma parcela em atraso. Tudo certo!</p></div>';
-    return;
-  }
-  const hojeDate = new Date(); hojeDate.setHours(0,0,0,0);
-  document.getElementById('lista-pend').innerHTML = pends.map(p => {
-    const vDate = new Date(p.vencimento + 'T12:00:00');
-    const dias = Math.round((hojeDate - vDate) / 86400000);
-    return `<div class="pend-item">
-      <div class="pend-avatar">${p.numero}</div>
-      <div class="pend-info">
-        <div class="pend-nome" onclick="abrirDetalhe('${p.devedorId}')">${esc(p.nome)}</div>
-        <div class="pend-desc">Parcela ${p.numero} · Venceu em ${fmtDataBR(p.vencimento)}</div>
-        <div class="dias-atraso">${dias} dia(s) em atraso</div>
-      </div>
-      <div>
-        <div class="pend-valor">${fmt(p.valor)}</div>
-        <button class="btn btn-ghost btn-sm" style="margin-top:6px" onclick="abrirPgto('${p.id}','${esc(p.nome)}',${p.numero},${p.valor},'${p.vencimento}')">Receber</button>
-      </div>
-    </div>`;
-  }).join('');
-}
-
-// ============================================================
-// DETALHE DEVEDOR
-// ============================================================
-async function abrirDetalhe(id) {
+async function abrirDet(id) {
   devedorAtualId = id;
   document.getElementById('det-titulo').textContent = '…';
   document.getElementById('det-body').innerHTML = '<div class="loading"><div class="spinner"></div>Carregando...</div>';
-  document.getElementById('modal-detalhe').classList.add('open');
+  document.getElementById('modal-det').classList.add('open');
   try {
-    const dv = await apiGet({ action: 'devedor', id });
+    const dv = await api({ action: 'devedor', id });
     document.getElementById('det-titulo').textContent = dv.nome;
-    renderDetalhe(dv);
-  } catch(e) {
-    document.getElementById('det-body').innerHTML = '<p style="color:var(--danger)">Erro: ' + e.message + '</p>';
-  }
-}
-
-function renderDetalhe(dv) {
-  const statusBadge = dv.quitado
-    ? '<span class="badge badge-success">Quitado</span>'
-    : dv.nAtrasadas > 0 ? `<span class="badge badge-danger">${dv.nAtrasadas} parcela(s) em atraso</span>`
-    : '<span class="badge badge-accent">Em dia</span>';
-
-  const pct = dv.valorTotal > 0 ? Math.round((dv.totalPago / dv.valorTotal) * 100) : 0;
-
-  const parcelasHtml = dv.parcelas.map(p => {
-    const cls = p.pago ? 'pago' : p.atrasado ? 'atrasado' : 'pendente';
-    const label = p.pago ? `Recebido em ${fmtDataBR(p.dataPagamento)}` : p.atrasado ? 'ATRASADO' : 'Pendente';
-    const btn = p.pago
-      ? `<button class="btn btn-ghost btn-sm" onclick="desfazer('${p.id}', '${dv.id}')">↩ Desfazer</button>`
-      : `<button class="btn btn-accent btn-sm" onclick="abrirPgto('${p.id}','${esc(dv.nome)}',${p.numero},${p.valor},'${p.vencimento}')">Receber</button>`;
-    return `<div class="pt-item">
-      <div class="pt-num ${cls}">${p.numero}</div>
-      <div class="pt-info">
-        <div class="pt-val">${fmt(p.valor)}</div>
-        <div class="pt-date">Vence ${fmtDataBR(p.vencimento)} · ${label}</div>
+    const pct = dv.valorTotal > 0 ? Math.round((dv.totalPago/dv.valorTotal)*100) : 0;
+    const statusBadge = dv.quitado ? '<span class="badge badge-success">Quitado</span>'
+      : dv.nAtrasadas > 0 ? `<span class="badge badge-danger">${dv.nAtrasadas} parcela(s) em atraso</span>`
+      : '<span class="badge badge-accent">Em dia</span>';
+    document.getElementById('det-body').innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px">
+        <div>${statusBadge}</div>
+        <div style="text-align:right">
+          <div style="font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--hint)">Saldo devedor</div>
+          <div style="font-family:var(--font-head);font-size:22px;font-weight:600;color:${dv.saldoDevedor>0?'var(--accent)':'var(--success)'}">${fmt(dv.saldoDevedor)}</div>
+        </div>
       </div>
-      <div class="pt-actions">${btn}</div>
-    </div>`;
-  }).join('');
-
-  document.getElementById('det-body').innerHTML = `
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px">
-      <div>${statusBadge}</div>
-      <div style="text-align:right">
-        <div style="font-size:11px;color:var(--hint);text-transform:uppercase;letter-spacing:.06em">Saldo devedor</div>
-        <div style="font-family:var(--font-head);font-size:22px;font-weight:600;color:${dv.saldoDevedor > 0 ? 'var(--accent)' : 'var(--success)'}">${fmt(dv.saldoDevedor)}</div>
+      <div class="info-grid">
+        <div class="info-item"><div class="info-label">Valor principal</div><div class="info-val">${fmt(dv.valorPrincipal)}</div></div>
+        <div class="info-item"><div class="info-label">Juros</div><div class="info-val">${dv.jurosPct}%</div></div>
+        <div class="info-item"><div class="info-label">Total com juros</div><div class="info-val">${fmt(dv.valorTotal)}</div></div>
+        <div class="info-item"><div class="info-label">Valor por parcela</div><div class="info-val">${fmt(dv.valorParcela)}</div></div>
+        <div class="info-item"><div class="info-label">Periodicidade</div><div class="info-val" style="text-transform:capitalize">${dv.periodicidade}${dv.diaSemana?' · '+dv.diaSemana:''}</div></div>
+        <div class="info-item"><div class="info-label">1ª parcela</div><div class="info-val">${fmtBR(dv.dataPrimeira)}</div></div>
       </div>
-    </div>
-    <div class="info-grid" style="margin-bottom:20px">
-      <div class="info-item"><div class="info-label">Valor principal</div><div class="info-val">${fmt(dv.valorPrincipal)}</div></div>
-      <div class="info-item"><div class="info-label">Juros</div><div class="info-val">${dv.jurosPct}%</div></div>
-      <div class="info-item"><div class="info-label">Total com juros</div><div class="info-val">${fmt(dv.valorTotal)}</div></div>
-      <div class="info-item"><div class="info-label">Valor por parcela</div><div class="info-val">${fmt(dv.valorParcela)}</div></div>
-      <div class="info-item"><div class="info-label">Periodicidade</div><div class="info-val" style="text-transform:capitalize">${dv.periodicidade}${dv.diaSemana ? ' · ' + dv.diaSemana : ''}</div></div>
-      <div class="info-item"><div class="info-label">1ª parcela</div><div class="info-val">${fmtDataBR(dv.dataPrimeira)}</div></div>
-    </div>
-    ${dv.observacoes ? `<div style="background:var(--surface2);border-radius:var(--radius-sm);padding:10px 14px;font-size:13px;color:var(--muted);margin-bottom:20px">${esc(dv.observacoes)}</div>` : ''}
-    <div style="margin-bottom:12px">
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
-        <span style="font-size:12px;color:var(--hint)">${dv.nPagas} de ${dv.numParcelas} recebidas</span>
+      ${dv.observacoes?`<div style="background:var(--surface2);border-radius:var(--radius-sm);padding:10px 14px;font-size:13px;color:var(--muted);margin-bottom:20px">${esc(dv.observacoes)}</div>`:''}
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+        <span style="font-size:12px;color:var(--hint)">${dv.nPagas}/${dv.numParcelas} recebidas</span>
         <div class="progress-bar" style="flex:1"><div class="progress-fill" style="width:${pct}%"></div></div>
         <span style="font-size:12px;color:var(--muted)">${pct}%</span>
       </div>
-    </div>
-    <div class="parcelas-timeline">${parcelasHtml}</div>
-  `;
+      <div>${dv.parcelas.map(p => {
+        const cls = p.pago ? 'pago' : p.atrasado ? 'atrasado' : 'pendente';
+        const label = p.pago ? `Recebido em ${fmtBR(p.dataPagamento)}` : p.atrasado ? '⚠ ATRASADO' : 'Pendente';
+        const btn = p.pago
+          ? `<button class="btn btn-ghost btn-sm" onclick="desfazer('${p.id}','${dv.id}')">↩ Desfazer</button>`
+          : `<button class="btn btn-accent btn-sm" onclick="abrirPgto('${p.id}','${dv.id}','${esc(dv.nome)}',${p.numero},${p.valor},'${p.vencimento}')">Receber</button>`;
+        return `<div class="pt-item">
+          <div class="pt-num ${cls}">${p.numero}</div>
+          <div class="pt-info">
+            <div class="pt-val">${fmt(p.valor)}</div>
+            <div class="pt-date">Vence ${fmtBR(p.vencimento)} · ${label}</div>
+          </div>
+          <div class="pt-actions">${btn}</div>
+        </div>`;
+      }).join('')}</div>`;
+  } catch(e) {
+    document.getElementById('det-body').innerHTML = `<p style="color:var(--danger)">Erro: ${e.message}</p>`;
+  }
 }
 
 // ============================================================
-// MODAL PAGAMENTO
+// PAGAMENTO
 // ============================================================
-function abrirPgto(parcelaId, nome, numero, valor, vencimento) {
-  document.getElementById('pgto-parcela-id').value = parcelaId;
-  document.getElementById('pgto-data').value = hoje();
-  document.getElementById('pgto-desc').textContent =
-    `${nome} · Parcela ${numero} · ${fmt(valor)} · Vencimento: ${fmtDataBR(vencimento)}`;
+function abrirPgto(pid, devid, nome, num, valor, venc) {
+  document.getElementById('pgto-pid').value   = pid;
+  document.getElementById('pgto-devid').value = devid;
+  document.getElementById('pgto-data').value  = hoje();
+  document.getElementById('pgto-desc').textContent = `${nome} · Parcela ${num} · ${fmt(valor)} · Vencimento: ${fmtBR(venc)}`;
   document.getElementById('modal-pgto').classList.add('open');
 }
 
 async function confirmarPgto() {
-  const parcelaId   = document.getElementById('pgto-parcela-id').value;
-  const dataPgto    = document.getElementById('pgto-data').value;
+  const pid   = document.getElementById('pgto-pid').value;
+  const devid = document.getElementById('pgto-devid').value;
+  const data  = document.getElementById('pgto-data').value;
   try {
-    await apiPost({ action: 'registrarPgto', parcelaId, dataPagamento: dataPgto });
+    await api({ action: 'registrarPgto', parcelaId: pid, dataPagamento: data });
     fechar('modal-pgto');
-    toast('Pagamento registrado!', 'success');
-    if (document.getElementById('modal-detalhe').classList.contains('open')) {
-      abrirDetalhe(devedorAtualId);
-    }
-    carregarDevedores();
-    carregarDashboard();
+    toast('Recebimento registrado!', 'success');
+    if (document.getElementById('modal-det').classList.contains('open')) abrirDet(devid);
+    carregarDevedores(); carregarDashboard();
     if (document.getElementById('page-pendencias').classList.contains('active')) carregarPendencias();
   } catch(e) { toast('Erro: ' + e.message, 'error'); }
 }
 
-async function desfazer(parcelaId, devedorId) {
+async function desfazer(pid, devid) {
   if (!confirm('Desfazer este recebimento?')) return;
   try {
-    await apiPost({ action: 'desfazerPgto', parcelaId });
+    await api({ action: 'desfazerPgto', parcelaId: pid });
     toast('Recebimento desfeito.', 'info');
-    abrirDetalhe(devedorId);
-    carregarDevedores();
-    carregarDashboard();
+    abrirDet(devid); carregarDevedores(); carregarDashboard();
   } catch(e) { toast('Erro: ' + e.message, 'error'); }
 }
 
 // ============================================================
-// MODAL NOVO/EDITAR
+// MODAL NOVO DEVEDOR
 // ============================================================
 function abrirNovo() {
   document.getElementById('modal-dev-title').textContent = 'Novo Devedor';
   document.getElementById('dev-id').value = '';
-  document.getElementById('dev-nome').value = '';
+  ['dev-nome','dev-obs'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('dev-valor').value = '';
   document.getElementById('dev-juros').value = '0';
   document.getElementById('dev-nparc').value = '4';
   document.getElementById('dev-periodo').value = 'semanal';
   document.getElementById('dev-data1').value = hoje();
-  document.getElementById('dev-obs').value = '';
   document.getElementById('btn-salvar-dev').textContent = 'Salvar';
-  toggleDiaSemana();
-  calcularPreview();
+  toggleDia(); calcPreview();
   document.getElementById('modal-dev').classList.add('open');
 }
 
-function toggleDiaSemana() {
-  const p = document.getElementById('dev-periodo').value;
-  document.getElementById('fg-diasemana').style.display = p === 'semanal' ? 'block' : 'none';
+function toggleDia() {
+  document.getElementById('fg-dia').style.display = document.getElementById('dev-periodo').value === 'semanal' ? 'block' : 'none';
 }
 
-function calcularPreview() {
+function calcPreview() {
   const principal = parseFloat(document.getElementById('dev-valor').value) || 0;
   const juros     = parseFloat(document.getElementById('dev-juros').value) || 0;
   const nparc     = parseInt(document.getElementById('dev-nparc').value) || 1;
-  const box       = document.getElementById('preview-calc');
+  const box       = document.getElementById('preview-box');
   if (!principal) { box.style.display = 'none'; return; }
-  const total    = principal * (1 + juros/100);
-  const parcela  = total / nparc;
+  const total   = principal * (1 + juros/100);
+  const parcela = total / nparc;
   box.style.display = 'block';
-  box.innerHTML = `Total com juros: <strong>${fmt(total)}</strong> · Valor por parcela: <strong>${fmt(parcela)}</strong>`;
+  box.innerHTML = `Total com juros: <strong>${fmt(total)}</strong> · Por parcela: <strong>${fmt(parcela)}</strong>`;
 }
 
 async function salvarDevedor() {
@@ -871,29 +711,29 @@ async function salvarDevedor() {
   const valor  = parseFloat(document.getElementById('dev-valor').value);
   const juros  = parseFloat(document.getElementById('dev-juros').value) || 0;
   const nparc  = parseInt(document.getElementById('dev-nparc').value) || 1;
-  const periodo = document.getElementById('dev-periodo').value;
-  const diaSem = document.getElementById('dev-diasemana').value;
+  const per    = document.getElementById('dev-periodo').value;
+  const dia    = document.getElementById('dev-dia').value;
   const data1  = document.getElementById('dev-data1').value;
   const obs    = document.getElementById('dev-obs').value.trim();
 
-  if (!nome)  { toast('Informe o nome do devedor.', 'error'); return; }
+  if (!nome)           { toast('Informe o nome.', 'error'); return; }
   if (!valor || valor <= 0) { toast('Informe um valor válido.', 'error'); return; }
-  if (!data1) { toast('Informe a data da 1ª parcela.', 'error'); return; }
+  if (!data1)          { toast('Informe a data da 1ª parcela.', 'error'); return; }
 
   const btn = document.getElementById('btn-salvar-dev');
   btn.textContent = 'Salvando…'; btn.disabled = true;
+
   try {
-    if (id) {
-      await apiPost({ action: 'editar', id, nome, observacoes: obs });
-    } else {
-      await apiPost({ action: 'criar', nome, valorPrincipal: valor, jurosPct: juros,
-        numParcelas: nparc, periodicidade: periodo, diaSemana: periodo === 'semanal' ? diaSem : '',
-        dataPrimeira: data1, observacoes: obs });
-    }
+    const params = id
+      ? { action: 'editar', id, nome, observacoes: obs }
+      : { action: 'criar', nome, valorPrincipal: valor, jurosPct: juros,
+          numParcelas: nparc, periodicidade: per,
+          diaSemana: per === 'semanal' ? dia : '',
+          dataPrimeira: data1, observacoes: obs };
+    await api(params);
     fechar('modal-dev');
-    toast(id ? 'Devedor atualizado!' : 'Devedor cadastrado!', 'success');
-    carregarDevedores();
-    carregarDashboard();
+    toast(id ? 'Atualizado!' : 'Devedor cadastrado!', 'success');
+    carregarDevedores(); carregarDashboard();
   } catch(e) {
     toast('Erro: ' + e.message, 'error');
   } finally {
@@ -902,13 +742,12 @@ async function salvarDevedor() {
   }
 }
 
-async function excluirDevedor(id, nome) {
-  if (!confirm(`Excluir "${nome}" e todas as suas parcelas?`)) return;
+async function excluirDev(id, nome) {
+  if (!confirm(`Excluir "${nome}" e todas as parcelas?`)) return;
   try {
-    await apiPost({ action: 'excluir', id });
-    toast('Devedor excluído.', 'info');
-    carregarDevedores();
-    carregarDashboard();
+    await api({ action: 'excluir', id });
+    toast('Excluído.', 'info');
+    carregarDevedores(); carregarDashboard();
   } catch(e) { toast('Erro: ' + e.message, 'error'); }
 }
 
@@ -919,13 +758,13 @@ function fechar(id) { document.getElementById(id).classList.remove('open'); }
 document.querySelectorAll('.overlay').forEach(el => {
   el.addEventListener('click', e => { if (e.target === el) el.classList.remove('open'); });
 });
-function fmt(v) { return 'R$ ' + Number(v).toLocaleString('pt-BR', { minimumFractionDigits:2, maximumFractionDigits:2 }); }
-function fmtDataBR(s) { if (!s) return '—'; return new Date(s + 'T12:00:00').toLocaleDateString('pt-BR'); }
+function fmt(v) { return 'R$ ' + Number(v).toLocaleString('pt-BR', {minimumFractionDigits:2,maximumFractionDigits:2}); }
+function fmtBR(s) { if (!s) return '—'; return new Date(s+'T12:00:00').toLocaleDateString('pt-BR'); }
 function esc(s) { if (!s) return ''; return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 function toast(msg, tipo) {
   const a = document.getElementById('toasts');
   const t = document.createElement('div');
-  t.className = 'toast ' + (tipo||'info');
+  t.className = 'toast '+(tipo||'info');
   t.textContent = msg;
   a.appendChild(t);
   setTimeout(() => t.remove(), 3500);
