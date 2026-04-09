@@ -29,16 +29,27 @@
   --sidebar: 220px;
   --font-head: 'Syne', sans-serif;
   --font-body: 'Inter', sans-serif;
+  --bottom-nav-h: 64px;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: var(--font-body); background: var(--bg); color: var(--text); min-height: 100vh; font-size: 14px; }
 .app { display: flex; min-height: 100vh; }
-.sidebar { width: var(--sidebar); background: var(--surface); border-right: 1px solid var(--border); position: fixed; top: 0; left: 0; height: 100vh; display: flex; flex-direction: column; z-index: 100; }
+
+/* ── SIDEBAR (desktop) ── */
+.sidebar {
+  width: var(--sidebar); background: var(--surface); border-right: 1px solid var(--border);
+  position: fixed; top: 0; left: 0; height: 100vh; display: flex; flex-direction: column; z-index: 100;
+}
 .logo { padding: 28px 20px 24px; border-bottom: 1px solid var(--border); }
 .logo-mark { font-family: var(--font-head); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; }
 .logo h1 { font-family: var(--font-head); font-size: 17px; font-weight: 600; color: var(--text); line-height: 1.25; }
 .nav { padding: 16px 10px; flex: 1; }
-.nav-btn { width: 100%; display: flex; align-items: center; gap: 10px; padding: 9px 12px; border: none; background: none; color: var(--muted); font-family: var(--font-body); font-size: 13px; font-weight: 400; border-radius: var(--radius-sm); cursor: pointer; transition: all .15s; margin-bottom: 2px; text-align: left; }
+.nav-btn {
+  width: 100%; display: flex; align-items: center; gap: 10px; padding: 9px 12px;
+  border: none; background: none; color: var(--muted); font-family: var(--font-body);
+  font-size: 13px; font-weight: 400; border-radius: var(--radius-sm); cursor: pointer;
+  transition: all .15s; margin-bottom: 2px; text-align: left;
+}
 .nav-btn:hover { background: var(--surface2); color: var(--text); }
 .nav-btn.active { background: var(--accent-dim); color: var(--accent); font-weight: 500; }
 .nav-icon { width: 16px; height: 16px; flex-shrink: 0; opacity: .7; }
@@ -48,13 +59,47 @@ body { font-family: var(--font-body); background: var(--bg); color: var(--text);
 .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--hint); flex-shrink: 0; }
 .dot.ok { background: var(--success); box-shadow: 0 0 6px var(--success); }
 .dot.err { background: var(--danger); }
+
+/* ── BOTTOM NAV (mobile) ── */
+.bottom-nav {
+  display: none;
+  position: fixed; bottom: 0; left: 0; right: 0;
+  height: var(--bottom-nav-h);
+  background: var(--surface);
+  border-top: 1px solid var(--border2);
+  z-index: 200;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.bottom-nav-inner {
+  display: flex; height: 100%; align-items: stretch;
+}
+.bn-btn {
+  flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 4px; background: none; border: none; color: var(--hint); cursor: pointer;
+  font-family: var(--font-body); font-size: 10px; letter-spacing: .04em; text-transform: uppercase;
+  transition: color .15s; padding: 0;
+}
+.bn-btn.active { color: var(--accent); }
+.bn-btn svg { width: 20px; height: 20px; }
+.bn-indicator {
+  position: absolute; top: 8px; right: calc(50% - 16px);
+  width: 6px; height: 6px; border-radius: 50%; background: var(--danger);
+  display: none;
+}
+.bn-btn.has-alert .bn-indicator { display: block; }
+
+/* ── MAIN ── */
 .main { margin-left: var(--sidebar); flex: 1; padding: 32px 36px; max-width: 1080px; }
 .page { display: none; }
 .page.active { display: block; animation: fadeIn .2s ease; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+
+/* ── PAGE HEADER ── */
 .ph { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 28px; }
 .ph-left h2 { font-family: var(--font-head); font-size: 26px; font-weight: 600; }
 .ph-left p { color: var(--muted); font-size: 13px; margin-top: 4px; }
+
+/* ── BUTTONS ── */
 .btn { display: inline-flex; align-items: center; gap: 7px; padding: 9px 18px; border-radius: var(--radius-sm); font-family: var(--font-body); font-size: 13px; font-weight: 500; cursor: pointer; border: none; transition: all .15s; }
 .btn-accent { background: var(--accent); color: #0F0F0F; }
 .btn-accent:hover { opacity: .88; }
@@ -63,95 +108,162 @@ body { font-family: var(--font-body); background: var(--bg); color: var(--text);
 .btn-sm { padding: 5px 12px; font-size: 12px; }
 .btn-icon { background: none; border: none; cursor: pointer; color: var(--hint); padding: 5px; border-radius: 6px; font-size: 15px; transition: all .15s; }
 .btn-icon:hover { background: var(--surface2); color: var(--text); }
-.metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; margin-bottom: 28px; }
-.metric { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 20px; }
-.metric-label { font-size: 10px; text-transform: uppercase; letter-spacing: .1em; color: var(--hint); margin-bottom: 10px; }
-.metric-value { font-family: var(--font-head); font-size: 22px; font-weight: 600; color: var(--text); }
+
+/* ── METRICS ── */
+.metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 24px; }
+.metric { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 18px; }
+.metric-label { font-size: 10px; text-transform: uppercase; letter-spacing: .1em; color: var(--hint); margin-bottom: 8px; }
+.metric-value { font-family: var(--font-head); font-size: 20px; font-weight: 600; color: var(--text); }
 .metric-value.success { color: var(--success); }
-.metric-value.danger { color: var(--danger); }
-.metric-value.accent { color: var(--accent); }
-.metric-sub { font-size: 11px; color: var(--muted); margin-top: 5px; }
+.metric-value.danger  { color: var(--danger); }
+.metric-value.accent  { color: var(--accent); }
+.metric-sub { font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+/* ── CARD ── */
 .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 20px; }
-.card-head { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
-.card-head h3 { font-size: 13px; font-weight: 500; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+.card-head { padding: 14px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.card-head h3 { font-size: 12px; font-weight: 500; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+
+/* ── BADGE ── */
 .badge { display: inline-flex; align-items: center; padding: 3px 9px; border-radius: 20px; font-size: 11px; font-weight: 500; }
 .badge-success { background: var(--success-dim); color: var(--success); }
-.badge-danger { background: var(--danger-dim); color: var(--danger); }
-.badge-warning { background: var(--warning-dim); color: var(--warning); }
-.badge-accent { background: var(--accent-dim); color: var(--accent); }
+.badge-danger  { background: var(--danger-dim);  color: var(--danger); }
+.badge-accent  { background: var(--accent-dim);  color: var(--accent); }
 .badge-neutral { background: rgba(255,255,255,0.06); color: var(--muted); }
-.tbl-wrap { overflow-x: auto; }
+
+/* ── TABLE ── */
+.tbl-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 table { width: 100%; border-collapse: collapse; }
-th { padding: 10px 16px; text-align: left; font-size: 10px; font-weight: 500; color: var(--hint); text-transform: uppercase; letter-spacing: .08em; border-bottom: 1px solid var(--border); background: var(--surface2); }
-td { padding: 13px 16px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+th { padding: 10px 14px; text-align: left; font-size: 10px; font-weight: 500; color: var(--hint); text-transform: uppercase; letter-spacing: .08em; border-bottom: 1px solid var(--border); background: var(--surface2); white-space: nowrap; }
+td { padding: 12px 14px; border-bottom: 1px solid var(--border); vertical-align: middle; }
 tr:last-child td { border-bottom: none; }
 tr:hover td { background: rgba(255,255,255,0.02); }
-.devedor-nome { font-weight: 500; font-size: 14px; cursor: pointer; color: var(--text); }
+.devedor-nome { font-weight: 500; cursor: pointer; color: var(--text); }
 .devedor-nome:hover { color: var(--accent); }
 .devedor-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
 .progress-wrap { display: flex; align-items: center; gap: 8px; }
-.progress-bar { flex: 1; min-width: 60px; height: 3px; background: rgba(255,255,255,0.08); border-radius: 2px; }
-.progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width .4s; }
-.progress-pct { font-size: 11px; color: var(--muted); min-width: 28px; }
-.filtros { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 16px; }
-.filter-select, .filter-input { background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius-sm); color: var(--text); font-family: var(--font-body); font-size: 13px; padding: 7px 12px; outline: none; }
+.progress-bar { flex: 1; min-width: 50px; height: 3px; background: rgba(255,255,255,0.08); border-radius: 2px; }
+.progress-fill { height: 100%; background: var(--accent); border-radius: 2px; }
+.progress-pct { font-size: 11px; color: var(--muted); min-width: 26px; }
+
+/* ── FILTROS ── */
+.filtros { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 14px; }
+.filter-select, .filter-input {
+  background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius-sm);
+  color: var(--text); font-family: var(--font-body); font-size: 13px; padding: 7px 10px; outline: none;
+}
 .filter-select:focus, .filter-input:focus { border-color: var(--accent); }
-.filter-input { width: 200px; }
-.overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.65); z-index: 200; display: none; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+.filter-input { width: 180px; }
+
+/* ── CARDS MOBILE (lista de devedores em cards no mobile) ── */
+.dev-cards { display: none; flex-direction: column; gap: 10px; padding: 12px; }
+.dev-card { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 16px; }
+.dev-card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+.dev-card-nome { font-weight: 600; font-size: 15px; cursor: pointer; }
+.dev-card-nome:hover { color: var(--accent); }
+.dev-card-info { font-size: 12px; color: var(--muted); margin-top: 3px; }
+.dev-card-row { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; gap: 8px; }
+.dev-card-actions { display: flex; gap: 6px; }
+
+/* ── MODAL ── */
+.overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 300; display: none; align-items: flex-end; justify-content: center; }
 .overlay.open { display: flex; }
-.modal { background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius); width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; animation: slideUp .2s ease; }
-.modal-lg { max-width: 640px; }
-@keyframes slideUp { from { transform: translateY(16px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-.modal-head { padding: 22px 24px 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+.modal {
+  background: var(--surface); border: 1px solid var(--border2);
+  border-radius: var(--radius) var(--radius) 0 0;
+  width: 100%; max-width: 600px; max-height: 92vh; overflow-y: auto;
+  animation: slideUp .25s ease;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+@keyframes slideUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+.modal-head { padding: 20px 20px 14px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: var(--surface); z-index: 1; }
 .modal-head h3 { font-family: var(--font-head); font-size: 18px; font-weight: 600; }
-.modal-body { padding: 20px 24px; }
-.modal-foot { padding: 14px 24px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 10px; }
-.fg { margin-bottom: 16px; }
-.fl { display: block; font-size: 11px; font-weight: 500; color: var(--hint); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; }
-.fi, .fs, .fta { width: 100%; padding: 10px 14px; background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text); font-family: var(--font-body); font-size: 14px; outline: none; transition: border-color .15s; }
+.modal-body { padding: 18px 20px; }
+.modal-foot { padding: 12px 20px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 10px; position: sticky; bottom: 0; background: var(--surface); }
+
+/* ── FORM ── */
+.fg { margin-bottom: 14px; }
+.fl { display: block; font-size: 11px; font-weight: 500; color: var(--hint); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 5px; }
+.fi, .fs, .fta {
+  width: 100%; padding: 11px 14px; background: var(--surface2); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); color: var(--text); font-family: var(--font-body); font-size: 16px; outline: none; transition: border-color .15s;
+  -webkit-appearance: none; appearance: none;
+}
 .fi:focus, .fs:focus, .fta:focus { border-color: var(--accent); }
-.fta { resize: vertical; min-height: 64px; }
-.frow { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-.hint-box { background: var(--accent-dim); border: 1px solid var(--accent-dim2); border-radius: var(--radius-sm); padding: 10px 14px; font-size: 12px; color: var(--accent); margin-top: -8px; margin-bottom: 14px; }
-.pt-item { display: flex; align-items: center; gap: 14px; padding: 12px 0; border-bottom: 1px solid var(--border); }
+.fta { resize: vertical; min-height: 64px; font-size: 14px; }
+.frow { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.hint-box { background: var(--accent-dim); border: 1px solid var(--accent-dim2); border-radius: var(--radius-sm); padding: 10px 14px; font-size: 12px; color: var(--accent); margin-top: -6px; margin-bottom: 12px; }
+
+/* ── PARCELAS TIMELINE ── */
+.pt-item { display: flex; align-items: center; gap: 12px; padding: 11px 0; border-bottom: 1px solid var(--border); }
 .pt-item:last-child { border-bottom: none; }
 .pt-num { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; flex-shrink: 0; }
-.pt-num.pago { background: var(--success-dim); color: var(--success); }
-.pt-num.atrasado { background: var(--danger-dim); color: var(--danger); }
+.pt-num.pago     { background: var(--success-dim); color: var(--success); }
+.pt-num.atrasado { background: var(--danger-dim);  color: var(--danger); }
 .pt-num.pendente { background: rgba(255,255,255,0.06); color: var(--muted); }
-.pt-info { flex: 1; }
-.pt-info .pt-val { font-weight: 500; }
-.pt-info .pt-date { font-size: 11px; color: var(--muted); margin-top: 2px; }
-.pt-actions { display: flex; gap: 6px; }
-.info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 16px; margin-bottom: 20px; }
-.info-item .info-label { font-size: 10px; text-transform: uppercase; letter-spacing: .08em; color: var(--hint); margin-bottom: 4px; }
-.info-item .info-val { font-size: 15px; font-weight: 500; }
-.pend-item { display: flex; align-items: center; gap: 16px; padding: 14px 20px; border-bottom: 1px solid var(--border); }
+.pt-info { flex: 1; min-width: 0; }
+.pt-val  { font-weight: 500; }
+.pt-date { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.pt-actions { display: flex; gap: 6px; flex-shrink: 0; }
+
+/* ── INFO GRID ── */
+.info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 14px; margin-bottom: 18px; }
+.info-label { font-size: 10px; text-transform: uppercase; letter-spacing: .08em; color: var(--hint); margin-bottom: 3px; }
+.info-val { font-size: 14px; font-weight: 500; }
+
+/* ── PENDÊNCIAS ── */
+.pend-item { display: flex; align-items: center; gap: 14px; padding: 13px 18px; border-bottom: 1px solid var(--border); }
 .pend-item:last-child { border-bottom: none; }
-.pend-avatar { width: 38px; height: 38px; border-radius: 50%; background: var(--danger-dim); color: var(--danger); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; flex-shrink: 0; }
-.pend-info { flex: 1; }
-.pend-nome { font-weight: 500; cursor: pointer; }
+.pend-avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--danger-dim); color: var(--danger); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; flex-shrink: 0; }
+.pend-info { flex: 1; min-width: 0; }
+.pend-nome { font-weight: 500; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .pend-nome:hover { color: var(--accent); }
-.pend-desc { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.pend-desc { font-size: 11px; color: var(--muted); margin-top: 2px; }
 .dias-atraso { font-size: 11px; color: var(--danger); margin-top: 2px; }
-.pend-valor { font-weight: 600; color: var(--danger); font-size: 15px; }
-.config-alert { background: var(--warning-dim); border: 1px solid rgba(255,179,71,0.25); border-radius: var(--radius-sm); padding: 14px 18px; margin-bottom: 24px; font-size: 13px; color: var(--warning); line-height: 1.8; }
+.pend-right { text-align: right; flex-shrink: 0; }
+.pend-valor { font-weight: 600; color: var(--danger); font-size: 14px; }
+
+/* ── CONFIG ── */
+.config-alert { background: var(--warning-dim); border: 1px solid rgba(255,179,71,0.25); border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 20px; font-size: 13px; color: var(--warning); line-height: 1.8; }
 .config-alert strong { color: var(--text); }
-.toast-area { position: fixed; bottom: 24px; right: 24px; z-index: 999; display: flex; flex-direction: column; gap: 8px; }
-.toast { padding: 11px 18px; border-radius: var(--radius-sm); font-size: 13px; animation: fadeIn .2s ease; max-width: 280px; border: 1px solid; }
+
+/* ── TOAST ── */
+.toast-area { position: fixed; bottom: calc(var(--bottom-nav-h) + 12px); right: 16px; z-index: 999; display: flex; flex-direction: column; gap: 8px; }
+.toast { padding: 10px 16px; border-radius: var(--radius-sm); font-size: 13px; animation: fadeIn .2s ease; max-width: 260px; border: 1px solid; }
 .toast.success { background: var(--success-dim); border-color: rgba(92,255,154,0.25); color: var(--success); }
-.toast.error { background: var(--danger-dim); border-color: rgba(255,92,92,0.25); color: var(--danger); }
-.toast.info { background: var(--surface); border-color: var(--border2); color: var(--text); }
-.empty { text-align: center; padding: 52px 20px; color: var(--hint); }
-.loading { display: flex; align-items: center; gap: 10px; padding: 24px 20px; color: var(--muted); font-size: 13px; }
+.toast.error   { background: var(--danger-dim);  border-color: rgba(255,92,92,0.25);  color: var(--danger); }
+.toast.info    { background: var(--surface);      border-color: var(--border2);        color: var(--text); }
+
+/* ── EMPTY / LOADING ── */
+.empty { text-align: center; padding: 48px 20px; color: var(--hint); }
+.loading { display: flex; align-items: center; gap: 10px; padding: 22px 18px; color: var(--muted); font-size: 13px; }
 .spinner { width: 16px; height: 16px; border: 2px solid var(--border2); border-top-color: var(--accent); border-radius: 50%; animation: spin .7s linear infinite; flex-shrink: 0; }
 @keyframes spin { to { transform: rotate(360deg); } }
-@media (max-width: 680px) { .sidebar { display: none; } .main { margin-left: 0; padding: 16px; } .frow { grid-template-columns: 1fr; } }
+
+/* ── MOBILE ── */
+@media (max-width: 680px) {
+  .sidebar { display: none; }
+  .bottom-nav { display: flex; }
+  .main { margin-left: 0; padding: 16px 14px calc(var(--bottom-nav-h) + 20px); }
+  .ph-left h2 { font-size: 22px; }
+  .metrics { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .metric { padding: 13px 14px; }
+  .metric-value { font-size: 17px; }
+  /* oculta tabela e mostra cards no mobile */
+  .tbl-wrap { display: none; }
+  .dev-cards { display: flex; }
+  .filtros { gap: 6px; }
+  .filter-input { width: 100%; }
+  .frow { grid-template-columns: 1fr; gap: 0; }
+  .toast-area { bottom: calc(var(--bottom-nav-h) + 8px); right: 12px; left: 12px; }
+  .toast { max-width: 100%; }
+}
 </style>
 </head>
 <body>
 <div class="app">
 
+<!-- SIDEBAR DESKTOP -->
 <aside class="sidebar">
   <div class="logo">
     <div class="logo-mark">Financeiro</div>
@@ -183,12 +295,37 @@ tr:hover td { background: rgba(255,255,255,0.02); }
   </div>
 </aside>
 
+<!-- BOTTOM NAV MOBILE -->
+<nav class="bottom-nav">
+  <div class="bottom-nav-inner">
+    <button class="bn-btn active" id="bn-dashboard" onclick="ir('dashboard')">
+      <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+      Início
+    </button>
+    <button class="bn-btn" id="bn-devedores" onclick="ir('devedores')">
+      <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/><path d="M19 8v6M22 11h-6"/></svg>
+      Devedores
+    </button>
+    <button class="bn-btn" id="bn-pendencias" onclick="ir('pendencias')" style="position:relative">
+      <div class="bn-indicator" id="pend-badge"></div>
+      <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+      Pendências
+    </button>
+    <button class="bn-btn" id="bn-config" onclick="ir('config')">
+      <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 10 0 000 14.14"/></svg>
+      Config
+    </button>
+  </div>
+</nav>
+
+<!-- MAIN -->
 <main class="main">
 
+  <!-- DASHBOARD -->
   <div class="page active" id="page-dashboard">
     <div class="ph">
       <div class="ph-left"><h2>Dashboard</h2><p id="dash-data">—</p></div>
-      <button class="btn btn-ghost btn-sm" onclick="carregarDashboard()">↻ Atualizar</button>
+      <button class="btn btn-ghost btn-sm" onclick="carregarDashboard()">↻</button>
     </div>
     <div class="metrics" id="dash-metrics">
       <div class="metric"><div class="metric-label">Aguardando</div><div class="metric-value">—</div></div>
@@ -199,47 +336,43 @@ tr:hover td { background: rgba(255,255,255,0.02); }
     </div>
   </div>
 
+  <!-- DEVEDORES -->
   <div class="page" id="page-devedores">
     <div class="ph">
-      <div class="ph-left"><h2>Devedores</h2><p>Gerencie todos os contratos</p></div>
-      <button class="btn btn-accent" onclick="abrirNovo()">
-        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
-        Novo devedor
-      </button>
+      <div class="ph-left"><h2>Devedores</h2><p id="dev-sub">—</p></div>
+      <button class="btn btn-accent btn-sm" onclick="abrirNovo()">+ Novo</button>
     </div>
     <div class="filtros">
       <input type="text" class="filter-input" placeholder="Buscar nome..." oninput="aplicarFiltros()" id="f-busca">
       <select class="filter-select" onchange="aplicarFiltros()" id="f-status">
-        <option value="">Todos os status</option>
+        <option value="">Todos</option>
         <option value="atrasado">Com atraso</option>
         <option value="emdia">Em dia</option>
         <option value="quitado">Quitado</option>
       </select>
       <select class="filter-select" onchange="aplicarFiltros()" id="f-periodo">
-        <option value="">Toda periodicidade</option>
+        <option value="">Período</option>
         <option value="semanal">Semanal</option>
         <option value="quinzenal">Quinzenal</option>
         <option value="mensal">Mensal</option>
       </select>
-      <select class="filter-select" onchange="aplicarFiltros()" id="f-parcelas">
-        <option value="">Todas as parcelas</option>
-        <option value="2">2x</option>
-        <option value="3">3x</option>
-        <option value="4">4x</option>
-        <option value="6">6x</option>
-        <option value="12">12x</option>
-      </select>
     </div>
+    <!-- TABELA DESKTOP -->
     <div class="card">
       <div class="card-head"><h3 id="dev-count">—</h3></div>
-      <div id="tbl-devedores"><div class="loading"><div class="spinner"></div>Carregando...</div></div>
+      <div class="tbl-wrap" id="tbl-devedores">
+        <div class="loading"><div class="spinner"></div>Carregando...</div>
+      </div>
+      <!-- CARDS MOBILE -->
+      <div class="dev-cards" id="dev-cards"></div>
     </div>
   </div>
 
+  <!-- PENDÊNCIAS -->
   <div class="page" id="page-pendencias">
     <div class="ph">
       <div class="ph-left"><h2>Pendências</h2><p>Parcelas em atraso até hoje</p></div>
-      <button class="btn btn-ghost btn-sm" onclick="carregarPendencias()">↻ Atualizar</button>
+      <button class="btn btn-ghost btn-sm" onclick="carregarPendencias()">↻</button>
     </div>
     <div class="card">
       <div class="card-head"><h3 id="pend-count">—</h3></div>
@@ -247,32 +380,36 @@ tr:hover td { background: rgba(255,255,255,0.02); }
     </div>
   </div>
 
+  <!-- CONFIG -->
   <div class="page" id="page-config">
-    <div class="ph"><div class="ph-left"><h2>Configuração</h2><p>Conecte ao Google Sheets via Apps Script</p></div></div>
+    <div class="ph"><div class="ph-left"><h2>Configuração</h2><p>Conecte ao Google Sheets</p></div></div>
     <div class="config-alert">
       <strong>Como configurar:</strong><br>
       1. Google Sheets → <strong>Extensões → Apps Script</strong> → cole o <code>Code.gs</code> → salve.<br>
       2. Execute <strong>inicializarPlanilha()</strong> uma vez.<br>
-      3. <strong>Implantar → Gerenciar implantações → editar → Nova versão → Implantar</strong>.<br>
+      3. <strong>Implantar → Gerenciar → editar → Nova versão → Implantar</strong>.<br>
       4. Cole a URL abaixo e clique em Salvar.
     </div>
     <div class="card" style="max-width:520px">
       <div class="card-head"><h3>URL da API</h3></div>
       <div class="modal-body">
         <div class="fg">
-          <label class="fl">URL do Web App</label>
-          <input type="url" class="fi" id="api-url-inp" placeholder="https://script.google.com/macros/s/.../exec">
+          <label class="fl">URL do Web App (Apps Script)</label>
+          <input type="url" class="fi" id="api-url-inp" placeholder="https://script.google.com/macros/s/.../exec" style="font-size:13px">
         </div>
         <button class="btn btn-accent" onclick="salvarConfig()">Salvar e testar conexão</button>
-        <span id="cfg-fb" style="font-size:12px;margin-left:12px;color:var(--muted)"></span>
+        <div id="cfg-fb" style="font-size:12px;margin-top:10px;color:var(--muted)"></div>
       </div>
+    </div>
+    <div style="margin-top:16px;font-size:12px;color:var(--hint);line-height:1.7">
+      <strong style="color:var(--muted)">Dica:</strong> A URL fica salva no seu navegador. Em outros dispositivos, você precisará configurar novamente aqui.
     </div>
   </div>
 
 </main>
 </div>
 
-<!-- MODAL NOVO DEVEDOR -->
+<!-- MODAL NOVO/EDITAR DEVEDOR -->
 <div class="overlay" id="modal-dev">
   <div class="modal">
     <div class="modal-head">
@@ -283,23 +420,23 @@ tr:hover td { background: rgba(255,255,255,0.02); }
       <input type="hidden" id="dev-id">
       <div class="fg">
         <label class="fl">Nome do devedor *</label>
-        <input type="text" class="fi" id="dev-nome" placeholder="Nome completo">
+        <input type="text" class="fi" id="dev-nome" placeholder="Nome completo" autocomplete="off">
       </div>
       <div class="frow">
         <div class="fg">
           <label class="fl">Valor principal (R$) *</label>
-          <input type="number" class="fi" id="dev-valor" placeholder="1000" step="0.01" min="0" oninput="calcPreview()">
+          <input type="number" class="fi" id="dev-valor" placeholder="1000" step="0.01" min="0" inputmode="decimal" oninput="calcPreview()">
         </div>
         <div class="fg">
           <label class="fl">Juros (%)</label>
-          <input type="number" class="fi" id="dev-juros" placeholder="0" step="0.1" min="0" value="0" oninput="calcPreview()">
+          <input type="number" class="fi" id="dev-juros" placeholder="0" step="0.1" min="0" value="0" inputmode="decimal" oninput="calcPreview()">
         </div>
       </div>
       <div id="preview-box" style="display:none" class="hint-box"></div>
       <div class="frow">
         <div class="fg">
           <label class="fl">Nº de parcelas *</label>
-          <input type="number" class="fi" id="dev-nparc" placeholder="4" min="1" max="52" value="4" oninput="calcPreview()">
+          <input type="number" class="fi" id="dev-nparc" placeholder="4" min="1" max="52" value="4" inputmode="numeric" oninput="calcPreview()">
         </div>
         <div class="fg">
           <label class="fl">Periodicidade *</label>
@@ -340,9 +477,9 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 
 <!-- MODAL DETALHE -->
 <div class="overlay" id="modal-det">
-  <div class="modal modal-lg">
+  <div class="modal" style="max-width:600px">
     <div class="modal-head">
-      <h3 id="det-titulo">—</h3>
+      <h3 id="det-titulo" style="font-size:16px">—</h3>
       <button class="btn-icon" onclick="fechar('modal-det')">✕</button>
     </div>
     <div class="modal-body" id="det-body">
@@ -356,7 +493,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 
 <!-- MODAL PAGAMENTO -->
 <div class="overlay" id="modal-pgto">
-  <div class="modal">
+  <div class="modal" style="max-width:420px">
     <div class="modal-head">
       <h3>Registrar Recebimento</h3>
       <button class="btn-icon" onclick="fechar('modal-pgto')">✕</button>
@@ -380,16 +517,10 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 <div class="toast-area" id="toasts"></div>
 
 <script>
-// ============================================================
-// ESTADO
-// ============================================================
 let API = localStorage.getItem('api_url') || '';
 let devedores = [];
 let devedorAtualId = null;
 
-// ============================================================
-// INIT
-// ============================================================
 window.onload = () => {
   if (API) {
     document.getElementById('api-url-inp').value = API;
@@ -404,22 +535,21 @@ window.onload = () => {
 
 function hoje() { return new Date().toISOString().substring(0,10); }
 
-// ============================================================
-// NAVEGAÇÃO
-// ============================================================
+// ── NAVEGAÇÃO ──
 function ir(pg) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.nav-btn, .bn-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('page-' + pg).classList.add('active');
-  document.getElementById('nav-' + pg).classList.add('active');
+  const sb = document.getElementById('nav-' + pg);
+  const bn = document.getElementById('bn-' + pg);
+  if (sb) sb.classList.add('active');
+  if (bn) bn.classList.add('active');
   if (pg === 'dashboard')  carregarDashboard();
   if (pg === 'devedores')  carregarDevedores();
   if (pg === 'pendencias') carregarPendencias();
 }
 
-// ============================================================
-// API — tudo via GET para evitar CORS
-// ============================================================
+// ── API ──
 async function api(params) {
   if (!API) { toast('Configure a URL da API primeiro.', 'error'); throw new Error('no api'); }
   const url = API + '?' + new URLSearchParams(params);
@@ -429,13 +559,11 @@ async function api(params) {
   return d;
 }
 
-// ============================================================
-// CONFIG
-// ============================================================
+// ── CONFIG ──
 async function salvarConfig() {
   const url = document.getElementById('api-url-inp').value.trim();
   const fb  = document.getElementById('cfg-fb');
-  fb.textContent = 'Testando…'; fb.style.color = 'var(--muted)';
+  fb.textContent = 'Testando conexão…'; fb.style.color = 'var(--muted)';
   try {
     const r = await fetch(url + '?action=dashboard');
     const d = await r.json();
@@ -443,7 +571,7 @@ async function salvarConfig() {
     API = url;
     localStorage.setItem('api_url', url);
     setStatus('ok');
-    fb.textContent = '✓ Conectado!'; fb.style.color = 'var(--success)';
+    fb.textContent = '✓ Conectado com sucesso!'; fb.style.color = 'var(--success)';
     carregarTudo();
   } catch(e) {
     setStatus('err');
@@ -458,9 +586,7 @@ function setStatus(s) {
 
 function carregarTudo() { carregarDashboard(); carregarDevedores(); }
 
-// ============================================================
-// DASHBOARD
-// ============================================================
+// ── DASHBOARD ──
 async function carregarDashboard() {
   try {
     const d = await api({ action: 'dashboard' });
@@ -470,43 +596,45 @@ async function carregarDashboard() {
     document.getElementById('dash-metrics').innerHTML = `
       <div class="metric"><div class="metric-label">Total a Receber</div><div class="metric-value accent">${fmt(d.totalAReceber)}</div><div class="metric-sub">${d.countDevedores} devedor(es)</div></div>
       <div class="metric"><div class="metric-label">Já Recebido</div><div class="metric-value success">${fmt(d.totalRecebido)}</div></div>
-      <div class="metric"><div class="metric-label">Saldo Devedor</div><div class="metric-value">${fmt(d.saldoDevedor)}</div></div>
+      <div class="metric"><div class="metric-label">Saldo</div><div class="metric-value">${fmt(d.saldoDevedor)}</div></div>
       <div class="metric"><div class="metric-label">Em Atraso</div><div class="metric-value danger">${fmt(d.totalAtrasado)}</div><div class="metric-sub">${d.countAtrasados} com atraso</div></div>`;
+
+    // badge vermelho no ícone de pendências
+    const pb = document.getElementById('pend-badge');
+    if (pb) pb.style.display = d.countAtrasados > 0 ? 'block' : 'none';
+
     if (!d.devedores || !d.devedores.length) {
       document.getElementById('dash-lista').innerHTML = '<div class="empty"><p>Nenhum devedor cadastrado ainda.</p></div>';
       return;
     }
     const lista = [...d.devedores].sort((a,b) => b.nAtrasadas - a.nAtrasadas || b.saldoDevedor - a.saldoDevedor);
     document.getElementById('dash-lista').innerHTML = `<table>
-      <thead><tr><th>Devedor</th><th>Total</th><th>Parcelas</th><th>Progresso</th><th>Status</th></tr></thead>
-      <tbody>${lista.map(dv => rowDevedor(dv)).join('')}</tbody></table>`;
+      <thead><tr><th>Devedor</th><th>Total</th><th>Prog.</th><th>Status</th></tr></thead>
+      <tbody>${lista.map(dv => {
+        const pct = dv.valorTotal>0 ? Math.round((dv.totalPago/dv.valorTotal)*100) : 0;
+        const badge = dv.quitado ? '<span class="badge badge-success">Quitado</span>'
+          : dv.nAtrasadas>0 ? `<span class="badge badge-danger">${dv.nAtrasadas} atr.</span>`
+          : '<span class="badge badge-accent">Em dia</span>';
+        return `<tr>
+          <td><div class="devedor-nome" onclick="abrirDet('${dv.id}')">${esc(dv.nome)}</div>
+              <div class="devedor-sub">${dv.periodicidade||''}${dv.diaSemana?' · '+dv.diaSemana:''}</div></td>
+          <td style="white-space:nowrap">${fmt(dv.valorTotal)}</td>
+          <td><div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div><span class="progress-pct">${pct}%</span></div></td>
+          <td>${badge}</td></tr>`;
+      }).join('')}</tbody></table>`;
   } catch(e) { /* silencioso */ }
 }
 
-function rowDevedor(dv) {
-  const pct = dv.valorTotal > 0 ? Math.round((dv.totalPago / dv.valorTotal)*100) : 0;
-  const badge = dv.quitado ? '<span class="badge badge-success">Quitado</span>'
-    : dv.nAtrasadas > 0 ? `<span class="badge badge-danger">${dv.nAtrasadas} em atraso</span>`
-    : '<span class="badge badge-accent">Em dia</span>';
-  return `<tr>
-    <td><div class="devedor-nome" onclick="abrirDet('${dv.id}')">${esc(dv.nome)}</div>
-        <div class="devedor-sub">${dv.periodicidade||''}${dv.diaSemana?' · '+dv.diaSemana:''}</div></td>
-    <td>${fmt(dv.valorTotal)}<br><span style="font-size:11px;color:var(--hint)">${dv.jurosPct>0?dv.jurosPct+'% juros':'sem juros'}</span></td>
-    <td style="font-size:13px">${dv.nPagas}/${dv.numParcelas}</td>
-    <td><div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div><span class="progress-pct">${pct}%</span></div></td>
-    <td>${badge}</td></tr>`;
-}
-
-// ============================================================
-// DEVEDORES
-// ============================================================
+// ── DEVEDORES ──
 async function carregarDevedores() {
   document.getElementById('tbl-devedores').innerHTML = '<div class="loading"><div class="spinner"></div>Carregando...</div>';
+  document.getElementById('dev-cards').innerHTML = '<div class="loading"><div class="spinner"></div>Carregando...</div>';
   try {
     devedores = await api({ action: 'listar' });
     aplicarFiltros();
   } catch(e) {
-    document.getElementById('tbl-devedores').innerHTML = '<div class="empty"><p>Erro ao carregar. Verifique a API.</p></div>';
+    document.getElementById('tbl-devedores').innerHTML = '<div class="empty"><p>Erro ao carregar.</p></div>';
+    document.getElementById('dev-cards').innerHTML = '<div class="empty"><p>Erro ao carregar.</p></div>';
   }
 }
 
@@ -514,55 +642,93 @@ function aplicarFiltros() {
   const busca  = (document.getElementById('f-busca').value||'').toLowerCase();
   const status = document.getElementById('f-status').value;
   const per    = document.getElementById('f-periodo').value;
-  const np     = document.getElementById('f-parcelas').value;
   let lista = devedores.filter(d => {
     if (busca  && !d.nome.toLowerCase().includes(busca)) return false;
     if (per    && d.periodicidade !== per) return false;
-    if (np     && String(d.numParcelas) !== np) return false;
     if (status === 'atrasado' && (!d.nAtrasadas || d.quitado)) return false;
-    if (status === 'emdia'    && (d.nAtrasadas > 0 || d.quitado)) return false;
+    if (status === 'emdia'    && (d.nAtrasadas>0||d.quitado)) return false;
     if (status === 'quitado'  && !d.quitado) return false;
     return true;
   });
+
   document.getElementById('dev-count').textContent = lista.length + ' devedor(es)';
-  if (!lista.length) { document.getElementById('tbl-devedores').innerHTML = '<div class="empty"><p>Nenhum resultado.</p></div>'; return; }
-  document.getElementById('tbl-devedores').innerHTML = `<div class="tbl-wrap"><table>
+  document.getElementById('dev-sub').textContent = lista.length + ' resultado(s)';
+
+  if (!lista.length) {
+    document.getElementById('tbl-devedores').innerHTML = '<div class="empty"><p>Nenhum resultado.</p></div>';
+    document.getElementById('dev-cards').innerHTML = '<div class="empty"><p>Nenhum resultado.</p></div>';
+    return;
+  }
+
+  // TABELA DESKTOP
+  document.getElementById('tbl-devedores').innerHTML = `<table>
     <thead><tr><th>Devedor</th><th>Valor Total</th><th>Periodicidade</th><th>Parcelas</th><th>Saldo</th><th>Status</th><th></th></tr></thead>
     <tbody>${lista.map(dv => {
-      const pct = dv.valorTotal > 0 ? Math.round((dv.totalPago/dv.valorTotal)*100) : 0;
+      const pct = dv.valorTotal>0 ? Math.round((dv.totalPago/dv.valorTotal)*100) : 0;
       const badge = dv.quitado ? '<span class="badge badge-success">Quitado</span>'
-        : dv.nAtrasadas > 0 ? `<span class="badge badge-danger">${dv.nAtrasadas} em atraso</span>`
+        : dv.nAtrasadas>0 ? `<span class="badge badge-danger">${dv.nAtrasadas} em atraso</span>`
         : '<span class="badge badge-accent">Em dia</span>';
       return `<tr>
         <td><div class="devedor-nome" onclick="abrirDet('${dv.id}')">${esc(dv.nome)}</div>${dv.observacoes?`<div class="devedor-sub">${esc(dv.observacoes)}</div>`:''}</td>
-        <td>${fmt(dv.valorTotal)}<br><span style="font-size:11px;color:var(--hint)">${dv.jurosPct>0?dv.jurosPct+'% juros':''}</span></td>
-        <td style="font-size:13px;text-transform:capitalize">${dv.periodicidade||'—'}${dv.diaSemana?'<br><span style="color:var(--hint);font-size:11px">'+dv.diaSemana+'</span>':''}</td>
+        <td style="white-space:nowrap">${fmt(dv.valorTotal)}<br><span style="font-size:11px;color:var(--hint)">${dv.jurosPct>0?dv.jurosPct+'% juros':''}</span></td>
+        <td style="font-size:12px;text-transform:capitalize">${dv.periodicidade||'—'}${dv.diaSemana?'<br><span style="color:var(--hint)">'+dv.diaSemana+'</span>':''}</td>
         <td><div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div><span class="progress-pct">${dv.nPagas}/${dv.numParcelas}</span></div></td>
-        <td style="font-weight:500">${fmt(dv.saldoDevedor)}</td>
+        <td style="font-weight:500;white-space:nowrap">${fmt(dv.saldoDevedor)}</td>
         <td>${badge}</td>
-        <td><div style="display:flex;gap:6px">
-          <button class="btn-icon" title="Detalhes" onclick="abrirDet('${dv.id}')">👁</button>
-          <button class="btn-icon" title="Excluir" onclick="excluirDev('${dv.id}','${esc(dv.nome)}')">🗑️</button>
+        <td><div style="display:flex;gap:4px">
+          <button class="btn-icon" onclick="abrirDet('${dv.id}')">👁</button>
+          <button class="btn-icon" onclick="excluirDev('${dv.id}','${esc(dv.nome)}')">🗑️</button>
         </div></td></tr>`;
-    }).join('')}</tbody></table></div>`;
+    }).join('')}</tbody></table>`;
+
+  // CARDS MOBILE
+  document.getElementById('dev-cards').innerHTML = lista.map(dv => {
+    const pct = dv.valorTotal>0 ? Math.round((dv.totalPago/dv.valorTotal)*100) : 0;
+    const badge = dv.quitado ? '<span class="badge badge-success">Quitado</span>'
+      : dv.nAtrasadas>0 ? `<span class="badge badge-danger">${dv.nAtrasadas} em atraso</span>`
+      : '<span class="badge badge-accent">Em dia</span>';
+    return `<div class="dev-card">
+      <div class="dev-card-top">
+        <div>
+          <div class="dev-card-nome" onclick="abrirDet('${dv.id}')">${esc(dv.nome)}</div>
+          <div class="dev-card-info">${dv.periodicidade||''}${dv.diaSemana?' · '+dv.diaSemana:''} · ${dv.numParcelas}x de ${fmt(dv.valorParcela)}</div>
+        </div>
+        ${badge}
+      </div>
+      <div class="progress-wrap" style="margin-bottom:8px">
+        <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+        <span class="progress-pct">${dv.nPagas}/${dv.numParcelas}</span>
+      </div>
+      <div class="dev-card-row">
+        <div>
+          <div style="font-size:10px;color:var(--hint);text-transform:uppercase;letter-spacing:.06em">Saldo</div>
+          <div style="font-weight:600;font-size:16px">${fmt(dv.saldoDevedor)}</div>
+        </div>
+        <div class="dev-card-actions">
+          <button class="btn btn-ghost btn-sm" onclick="abrirDet('${dv.id}')">Ver parcelas</button>
+          <button class="btn-icon" onclick="excluirDev('${dv.id}','${esc(dv.nome)}')">🗑️</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
 }
 
-// ============================================================
-// PENDÊNCIAS
-// ============================================================
+// ── PENDÊNCIAS ──
 async function carregarPendencias() {
   document.getElementById('lista-pend').innerHTML = '<div class="loading"><div class="spinner"></div>Carregando...</div>';
   try {
     const pends = await api({ action: 'pendencias' });
     document.getElementById('pend-count').textContent = pends.length + ' parcela(s) em atraso';
+    const pb = document.getElementById('pend-badge');
+    if (pb) pb.style.display = pends.length > 0 ? 'block' : 'none';
     if (!pends.length) {
       document.getElementById('lista-pend').innerHTML = '<div class="empty"><p>✅ Nenhuma parcela em atraso!</p></div>';
       return;
     }
     const hj = new Date(); hj.setHours(0,0,0,0);
     document.getElementById('lista-pend').innerHTML = pends.map(p => {
-      const vd = new Date(p.vencimento + 'T12:00:00');
-      const dias = Math.round((hj - vd) / 86400000);
+      const vd = new Date(p.vencimento+'T12:00:00');
+      const dias = Math.round((hj-vd)/86400000);
       return `<div class="pend-item">
         <div class="pend-avatar">${p.numero}</div>
         <div class="pend-info">
@@ -570,7 +736,7 @@ async function carregarPendencias() {
           <div class="pend-desc">Parcela ${p.numero} · Venceu ${fmtBR(p.vencimento)}</div>
           <div class="dias-atraso">${dias} dia(s) em atraso</div>
         </div>
-        <div style="text-align:right">
+        <div class="pend-right">
           <div class="pend-valor">${fmt(p.valor)}</div>
           <button class="btn btn-ghost btn-sm" style="margin-top:6px" onclick="abrirPgto('${p.id}','${p.devedorId}','${esc(p.nome)}',${p.numero},${p.valor},'${p.vencimento}')">Receber</button>
         </div>
@@ -581,9 +747,7 @@ async function carregarPendencias() {
   }
 }
 
-// ============================================================
-// DETALHE
-// ============================================================
+// ── DETALHE ──
 async function abrirDet(id) {
   devedorAtualId = id;
   document.getElementById('det-titulo').textContent = '…';
@@ -592,37 +756,37 @@ async function abrirDet(id) {
   try {
     const dv = await api({ action: 'devedor', id });
     document.getElementById('det-titulo').textContent = dv.nome;
-    const pct = dv.valorTotal > 0 ? Math.round((dv.totalPago/dv.valorTotal)*100) : 0;
+    const pct = dv.valorTotal>0 ? Math.round((dv.totalPago/dv.valorTotal)*100) : 0;
     const statusBadge = dv.quitado ? '<span class="badge badge-success">Quitado</span>'
-      : dv.nAtrasadas > 0 ? `<span class="badge badge-danger">${dv.nAtrasadas} parcela(s) em atraso</span>`
+      : dv.nAtrasadas>0 ? `<span class="badge badge-danger">${dv.nAtrasadas} parcela(s) em atraso</span>`
       : '<span class="badge badge-accent">Em dia</span>';
     document.getElementById('det-body').innerHTML = `
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px">
         <div>${statusBadge}</div>
         <div style="text-align:right">
           <div style="font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--hint)">Saldo devedor</div>
-          <div style="font-family:var(--font-head);font-size:22px;font-weight:600;color:${dv.saldoDevedor>0?'var(--accent)':'var(--success)'}">${fmt(dv.saldoDevedor)}</div>
+          <div style="font-family:var(--font-head);font-size:20px;font-weight:600;color:${dv.saldoDevedor>0?'var(--accent)':'var(--success)'}">${fmt(dv.saldoDevedor)}</div>
         </div>
       </div>
       <div class="info-grid">
-        <div class="info-item"><div class="info-label">Valor principal</div><div class="info-val">${fmt(dv.valorPrincipal)}</div></div>
-        <div class="info-item"><div class="info-label">Juros</div><div class="info-val">${dv.jurosPct}%</div></div>
-        <div class="info-item"><div class="info-label">Total com juros</div><div class="info-val">${fmt(dv.valorTotal)}</div></div>
-        <div class="info-item"><div class="info-label">Valor por parcela</div><div class="info-val">${fmt(dv.valorParcela)}</div></div>
-        <div class="info-item"><div class="info-label">Periodicidade</div><div class="info-val" style="text-transform:capitalize">${dv.periodicidade}${dv.diaSemana?' · '+dv.diaSemana:''}</div></div>
-        <div class="info-item"><div class="info-label">1ª parcela</div><div class="info-val">${fmtBR(dv.dataPrimeira)}</div></div>
+        <div><div class="info-label">Principal</div><div class="info-val">${fmt(dv.valorPrincipal)}</div></div>
+        <div><div class="info-label">Juros</div><div class="info-val">${dv.jurosPct}%</div></div>
+        <div><div class="info-label">Total</div><div class="info-val">${fmt(dv.valorTotal)}</div></div>
+        <div><div class="info-label">Por parcela</div><div class="info-val">${fmt(dv.valorParcela)}</div></div>
+        <div><div class="info-label">Periodicidade</div><div class="info-val" style="text-transform:capitalize">${dv.periodicidade}${dv.diaSemana?' · '+dv.diaSemana:''}</div></div>
+        <div><div class="info-label">1ª parcela</div><div class="info-val">${fmtBR(dv.dataPrimeira)}</div></div>
       </div>
-      ${dv.observacoes?`<div style="background:var(--surface2);border-radius:var(--radius-sm);padding:10px 14px;font-size:13px;color:var(--muted);margin-bottom:20px">${esc(dv.observacoes)}</div>`:''}
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
-        <span style="font-size:12px;color:var(--hint)">${dv.nPagas}/${dv.numParcelas} recebidas</span>
+      ${dv.observacoes?`<div style="background:var(--surface2);border-radius:var(--radius-sm);padding:10px 12px;font-size:13px;color:var(--muted);margin-bottom:16px">${esc(dv.observacoes)}</div>`:''}
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+        <span style="font-size:11px;color:var(--hint)">${dv.nPagas}/${dv.numParcelas}</span>
         <div class="progress-bar" style="flex:1"><div class="progress-fill" style="width:${pct}%"></div></div>
-        <span style="font-size:12px;color:var(--muted)">${pct}%</span>
+        <span style="font-size:11px;color:var(--muted)">${pct}%</span>
       </div>
       <div>${dv.parcelas.map(p => {
-        const cls = p.pago ? 'pago' : p.atrasado ? 'atrasado' : 'pendente';
-        const label = p.pago ? `Recebido em ${fmtBR(p.dataPagamento)}` : p.atrasado ? '⚠ ATRASADO' : 'Pendente';
+        const cls = p.pago?'pago':p.atrasado?'atrasado':'pendente';
+        const label = p.pago?`Recebido em ${fmtBR(p.dataPagamento)}`:p.atrasado?'⚠ ATRASADO':'Pendente';
         const btn = p.pago
-          ? `<button class="btn btn-ghost btn-sm" onclick="desfazer('${p.id}','${dv.id}')">↩ Desfazer</button>`
+          ? `<button class="btn btn-ghost btn-sm" onclick="desfazer('${p.id}','${dv.id}')">↩</button>`
           : `<button class="btn btn-accent btn-sm" onclick="abrirPgto('${p.id}','${dv.id}','${esc(dv.nome)}',${p.numero},${p.valor},'${p.vencimento}')">Receber</button>`;
         return `<div class="pt-item">
           <div class="pt-num ${cls}">${p.numero}</div>
@@ -638,9 +802,7 @@ async function abrirDet(id) {
   }
 }
 
-// ============================================================
-// PAGAMENTO
-// ============================================================
+// ── PAGAMENTO ──
 function abrirPgto(pid, devid, nome, num, valor, venc) {
   document.getElementById('pgto-pid').value   = pid;
   document.getElementById('pgto-devid').value = devid;
@@ -667,14 +829,12 @@ async function desfazer(pid, devid) {
   if (!confirm('Desfazer este recebimento?')) return;
   try {
     await api({ action: 'desfazerPgto', parcelaId: pid });
-    toast('Recebimento desfeito.', 'info');
+    toast('Desfeito.', 'info');
     abrirDet(devid); carregarDevedores(); carregarDashboard();
   } catch(e) { toast('Erro: ' + e.message, 'error'); }
 }
 
-// ============================================================
-// MODAL NOVO DEVEDOR
-// ============================================================
+// ── MODAL DEVEDOR ──
 function abrirNovo() {
   document.getElementById('modal-dev-title').textContent = 'Novo Devedor';
   document.getElementById('dev-id').value = '';
@@ -685,89 +845,84 @@ function abrirNovo() {
   document.getElementById('dev-periodo').value = 'semanal';
   document.getElementById('dev-data1').value = hoje();
   document.getElementById('btn-salvar-dev').textContent = 'Salvar';
-  toggleDia(); calcPreview();
+  document.getElementById('preview-box').style.display = 'none';
+  toggleDia();
   document.getElementById('modal-dev').classList.add('open');
 }
 
 function toggleDia() {
-  document.getElementById('fg-dia').style.display = document.getElementById('dev-periodo').value === 'semanal' ? 'block' : 'none';
+  document.getElementById('fg-dia').style.display = document.getElementById('dev-periodo').value==='semanal' ? 'block' : 'none';
 }
 
 function calcPreview() {
-  const principal = parseFloat(document.getElementById('dev-valor').value) || 0;
-  const juros     = parseFloat(document.getElementById('dev-juros').value) || 0;
-  const nparc     = parseInt(document.getElementById('dev-nparc').value) || 1;
+  const principal = parseFloat(document.getElementById('dev-valor').value)||0;
+  const juros     = parseFloat(document.getElementById('dev-juros').value)||0;
+  const nparc     = parseInt(document.getElementById('dev-nparc').value)||1;
   const box       = document.getElementById('preview-box');
-  if (!principal) { box.style.display = 'none'; return; }
-  const total   = principal * (1 + juros/100);
-  const parcela = total / nparc;
-  box.style.display = 'block';
-  box.innerHTML = `Total com juros: <strong>${fmt(total)}</strong> · Por parcela: <strong>${fmt(parcela)}</strong>`;
+  if (!principal) { box.style.display='none'; return; }
+  const total=principal*(1+juros/100), parcela=total/nparc;
+  box.style.display='block';
+  box.innerHTML=`Total com juros: <strong>${fmt(total)}</strong> · Por parcela: <strong>${fmt(parcela)}</strong>`;
 }
 
 async function salvarDevedor() {
-  const id     = document.getElementById('dev-id').value;
-  const nome   = document.getElementById('dev-nome').value.trim();
-  const valor  = parseFloat(document.getElementById('dev-valor').value);
-  const juros  = parseFloat(document.getElementById('dev-juros').value) || 0;
-  const nparc  = parseInt(document.getElementById('dev-nparc').value) || 1;
-  const per    = document.getElementById('dev-periodo').value;
-  const dia    = document.getElementById('dev-dia').value;
-  const data1  = document.getElementById('dev-data1').value;
-  const obs    = document.getElementById('dev-obs').value.trim();
+  const id    = document.getElementById('dev-id').value;
+  const nome  = document.getElementById('dev-nome').value.trim();
+  const valor = parseFloat(document.getElementById('dev-valor').value);
+  const juros = parseFloat(document.getElementById('dev-juros').value)||0;
+  const nparc = parseInt(document.getElementById('dev-nparc').value)||1;
+  const per   = document.getElementById('dev-periodo').value;
+  const dia   = document.getElementById('dev-dia').value;
+  const data1 = document.getElementById('dev-data1').value;
+  const obs   = document.getElementById('dev-obs').value.trim();
 
-  if (!nome)           { toast('Informe o nome.', 'error'); return; }
-  if (!valor || valor <= 0) { toast('Informe um valor válido.', 'error'); return; }
-  if (!data1)          { toast('Informe a data da 1ª parcela.', 'error'); return; }
+  if (!nome)          { toast('Informe o nome.','error'); return; }
+  if (!valor||valor<=0){ toast('Informe um valor válido.','error'); return; }
+  if (!data1)         { toast('Informe a data da 1ª parcela.','error'); return; }
 
   const btn = document.getElementById('btn-salvar-dev');
-  btn.textContent = 'Salvando…'; btn.disabled = true;
-
+  btn.textContent='Salvando…'; btn.disabled=true;
   try {
-    const params = id
-      ? { action: 'editar', id, nome, observacoes: obs }
-      : { action: 'criar', nome, valorPrincipal: valor, jurosPct: juros,
-          numParcelas: nparc, periodicidade: per,
-          diaSemana: per === 'semanal' ? dia : '',
-          dataPrimeira: data1, observacoes: obs };
-    await api(params);
+    await api(id
+      ? { action:'editar', id, nome, observacoes:obs }
+      : { action:'criar', nome, valorPrincipal:valor, jurosPct:juros,
+          numParcelas:nparc, periodicidade:per,
+          diaSemana: per==='semanal'?dia:'',
+          dataPrimeira:data1, observacoes:obs });
     fechar('modal-dev');
-    toast(id ? 'Atualizado!' : 'Devedor cadastrado!', 'success');
+    toast(id?'Atualizado!':'Devedor cadastrado!','success');
     carregarDevedores(); carregarDashboard();
   } catch(e) {
-    toast('Erro: ' + e.message, 'error');
+    toast('Erro: '+e.message,'error');
   } finally {
-    btn.textContent = id ? 'Atualizar' : 'Salvar';
-    btn.disabled = false;
+    btn.textContent=id?'Atualizar':'Salvar'; btn.disabled=false;
   }
 }
 
 async function excluirDev(id, nome) {
   if (!confirm(`Excluir "${nome}" e todas as parcelas?`)) return;
   try {
-    await api({ action: 'excluir', id });
-    toast('Excluído.', 'info');
+    await api({ action:'excluir', id });
+    toast('Excluído.','info');
     carregarDevedores(); carregarDashboard();
-  } catch(e) { toast('Erro: ' + e.message, 'error'); }
+  } catch(e) { toast('Erro: '+e.message,'error'); }
 }
 
-// ============================================================
-// UTILS
-// ============================================================
+// ── UTILS ──
 function fechar(id) { document.getElementById(id).classList.remove('open'); }
 document.querySelectorAll('.overlay').forEach(el => {
-  el.addEventListener('click', e => { if (e.target === el) el.classList.remove('open'); });
+  el.addEventListener('click', e => { if (e.target===el) el.classList.remove('open'); });
 });
-function fmt(v) { return 'R$ ' + Number(v).toLocaleString('pt-BR', {minimumFractionDigits:2,maximumFractionDigits:2}); }
+function fmt(v) { return 'R$ '+Number(v).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}); }
 function fmtBR(s) { if (!s) return '—'; return new Date(s+'T12:00:00').toLocaleDateString('pt-BR'); }
 function esc(s) { if (!s) return ''; return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 function toast(msg, tipo) {
-  const a = document.getElementById('toasts');
-  const t = document.createElement('div');
-  t.className = 'toast '+(tipo||'info');
-  t.textContent = msg;
+  const a=document.getElementById('toasts');
+  const t=document.createElement('div');
+  t.className='toast '+(tipo||'info');
+  t.textContent=msg;
   a.appendChild(t);
-  setTimeout(() => t.remove(), 3500);
+  setTimeout(()=>t.remove(),3500);
 }
 </script>
 </body>
