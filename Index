@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Controle de Pagamentos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F7F5F0;
+  --surface: #FFFFFF;
+  --border: #E4E0D8;
+  --border-light: #EDE9E2;
+  --text: #1A1814;
+  --text-muted: #7A7568;
+  --text-hint: #B0AB9E;
+  --accent: #2A5C45;
+  --accent-light: #EAF3EE;
+  --accent-mid: #4A8C6A;
+  --danger: #B83232;
+  --danger-light: #FBF0F0;
+  --warning: #A05A10;
+  --warning-light: #FEF6EC;
+  --success: #2A5C45;
+  --success-light: #EAF3EE;
+  --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
+  --radius: 12px;
+  --radius-sm: 8px;
+  --font-display: 'DM Serif Display', serif;
+  --font-body: 'DM Sans', sans-serif;
+  --sidebar-w: 240px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-body); background: var(--bg); color: var(--text); min-height: 100vh; }
+
+/* LAYOUT */
+.app { display: flex; min-height: 100vh; }
+
+/* SIDEBAR */
+.sidebar {
+  width: var(--sidebar-w); background: var(--surface); border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; position: fixed; top: 0; left: 0; height: 100vh; z-index: 100;
+}
+.sidebar-logo {
+  padding: 28px 24px 20px;
+  border-bottom: 1px solid var(--border-light);
+}
+.sidebar-logo h1 { font-family: var(--font-display); font-size: 18px; color: var(--accent); line-height: 1.2; }
+.sidebar-logo p { font-size: 11px; color: var(--text-hint); margin-top: 3px; letter-spacing: 0.04em; text-transform: uppercase; }
+.nav { padding: 16px 12px; flex: 1; }
+.nav-item {
+  display: flex; align-items: center; gap: 10px; padding: 9px 12px;
+  border-radius: var(--radius-sm); cursor: pointer; font-size: 14px; font-weight: 400;
+  color: var(--text-muted); transition: all .15s; margin-bottom: 2px; border: none; background: none; width: 100%; text-align: left;
+}
+.nav-item:hover { background: var(--bg); color: var(--text); }
+.nav-item.active { background: var(--accent-light); color: var(--accent); font-weight: 500; }
+.nav-icon { width: 18px; height: 18px; flex-shrink: 0; }
+.sidebar-footer { padding: 16px 24px; border-top: 1px solid var(--border-light); }
+.api-status { font-size: 11px; color: var(--text-hint); display: flex; align-items: center; gap: 6px; }
+.status-dot { width: 6px; height: 6px; border-radius: 50%; background: #ccc; }
+.status-dot.ok { background: #4CAF50; }
+.status-dot.err { background: var(--danger); }
+
+/* MAIN */
+.main { margin-left: var(--sidebar-w); flex: 1; padding: 32px; max-width: 1100px; }
+.page { display: none; }
+.page.active { display: block; }
+
+/* PAGE HEADER */
+.page-header { margin-bottom: 28px; display: flex; align-items: flex-start; justify-content: space-between; }
+.page-header-left h2 { font-family: var(--font-display); font-size: 28px; color: var(--text); }
+.page-header-left p { font-size: 14px; color: var(--text-muted); margin-top: 4px; }
+
+/* BUTTONS */
+.btn {
+  display: inline-flex; align-items: center; gap: 7px; padding: 9px 18px;
+  border-radius: var(--radius-sm); font-family: var(--font-body); font-size: 14px; font-weight: 500;
+  cursor: pointer; border: none; transition: all .15s;
+}
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover { background: #1E4432; }
+.btn-ghost { background: transparent; color: var(--text-muted); border: 1px solid var(--border); }
+.btn-ghost:hover { background: var(--bg); color: var(--text); }
+.btn-danger { background: transparent; color: var(--danger); border: 1px solid #EAB8B8; font-size: 12px; padding: 5px 10px; }
+.btn-danger:hover { background: var(--danger-light); }
+.btn-sm { padding: 5px 12px; font-size: 12px; }
+
+/* METRIC CARDS */
+.metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 28px; }
+.metric-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 20px; box-shadow: var(--shadow);
+}
+.metric-label { font-size: 11px; color: var(--text-hint); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+.metric-value { font-family: var(--font-display); font-size: 26px; color: var(--text); }
+.metric-value.success { color: var(--success); }
+.metric-value.danger { color: var(--danger); }
+.metric-value.warning { color: var(--warning); }
+.metric-sub { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+
+/* CARDS */
+.card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+  box-shadow: var(--shadow); overflow: hidden;
+}
+.card-header { padding: 18px 20px; border-bottom: 1px solid var(--border-light); display: flex; align-items: center; justify-content: space-between; }
+.card-header h3 { font-size: 15px; font-weight: 500; }
+
+/* BADGES */
+.badge {
+  display: inline-flex; align-items: center; padding: 3px 10px;
+  border-radius: 20px; font-size: 11px; font-weight: 500; letter-spacing: 0.02em;
+}
+.badge-success { background: var(--success-light); color: var(--success); }
+.badge-danger { background: var(--danger-light); color: var(--danger); }
+.badge-warning { background: var(--warning-light); color: var(--warning); }
+.badge-neutral { background: var(--bg); color: var(--text-muted); }
+
+/* TABLE */
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th { padding: 11px 16px; text-align: left; font-size: 11px; font-weight: 500; color: var(--text-hint); text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1px solid var(--border); background: var(--bg); }
+td { padding: 14px 16px; border-bottom: 1px solid var(--border-light); vertical-align: middle; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: rgba(0,0,0,0.015); }
+.fornecedor-name { font-weight: 500; }
+.fornecedor-obs { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+.actions { display: flex; gap: 6px; align-items: center; }
+.btn-icon { background: none; border: none; cursor: pointer; color: var(--text-muted); padding: 4px; border-radius: 6px; transition: all .15s; }
+.btn-icon:hover { background: var(--bg); color: var(--text); }
+.progress-wrap { display: flex; align-items: center; gap: 8px; }
+.progress-bar { flex: 1; min-width: 80px; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width .3s; }
+.progress-pct { font-size: 11px; color: var(--text-muted); min-width: 30px; }
+
+/* MODAL */
+.overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.35); z-index: 200; display: none; align-items: center; justify-content: center; backdrop-filter: blur(2px); }
+.overlay.open { display: flex; }
+.modal {
+  background: var(--surface); border-radius: var(--radius); box-shadow: 0 20px 60px rgba(0,0,0,0.18);
+  width: 100%; max-width: 520px; max-height: 90vh; overflow-y: auto;
+  animation: slideUp .2s ease;
+}
+@keyframes slideUp { from { transform: translateY(16px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+.modal-header { padding: 24px 24px 16px; border-bottom: 1px solid var(--border-light); display: flex; justify-content: space-between; align-items: center; }
+.modal-header h3 { font-family: var(--font-display); font-size: 20px; }
+.modal-body { padding: 20px 24px; }
+.modal-footer { padding: 16px 24px; border-top: 1px solid var(--border-light); display: flex; justify-content: flex-end; gap: 10px; }
+
+/* FORM */
+.form-group { margin-bottom: 16px; }
+.form-label { display: block; font-size: 12px; font-weight: 500; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.04em; }
+.form-input, .form-select, .form-textarea {
+  width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+  font-family: var(--font-body); font-size: 14px; background: var(--surface); color: var(--text);
+  transition: border-color .15s; outline: none;
+}
+.form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--accent-mid); }
+.form-textarea { resize: vertical; min-height: 72px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.parcelas-container { margin-top: 8px; }
+.parcela-row { display: grid; grid-template-columns: 48px 1fr 1fr; gap: 10px; align-items: center; margin-bottom: 8px; }
+.parcela-row .parcela-num { font-size: 12px; color: var(--text-muted); font-weight: 500; text-align: center; }
+
+/* PARCELAS LIST */
+.parcelas-list { padding: 16px 20px; }
+.parcela-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border-light); }
+.parcela-item:last-child { border-bottom: none; }
+.parcela-check { width: 18px; height: 18px; accent-color: var(--accent); cursor: pointer; }
+.parcela-info { flex: 1; }
+.parcela-info .p-num { font-size: 11px; color: var(--text-hint); }
+.parcela-info .p-val { font-size: 14px; font-weight: 500; }
+.parcela-date { font-size: 12px; color: var(--text-muted); }
+
+/* PENDÊNCIAS */
+.pendencias-list { padding: 0; }
+.pendencia-item { display: flex; align-items: center; gap: 16px; padding: 14px 20px; border-bottom: 1px solid var(--border-light); }
+.pendencia-item:last-child { border-bottom: none; }
+.pendencia-badge { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; flex-shrink: 0; }
+.pendencia-badge.atrasado { background: var(--danger-light); color: var(--danger); }
+.pendencia-badge.pendente { background: var(--warning-light); color: var(--warning); }
+.pendencia-info { flex: 1; }
+.pendencia-info .p-forn { font-weight: 500; font-size: 14px; }
+.pendencia-info .p-desc { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+.pendencia-valor { font-weight: 600; font-size: 15px; }
+.pendencia-valor.atrasado { color: var(--danger); }
+.pendencia-valor.pendente { color: var(--warning); }
+
+/* TOAST */
+.toast-area { position: fixed; bottom: 24px; right: 24px; z-index: 999; display: flex; flex-direction: column; gap: 8px; }
+.toast {
+  background: var(--text); color: #fff; padding: 12px 18px; border-radius: var(--radius-sm);
+  font-size: 13px; box-shadow: var(--shadow); animation: fadeIn .2s ease; max-width: 300px;
+}
+.toast.success { background: var(--accent); }
+.toast.error { background: var(--danger); }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+/* EMPTY */
+.empty { text-align: center; padding: 60px 20px; color: var(--text-muted); }
+.empty-icon { font-size: 40px; margin-bottom: 12px; opacity: 0.3; }
+.empty p { font-size: 14px; }
+
+/* API CONFIG */
+.config-box { background: #FFFDF5; border: 1px solid #E8E0C0; border-radius: var(--radius); padding: 20px 24px; margin-bottom: 24px; }
+.config-box h4 { font-size: 14px; font-weight: 600; margin-bottom: 10px; color: #6B5A20; }
+.config-box p { font-size: 13px; color: #8B7A40; line-height: 1.6; }
+
+/* LOADING */
+.loading { display: flex; align-items: center; gap: 10px; padding: 24px 20px; color: var(--text-muted); font-size: 14px; }
+.spinner { width: 16px; height: 16px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin .7s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+@media (max-width: 700px) {
+  .sidebar { display: none; }
+  .main { margin-left: 0; padding: 16px; }
+  .metrics { grid-template-columns: 1fr 1fr; }
+  .form-row { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <h1>Controle de<br>Pagamentos</h1>
+    <p>Gestão financeira</p>
+  </div>
+  <nav class="nav">
+    <button class="nav-item active" onclick="showPage('dashboard')" id="nav-dashboard">
+      <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      Dashboard
+    </button>
+    <button class="nav-item" onclick="showPage('pagamentos')" id="nav-pagamentos">
+      <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M9 12h6M9 16h6M9 8h6M5 4h14a1 1 0 011 1v14a1 1 0 01-1 1H5a1 1 0 01-1-1V5a1 1 0 011-1z"/></svg>
+      Pagamentos
+    </button>
+    <button class="nav-item" onclick="showPage('pendencias')" id="nav-pendencias">
+      <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+      Pendências
+    </button>
+    <button class="nav-item" onclick="showPage('config')" id="nav-config">
+      <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 10 0 000 14.14"/></svg>
+      Configuração
+    </button>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="api-status">
+      <div class="status-dot" id="status-dot"></div>
+      <span id="status-text">Não configurado</span>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- DASHBOARD -->
+  <div class="page active" id="page-dashboard">
+    <div class="page-header">
+      <div class="page-header-left">
+        <h2>Dashboard</h2>
+        <p>Visão geral dos pagamentos</p>
+      </div>
+      <button class="btn btn-ghost btn-sm" onclick="carregarDashboard()">↻ Atualizar</button>
+    </div>
+    <div class="metrics" id="dash-metrics">
+      <div class="metric-card"><div class="metric-label">Carregando...</div></div>
+    </div>
+    <div class="card" style="margin-bottom:20px">
+      <div class="card-header"><h3>Últimos pagamentos</h3></div>
+      <div id="dash-lista"><div class="loading"><div class="spinner"></div>Carregando...</div></div>
+    </div>
+  </div>
+
+  <!-- PAGAMENTOS -->
+  <div class="page" id="page-pagamentos">
+    <div class="page-header">
+      <div class="page-header-left">
+        <h2>Pagamentos</h2>
+        <p>Todos os fornecedores e contratos</p>
+      </div>
+      <button class="btn btn-primary" onclick="abrirModalNovo()">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+        Novo pagamento
+      </button>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <h3 id="pag-count">—</h3>
+        <input type="text" class="form-input" style="width:220px;padding:7px 12px;font-size:13px" placeholder="Buscar fornecedor..." oninput="filtrarPagamentos(this.value)" id="busca-input">
+      </div>
+      <div class="table-wrap" id="tabela-pagamentos">
+        <div class="loading"><div class="spinner"></div>Carregando...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PENDÊNCIAS -->
+  <div class="page" id="page-pendencias">
+    <div class="page-header">
+      <div class="page-header-left">
+        <h2>Pendências</h2>
+        <p>Parcelas em aberto e atrasadas</p>
+      </div>
+      <button class="btn btn-ghost btn-sm" onclick="carregarPendencias()">↻ Atualizar</button>
+    </div>
+    <div class="card">
+      <div class="card-header"><h3 id="pend-count">—</h3></div>
+      <div class="pendencias-list" id="lista-pendencias">
+        <div class="loading"><div class="spinner"></div>Carregando...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONFIG -->
+  <div class="page" id="page-config">
+    <div class="page-header">
+      <div class="page-header-left">
+        <h2>Configuração</h2>
+        <p>Conecte ao Google Sheets</p>
+      </div>
+    </div>
+    <div class="config-box">
+      <h4>Como configurar</h4>
+      <p>1. Abra o Google Sheets e vá em <strong>Extensões → Apps Script</strong>.<br>
+         2. Cole o arquivo <code>Code.gs</code> fornecido junto com este app.<br>
+         3. Execute a função <code>inicializarPlanilha()</code> uma vez.<br>
+         4. Vá em <strong>Implantar → Nova implantação → Web App</strong>.<br>
+         &nbsp;&nbsp;&nbsp;• "Executar como": sua conta Google<br>
+         &nbsp;&nbsp;&nbsp;• "Quem tem acesso": Qualquer pessoa<br>
+         5. Copie a URL gerada e cole abaixo.</p>
+    </div>
+    <div class="card" style="max-width:560px">
+      <div class="card-header"><h3>URL da API</h3></div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">URL do Apps Script (Web App)</label>
+          <input type="url" class="form-input" id="api-url-input" placeholder="https://script.google.com/macros/s/.../exec">
+        </div>
+        <button class="btn btn-primary" onclick="salvarConfig()">Salvar e testar conexão</button>
+        <span id="config-feedback" style="font-size:13px;margin-left:12px;color:var(--text-muted)"></span>
+      </div>
+    </div>
+  </div>
+
+</main>
+</div>
+
+<!-- MODAL NOVO/EDITAR PAGAMENTO -->
+<div class="overlay" id="modal-pagamento">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modal-title">Novo Pagamento</h3>
+      <button class="btn-icon" onclick="fecharModal('modal-pagamento')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="pag-id">
+      <div class="form-group">
+        <label class="form-label">Fornecedor *</label>
+        <input type="text" class="form-input" id="pag-fornecedor" placeholder="Nome do fornecedor">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Valor Total (R$) *</label>
+          <input type="number" class="form-input" id="pag-valor" placeholder="0,00" step="0.01" min="0" oninput="atualizarParcelas()">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Nº de Parcelas</label>
+          <input type="number" class="form-input" id="pag-nparcelas" placeholder="1" min="1" max="24" value="1" oninput="atualizarParcelas()">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Parcelas — vencimentos e valores</label>
+        <div class="parcelas-container" id="parcelas-container"></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Observações</label>
+        <textarea class="form-textarea" id="pag-obs" placeholder="Número do processo, nota fiscal, etc."></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="fecharModal('modal-pagamento')">Cancelar</button>
+      <button class="btn btn-primary" onclick="salvarPagamento()" id="btn-salvar">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL PARCELAS -->
+<div class="overlay" id="modal-parcelas">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="parcelas-modal-title">Parcelas</h3>
+      <button class="btn-icon" onclick="fecharModal('modal-parcelas')">✕</button>
+    </div>
+    <div class="parcelas-list" id="parcelas-modal-body">
+      <div class="loading"><div class="spinner"></div>Carregando...</div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="fecharModal('modal-parcelas')">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOASTS -->
+<div class="toast-area" id="toast-area"></div>
+
+<script>
+// ============================================================
+// ESTADO
+// ============================================================
+let API_URL = localStorage.getItem('api_url') || '';
+let todosOsPagamentos = [];
+let pagamentoAtualId = null;
+
+// ============================================================
+// INIT
+// ============================================================
+window.onload = () => {
+  if (API_URL) {
+    document.getElementById('api-url-input').value = API_URL;
+    atualizarStatus('ok');
+    carregarTudo();
+  } else {
+    atualizarStatus('err');
+    renderDashboardVazio();
+  }
+};
+
+// ============================================================
+// NAVEGAÇÃO
+// ============================================================
+function showPage(nome) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + nome).classList.add('active');
+  document.getElementById('nav-' + nome).classList.add('active');
+  if (nome === 'dashboard') carregarDashboard();
+  if (nome === 'pagamentos') carregarPagamentos();
+  if (nome === 'pendencias') carregarPendencias();
+}
+
+// ============================================================
+// API
+// ============================================================
+async function apiGet(params) {
+  if (!API_URL) { toast('Configure a URL da API primeiro.', 'error'); throw new Error('no api'); }
+  const url = API_URL + '?' + new URLSearchParams(params);
+  const r = await fetch(url);
+  const data = await r.json();
+  if (data.erro) throw new Error(data.erro);
+  return data;
+}
+
+async function apiPost(body) {
+  if (!API_URL) { toast('Configure a URL da API primeiro.', 'error'); throw new Error('no api'); }
+  const r = await fetch(API_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+  const data = await r.json();
+  if (data.erro) throw new Error(data.erro);
+  return data;
+}
+
+// ============================================================
+// CONFIG
+// ============================================================
+async function salvarConfig() {
+  const url = document.getElementById('api-url-input').value.trim();
+  const fb = document.getElementById('config-feedback');
+  fb.textContent = 'Testando…';
+  try {
+    const r = await fetch(url + '?action=dashboard');
+    const d = await r.json();
+    if (d.erro) throw new Error(d.erro);
+    API_URL = url;
+    localStorage.setItem('api_url', url);
+    atualizarStatus('ok');
+    fb.textContent = '✓ Conectado!';
+    fb.style.color = 'var(--success)';
+    carregarTudo();
+  } catch(e) {
+    atualizarStatus('err');
+    fb.textContent = '✗ Falha: ' + e.message;
+    fb.style.color = 'var(--danger)';
+  }
+}
+
+function atualizarStatus(s) {
+  const dot = document.getElementById('status-dot');
+  const txt = document.getElementById('status-text');
+  dot.className = 'status-dot ' + s;
+  txt.textContent = s === 'ok' ? 'Conectado' : 'Desconectado';
+}
+
+// ============================================================
+// CARREGAR TUDO
+// ============================================================
+function carregarTudo() {
+  carregarDashboard();
+  carregarPagamentos();
+}
+
+// ============================================================
+// DASHBOARD
+// ============================================================
+async function carregarDashboard() {
+  try {
+    const d = await apiGet({ action: 'dashboard' });
+    renderDashboard(d);
+    const pags = await apiGet({ action: 'listar' });
+    renderDashLista(pags.slice(0, 5));
+  } catch(e) {
+    renderDashboardVazio();
+  }
+}
+
+function renderDashboard(d) {
+  const fmt = v => 'R$ ' + Number(v).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  document.getElementById('dash-metrics').innerHTML = `
+    <div class="metric-card">
+      <div class="metric-label">Total Geral</div>
+      <div class="metric-value">${fmt(d.totalGeral)}</div>
+      <div class="metric-sub">${d.countPagamentos} pagamento(s)</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Total Pago</div>
+      <div class="metric-value success">${fmt(d.totalPago)}</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">A Vencer</div>
+      <div class="metric-value warning">${fmt(d.totalPendente)}</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Atrasado</div>
+      <div class="metric-value danger">${fmt(d.totalAtrasado)}</div>
+      <div class="metric-sub">${d.countAtrasados} parcela(s)</div>
+    </div>
+  `;
+}
+
+function renderDashboardVazio() {
+  document.getElementById('dash-metrics').innerHTML = `
+    <div class="metric-card"><div class="metric-label">Total Geral</div><div class="metric-value">—</div></div>
+    <div class="metric-card"><div class="metric-label">Total Pago</div><div class="metric-value">—</div></div>
+    <div class="metric-card"><div class="metric-label">A Vencer</div><div class="metric-value">—</div></div>
+    <div class="metric-card"><div class="metric-label">Atrasado</div><div class="metric-value">—</div></div>
+  `;
+  document.getElementById('dash-lista').innerHTML = '<div class="empty"><div class="empty-icon">☁</div><p>Configure a API para ver os dados</p></div>';
+}
+
+function renderDashLista(pags) {
+  if (!pags || pags.length === 0) {
+    document.getElementById('dash-lista').innerHTML = '<div class="empty"><div class="empty-icon">📋</div><p>Nenhum pagamento cadastrado</p></div>';
+    return;
+  }
+  const fmt = v => 'R$ ' + Number(v).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  document.getElementById('dash-lista').innerHTML = `
+    <table>
+      <thead><tr><th>Fornecedor</th><th>Valor Total</th><th>Progresso</th><th>Status</th></tr></thead>
+      <tbody>
+        ${pags.map(p => {
+          const pct = p.valorTotal > 0 ? Math.round((p.totalPago / p.valorTotal) * 100) : 0;
+          const badge = p.temAtrasadas
+            ? '<span class="badge badge-danger">Atrasado</span>'
+            : pct === 100 ? '<span class="badge badge-success">Quitado</span>'
+            : '<span class="badge badge-neutral">Em dia</span>';
+          return `<tr>
+            <td><div class="fornecedor-name">${esc(p.fornecedor)}</div></td>
+            <td>${fmt(p.valorTotal)}</td>
+            <td>
+              <div class="progress-wrap">
+                <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+                <span class="progress-pct">${pct}%</span>
+              </div>
+            </td>
+            <td>${badge}</td>
+          </tr>`;
+        }).join('')}
+      </tbody>
+    </table>`;
+}
+
+// ============================================================
+// PAGAMENTOS
+// ============================================================
+async function carregarPagamentos() {
+  document.getElementById('tabela-pagamentos').innerHTML = '<div class="loading"><div class="spinner"></div>Carregando...</div>';
+  try {
+    const pags = await apiGet({ action: 'listar' });
+    todosOsPagamentos = pags;
+    renderTabela(pags);
+  } catch(e) {
+    document.getElementById('tabela-pagamentos').innerHTML = '<div class="empty"><p>Erro ao carregar. Configure a API.</p></div>';
+  }
+}
+
+function filtrarPagamentos(texto) {
+  const filtrado = todosOsPagamentos.filter(p =>
+    p.fornecedor.toLowerCase().includes(texto.toLowerCase()) ||
+    (p.observacoes || '').toLowerCase().includes(texto.toLowerCase())
+  );
+  renderTabela(filtrado);
+}
+
+function renderTabela(pags) {
+  const fmt = v => 'R$ ' + Number(v).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  document.getElementById('pag-count').textContent = pags.length + ' pagamento(s)';
+
+  if (!pags.length) {
+    document.getElementById('tabela-pagamentos').innerHTML = '<div class="empty"><div class="empty-icon">📋</div><p>Nenhum registro encontrado</p></div>';
+    return;
+  }
+
+  document.getElementById('tabela-pagamentos').innerHTML = `
+    <table>
+      <thead><tr><th>Fornecedor</th><th>Valor Total</th><th>Parcelas</th><th>Pago</th><th>Status</th><th></th></tr></thead>
+      <tbody>
+        ${pags.map(p => {
+          const pct = p.valorTotal > 0 ? Math.round((p.totalPago / p.valorTotal) * 100) : 0;
+          const pagas = p.parcelas.filter(x => x.status === 'Pago').length;
+          const badge = p.temAtrasadas
+            ? '<span class="badge badge-danger">Atrasado</span>'
+            : pct === 100 ? '<span class="badge badge-success">Quitado</span>'
+            : '<span class="badge badge-neutral">Em dia</span>';
+          return `<tr>
+            <td>
+              <div class="fornecedor-name">${esc(p.fornecedor)}</div>
+              ${p.observacoes ? `<div class="fornecedor-obs">${esc(p.observacoes)}</div>` : ''}
+            </td>
+            <td>${fmt(p.valorTotal)}</td>
+            <td>
+              <button class="btn btn-ghost btn-sm" onclick="abrirParcelas('${p.id}','${esc(p.fornecedor)}')">
+                ${pagas}/${p.numParcelas} parcelas
+              </button>
+            </td>
+            <td>
+              <div class="progress-wrap">
+                <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+                <span class="progress-pct">${pct}%</span>
+              </div>
+            </td>
+            <td>${badge}</td>
+            <td>
+              <div class="actions">
+                <button class="btn-icon" title="Editar" onclick="abrirModalEditar(${JSON.stringify(p).replace(/"/g,'&quot;')})">✏️</button>
+                <button class="btn-icon" title="Excluir" onclick="excluirPagamento('${p.id}','${esc(p.fornecedor)}')">🗑️</button>
+              </div>
+            </td>
+          </tr>`;
+        }).join('')}
+      </tbody>
+    </table>`;
+}
+
+// ============================================================
+// PENDÊNCIAS
+// ============================================================
+async function carregarPendencias() {
+  document.getElementById('lista-pendencias').innerHTML = '<div class="loading"><div class="spinner"></div>Carregando...</div>';
+  try {
+    const pags = await apiGet({ action: 'listar' });
+    const hoje = new Date(); hoje.setHours(0,0,0,0);
+    const itens = [];
+
+    pags.forEach(p => {
+      p.parcelas.filter(pa => pa.status !== 'Pago').forEach(pa => {
+        const venc = pa.vencimento ? new Date(pa.vencimento + 'T00:00:00') : null;
+        const atrasado = venc && venc < hoje;
+        itens.push({ ...pa, fornecedor: p.fornecedor, atrasado, venc });
+      });
+    });
+
+    itens.sort((a, b) => {
+      if (a.atrasado !== b.atrasado) return a.atrasado ? -1 : 1;
+      if (a.venc && b.venc) return a.venc - b.venc;
+      return 0;
+    });
+
+    document.getElementById('pend-count').textContent = itens.length + ' pendência(s)';
+
+    if (!itens.length) {
+      document.getElementById('lista-pendencias').innerHTML = '<div class="empty"><div class="empty-icon">✅</div><p>Sem pendências! Tudo em dia.</p></div>';
+      return;
+    }
+
+    const fmt = v => 'R$ ' + Number(v).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const fmtData = d => d ? d.toLocaleDateString('pt-BR') : '—';
+
+    document.getElementById('lista-pendencias').innerHTML = itens.map(it => `
+      <div class="pendencia-item">
+        <div class="pendencia-badge ${it.atrasado ? 'atrasado' : 'pendente'}">${it.numero}</div>
+        <div class="pendencia-info">
+          <div class="p-forn">${esc(it.fornecedor)}</div>
+          <div class="p-desc">Parcela ${it.numero} · Vence ${it.venc ? fmtData(it.venc) : 'sem data'}
+            ${it.atrasado ? ' · <strong style="color:var(--danger)">ATRASADO</strong>' : ''}
+          </div>
+        </div>
+        <div class="pendencia-valor ${it.atrasado ? 'atrasado' : 'pendente'}">${fmt(it.valor)}</div>
+      </div>
+    `).join('');
+  } catch(e) {
+    document.getElementById('lista-pendencias').innerHTML = '<div class="empty"><p>Erro ao carregar. Configure a API.</p></div>';
+  }
+}
+
+// ============================================================
+// MODAL PARCELAS
+// ============================================================
+async function abrirParcelas(id, fornecedor) {
+  pagamentoAtualId = id;
+  document.getElementById('parcelas-modal-title').textContent = 'Parcelas — ' + fornecedor;
+  document.getElementById('modal-parcelas').classList.add('open');
+  document.getElementById('parcelas-modal-body').innerHTML = '<div class="loading"><div class="spinner"></div>Carregando...</div>';
+
+  try {
+    const parcelas = await apiGet({ action: 'listarParcelas', pagamentoId: id });
+    renderParcelasModal(parcelas, id);
+  } catch(e) {
+    document.getElementById('parcelas-modal-body').innerHTML = '<p style="padding:20px;color:var(--danger)">Erro: ' + e.message + '</p>';
+  }
+}
+
+function renderParcelasModal(parcelas, pagId) {
+  const fmt = v => 'R$ ' + Number(v).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const fmtData = s => s ? new Date(s + 'T00:00:00').toLocaleDateString('pt-BR') : '—';
+
+  document.getElementById('parcelas-modal-body').innerHTML = parcelas.map(p => `
+    <div class="parcela-item" id="pitem-${p.id}">
+      <input type="checkbox" class="parcela-check" ${p.status === 'Pago' ? 'checked' : ''}
+        onchange="toggleParcela('${p.id}', '${pagId}', this.checked)">
+      <div class="parcela-info">
+        <div class="p-num">Parcela ${p.numero}</div>
+        <div class="p-val">${fmt(p.valor)}</div>
+      </div>
+      <div class="parcela-date">${fmtData(p.vencimento)}</div>
+      <span class="badge ${p.status === 'Pago' ? 'badge-success' : 'badge-neutral'}" id="pbadge-${p.id}">${p.status}</span>
+    </div>
+  `).join('');
+}
+
+async function toggleParcela(parcelaId, pagId, pago) {
+  const status = pago ? 'Pago' : 'Pendente';
+  try {
+    await apiPost({ action: 'marcarParcela', parcelaId, status });
+    const badge = document.getElementById('pbadge-' + parcelaId);
+    if (badge) {
+      badge.textContent = status;
+      badge.className = 'badge ' + (pago ? 'badge-success' : 'badge-neutral');
+    }
+    toast(pago ? 'Parcela marcada como paga!' : 'Parcela reaberta.', 'success');
+    carregarDashboard();
+  } catch(e) {
+    toast('Erro: ' + e.message, 'error');
+  }
+}
+
+// ============================================================
+// MODAL CRIAR/EDITAR
+// ============================================================
+function abrirModalNovo() {
+  document.getElementById('modal-title').textContent = 'Novo Pagamento';
+  document.getElementById('pag-id').value = '';
+  document.getElementById('pag-fornecedor').value = '';
+  document.getElementById('pag-valor').value = '';
+  document.getElementById('pag-nparcelas').value = '1';
+  document.getElementById('pag-obs').value = '';
+  document.getElementById('btn-salvar').textContent = 'Salvar';
+  atualizarParcelas();
+  document.getElementById('modal-pagamento').classList.add('open');
+}
+
+function abrirModalEditar(p) {
+  document.getElementById('modal-title').textContent = 'Editar Pagamento';
+  document.getElementById('pag-id').value = p.id;
+  document.getElementById('pag-fornecedor').value = p.fornecedor;
+  document.getElementById('pag-valor').value = p.valorTotal;
+  document.getElementById('pag-nparcelas').value = p.numParcelas;
+  document.getElementById('pag-obs').value = p.observacoes || '';
+  document.getElementById('btn-salvar').textContent = 'Atualizar';
+  atualizarParcelas(p.parcelas);
+  document.getElementById('modal-pagamento').classList.add('open');
+}
+
+function atualizarParcelas(existentes) {
+  const n = parseInt(document.getElementById('pag-nparcelas').value) || 1;
+  const valorTotal = parseFloat(document.getElementById('pag-valor').value) || 0;
+  const valorParcela = n > 0 ? (valorTotal / n).toFixed(2) : 0;
+  const cont = document.getElementById('parcelas-container');
+  let html = '';
+  for (let i = 0; i < n; i++) {
+    const ex = existentes && existentes[i] ? existentes[i] : {};
+    html += `
+      <div class="parcela-row">
+        <div class="parcela-num">${i + 1}</div>
+        <input type="number" class="form-input" placeholder="R$" step="0.01"
+          id="pval-${i}" value="${ex.valor !== undefined ? ex.valor : valorParcela}" min="0">
+        <input type="date" class="form-input" id="pvenc-${i}" value="${ex.vencimento || ''}">
+      </div>`;
+  }
+  cont.innerHTML = html;
+}
+
+async function salvarPagamento() {
+  const id = document.getElementById('pag-id').value;
+  const fornecedor = document.getElementById('pag-fornecedor').value.trim();
+  const valorTotal = parseFloat(document.getElementById('pag-valor').value);
+  const numParcelas = parseInt(document.getElementById('pag-nparcelas').value) || 1;
+  const observacoes = document.getElementById('pag-obs').value.trim();
+
+  if (!fornecedor) { toast('Informe o nome do fornecedor.', 'error'); return; }
+  if (!valorTotal || valorTotal <= 0) { toast('Informe um valor válido.', 'error'); return; }
+
+  const parcelas = [];
+  for (let i = 0; i < numParcelas; i++) {
+    parcelas.push({
+      valor: parseFloat(document.getElementById('pval-' + i)?.value) || (valorTotal / numParcelas),
+      vencimento: document.getElementById('pvenc-' + i)?.value || ''
+    });
+  }
+
+  const btn = document.getElementById('btn-salvar');
+  btn.textContent = 'Salvando…'; btn.disabled = true;
+
+  try {
+    if (id) {
+      await apiPost({ action: 'editar', id, fornecedor, observacoes });
+    } else {
+      await apiPost({ action: 'criar', fornecedor, valorTotal, numParcelas, observacoes, parcelas });
+    }
+    fecharModal('modal-pagamento');
+    toast(id ? 'Pagamento atualizado!' : 'Pagamento criado!', 'success');
+    carregarPagamentos();
+    carregarDashboard();
+  } catch(e) {
+    toast('Erro: ' + e.message, 'error');
+  } finally {
+    btn.textContent = id ? 'Atualizar' : 'Salvar';
+    btn.disabled = false;
+  }
+}
+
+async function excluirPagamento(id, nome) {
+  if (!confirm(`Excluir o pagamento de "${nome}"? Esta ação não pode ser desfeita.`)) return;
+  try {
+    await apiPost({ action: 'excluir', id });
+    toast('Pagamento excluído.', 'success');
+    carregarPagamentos();
+    carregarDashboard();
+  } catch(e) {
+    toast('Erro: ' + e.message, 'error');
+  }
+}
+
+// ============================================================
+// UTILITÁRIOS
+// ============================================================
+function fecharModal(id) {
+  document.getElementById(id).classList.remove('open');
+}
+
+document.querySelectorAll('.overlay').forEach(el => {
+  el.addEventListener('click', e => { if (e.target === el) el.classList.remove('open'); });
+});
+
+function toast(msg, tipo) {
+  const area = document.getElementById('toast-area');
+  const t = document.createElement('div');
+  t.className = 'toast ' + (tipo || '');
+  t.textContent = msg;
+  area.appendChild(t);
+  setTimeout(() => t.remove(), 3500);
+}
+
+function esc(s) {
+  if (!s) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+</script>
+</body>
+</html>
