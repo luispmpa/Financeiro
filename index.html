@@ -3,221 +3,215 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Controle de Pagamentos</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<title>Controle de Recebimentos</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #F7F5F0;
-  --surface: #FFFFFF;
-  --border: #E4E0D8;
-  --border-light: #EDE9E2;
-  --text: #1A1814;
-  --text-muted: #7A7568;
-  --text-hint: #B0AB9E;
-  --accent: #2A5C45;
-  --accent-light: #EAF3EE;
-  --accent-mid: #4A8C6A;
-  --danger: #B83232;
-  --danger-light: #FBF0F0;
-  --warning: #A05A10;
-  --warning-light: #FEF6EC;
-  --success: #2A5C45;
-  --success-light: #EAF3EE;
-  --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
-  --radius: 12px;
+  --bg: #0F0F0F;
+  --surface: #1A1A1A;
+  --surface2: #222222;
+  --border: rgba(255,255,255,0.08);
+  --border2: rgba(255,255,255,0.14);
+  --text: #F0EDE8;
+  --muted: #888580;
+  --hint: #555250;
+  --accent: #C8F060;
+  --accent-dim: rgba(200,240,96,0.12);
+  --accent-dim2: rgba(200,240,96,0.2);
+  --danger: #FF5C5C;
+  --danger-dim: rgba(255,92,92,0.12);
+  --warning: #FFB347;
+  --warning-dim: rgba(255,179,71,0.12);
+  --success: #5CFF9A;
+  --success-dim: rgba(92,255,154,0.10);
+  --radius: 14px;
   --radius-sm: 8px;
-  --font-display: 'DM Serif Display', serif;
-  --font-body: 'DM Sans', sans-serif;
-  --sidebar-w: 240px;
+  --sidebar: 220px;
+  --font-head: 'Syne', sans-serif;
+  --font-body: 'Inter', sans-serif;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: var(--font-body); background: var(--bg); color: var(--text); min-height: 100vh; }
+body { font-family: var(--font-body); background: var(--bg); color: var(--text); min-height: 100vh; font-size: 14px; }
 
 /* LAYOUT */
 .app { display: flex; min-height: 100vh; }
 
 /* SIDEBAR */
 .sidebar {
-  width: var(--sidebar-w); background: var(--surface); border-right: 1px solid var(--border);
-  display: flex; flex-direction: column; position: fixed; top: 0; left: 0; height: 100vh; z-index: 100;
+  width: var(--sidebar); background: var(--surface); border-right: 1px solid var(--border);
+  position: fixed; top: 0; left: 0; height: 100vh; display: flex; flex-direction: column; z-index: 100;
 }
-.sidebar-logo {
-  padding: 28px 24px 20px;
-  border-bottom: 1px solid var(--border-light);
+.logo { padding: 28px 20px 24px; border-bottom: 1px solid var(--border); }
+.logo-mark { font-family: var(--font-head); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; }
+.logo h1 { font-family: var(--font-head); font-size: 17px; font-weight: 600; color: var(--text); line-height: 1.25; }
+.nav { padding: 16px 10px; flex: 1; }
+.nav-btn {
+  width: 100%; display: flex; align-items: center; gap: 10px; padding: 9px 12px;
+  border: none; background: none; color: var(--muted); font-family: var(--font-body);
+  font-size: 13px; font-weight: 400; border-radius: var(--radius-sm); cursor: pointer;
+  transition: all .15s; margin-bottom: 2px; text-align: left;
 }
-.sidebar-logo h1 { font-family: var(--font-display); font-size: 18px; color: var(--accent); line-height: 1.2; }
-.sidebar-logo p { font-size: 11px; color: var(--text-hint); margin-top: 3px; letter-spacing: 0.04em; text-transform: uppercase; }
-.nav { padding: 16px 12px; flex: 1; }
-.nav-item {
-  display: flex; align-items: center; gap: 10px; padding: 9px 12px;
-  border-radius: var(--radius-sm); cursor: pointer; font-size: 14px; font-weight: 400;
-  color: var(--text-muted); transition: all .15s; margin-bottom: 2px; border: none; background: none; width: 100%; text-align: left;
-}
-.nav-item:hover { background: var(--bg); color: var(--text); }
-.nav-item.active { background: var(--accent-light); color: var(--accent); font-weight: 500; }
-.nav-icon { width: 18px; height: 18px; flex-shrink: 0; }
-.sidebar-footer { padding: 16px 24px; border-top: 1px solid var(--border-light); }
-.api-status { font-size: 11px; color: var(--text-hint); display: flex; align-items: center; gap: 6px; }
-.status-dot { width: 6px; height: 6px; border-radius: 50%; background: #ccc; }
-.status-dot.ok { background: #4CAF50; }
-.status-dot.err { background: var(--danger); }
+.nav-btn:hover { background: var(--surface2); color: var(--text); }
+.nav-btn.active { background: var(--accent-dim); color: var(--accent); font-weight: 500; }
+.nav-icon { width: 16px; height: 16px; flex-shrink: 0; opacity: .7; }
+.nav-btn.active .nav-icon { opacity: 1; }
+.sidebar-foot { padding: 16px 20px; border-top: 1px solid var(--border); }
+.conn-status { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--hint); }
+.dot { width: 6px; height: 6px; border-radius: 50%; background: var(--hint); flex-shrink: 0; }
+.dot.ok { background: var(--success); box-shadow: 0 0 6px var(--success); }
+.dot.err { background: var(--danger); }
 
 /* MAIN */
-.main { margin-left: var(--sidebar-w); flex: 1; padding: 32px; max-width: 1100px; }
+.main { margin-left: var(--sidebar); flex: 1; padding: 32px 36px; max-width: 1080px; }
 .page { display: none; }
-.page.active { display: block; }
+.page.active { display: block; animation: fadeIn .2s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
 /* PAGE HEADER */
-.page-header { margin-bottom: 28px; display: flex; align-items: flex-start; justify-content: space-between; }
-.page-header-left h2 { font-family: var(--font-display); font-size: 28px; color: var(--text); }
-.page-header-left p { font-size: 14px; color: var(--text-muted); margin-top: 4px; }
+.ph { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 28px; }
+.ph-left h2 { font-family: var(--font-head); font-size: 26px; font-weight: 600; }
+.ph-left p { color: var(--muted); font-size: 13px; margin-top: 4px; }
 
-/* BUTTONS */
-.btn {
-  display: inline-flex; align-items: center; gap: 7px; padding: 9px 18px;
-  border-radius: var(--radius-sm); font-family: var(--font-body); font-size: 14px; font-weight: 500;
-  cursor: pointer; border: none; transition: all .15s;
-}
-.btn-primary { background: var(--accent); color: #fff; }
-.btn-primary:hover { background: #1E4432; }
-.btn-ghost { background: transparent; color: var(--text-muted); border: 1px solid var(--border); }
-.btn-ghost:hover { background: var(--bg); color: var(--text); }
-.btn-danger { background: transparent; color: var(--danger); border: 1px solid #EAB8B8; font-size: 12px; padding: 5px 10px; }
-.btn-danger:hover { background: var(--danger-light); }
+/* BTN */
+.btn { display: inline-flex; align-items: center; gap: 7px; padding: 9px 18px; border-radius: var(--radius-sm); font-family: var(--font-body); font-size: 13px; font-weight: 500; cursor: pointer; border: none; transition: all .15s; }
+.btn-accent { background: var(--accent); color: #0F0F0F; }
+.btn-accent:hover { opacity: .88; }
+.btn-ghost { background: transparent; color: var(--muted); border: 1px solid var(--border2); }
+.btn-ghost:hover { background: var(--surface2); color: var(--text); }
 .btn-sm { padding: 5px 12px; font-size: 12px; }
+.btn-danger-ghost { background: transparent; color: var(--danger); border: 1px solid rgba(255,92,92,0.25); font-size: 12px; padding: 5px 10px; }
+.btn-danger-ghost:hover { background: var(--danger-dim); }
+.btn-icon { background: none; border: none; cursor: pointer; color: var(--hint); padding: 5px; border-radius: 6px; font-size: 15px; transition: all .15s; }
+.btn-icon:hover { background: var(--surface2); color: var(--text); }
 
-/* METRIC CARDS */
-.metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 28px; }
-.metric-card {
-  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
-  padding: 20px; box-shadow: var(--shadow);
+/* METRICS */
+.metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; margin-bottom: 28px; }
+.metric {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 20px;
 }
-.metric-label { font-size: 11px; color: var(--text-hint); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
-.metric-value { font-family: var(--font-display); font-size: 26px; color: var(--text); }
+.metric-label { font-size: 10px; text-transform: uppercase; letter-spacing: .1em; color: var(--hint); margin-bottom: 10px; }
+.metric-value { font-family: var(--font-head); font-size: 22px; font-weight: 600; color: var(--text); }
 .metric-value.success { color: var(--success); }
-.metric-value.danger { color: var(--danger); }
+.metric-value.danger  { color: var(--danger); }
 .metric-value.warning { color: var(--warning); }
-.metric-sub { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+.metric-value.accent  { color: var(--accent); }
+.metric-sub { font-size: 11px; color: var(--muted); margin-top: 5px; }
 
-/* CARDS */
-.card {
-  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
-  box-shadow: var(--shadow); overflow: hidden;
-}
-.card-header { padding: 18px 20px; border-bottom: 1px solid var(--border-light); display: flex; align-items: center; justify-content: space-between; }
-.card-header h3 { font-size: 15px; font-weight: 500; }
+/* CARD */
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 20px; }
+.card-head { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.card-head h3 { font-size: 13px; font-weight: 500; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
 
-/* BADGES */
-.badge {
-  display: inline-flex; align-items: center; padding: 3px 10px;
-  border-radius: 20px; font-size: 11px; font-weight: 500; letter-spacing: 0.02em;
-}
-.badge-success { background: var(--success-light); color: var(--success); }
-.badge-danger { background: var(--danger-light); color: var(--danger); }
-.badge-warning { background: var(--warning-light); color: var(--warning); }
-.badge-neutral { background: var(--bg); color: var(--text-muted); }
+/* BADGE */
+.badge { display: inline-flex; align-items: center; padding: 3px 9px; border-radius: 20px; font-size: 11px; font-weight: 500; }
+.badge-success { background: var(--success-dim); color: var(--success); }
+.badge-danger  { background: var(--danger-dim);  color: var(--danger); }
+.badge-warning { background: var(--warning-dim); color: var(--warning); }
+.badge-accent  { background: var(--accent-dim);  color: var(--accent); }
+.badge-neutral { background: rgba(255,255,255,0.06); color: var(--muted); }
 
 /* TABLE */
-.table-wrap { overflow-x: auto; }
-table { width: 100%; border-collapse: collapse; font-size: 14px; }
-th { padding: 11px 16px; text-align: left; font-size: 11px; font-weight: 500; color: var(--text-hint); text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1px solid var(--border); background: var(--bg); }
-td { padding: 14px 16px; border-bottom: 1px solid var(--border-light); vertical-align: middle; }
+.tbl-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; }
+th { padding: 10px 16px; text-align: left; font-size: 10px; font-weight: 500; color: var(--hint); text-transform: uppercase; letter-spacing: .08em; border-bottom: 1px solid var(--border); background: var(--surface2); }
+td { padding: 13px 16px; border-bottom: 1px solid var(--border); vertical-align: middle; }
 tr:last-child td { border-bottom: none; }
-tr:hover td { background: rgba(0,0,0,0.015); }
-.fornecedor-name { font-weight: 500; }
-.fornecedor-obs { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
-.actions { display: flex; gap: 6px; align-items: center; }
-.btn-icon { background: none; border: none; cursor: pointer; color: var(--text-muted); padding: 4px; border-radius: 6px; transition: all .15s; }
-.btn-icon:hover { background: var(--bg); color: var(--text); }
+tr:hover td { background: rgba(255,255,255,0.02); }
+.devedor-nome { font-weight: 500; font-size: 14px; cursor: pointer; color: var(--text); }
+.devedor-nome:hover { color: var(--accent); }
+.devedor-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
 .progress-wrap { display: flex; align-items: center; gap: 8px; }
-.progress-bar { flex: 1; min-width: 80px; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
-.progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width .3s; }
-.progress-pct { font-size: 11px; color: var(--text-muted); min-width: 30px; }
+.progress-bar { flex: 1; min-width: 60px; height: 3px; background: rgba(255,255,255,0.08); border-radius: 2px; }
+.progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width .4s; }
+.progress-pct { font-size: 11px; color: var(--muted); min-width: 28px; }
+
+/* FILTROS */
+.filtros { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 16px; }
+.filter-select, .filter-input {
+  background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius-sm);
+  color: var(--text); font-family: var(--font-body); font-size: 13px; padding: 7px 12px; outline: none;
+}
+.filter-select:focus, .filter-input:focus { border-color: var(--accent); }
+.filter-input { width: 200px; }
 
 /* MODAL */
-.overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.35); z-index: 200; display: none; align-items: center; justify-content: center; backdrop-filter: blur(2px); }
+.overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.65); z-index: 200; display: none; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
 .overlay.open { display: flex; }
-.modal {
-  background: var(--surface); border-radius: var(--radius); box-shadow: 0 20px 60px rgba(0,0,0,0.18);
-  width: 100%; max-width: 520px; max-height: 90vh; overflow-y: auto;
-  animation: slideUp .2s ease;
-}
+.modal { background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius); width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; animation: slideUp .2s ease; }
+.modal-lg { max-width: 640px; }
 @keyframes slideUp { from { transform: translateY(16px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-.modal-header { padding: 24px 24px 16px; border-bottom: 1px solid var(--border-light); display: flex; justify-content: space-between; align-items: center; }
-.modal-header h3 { font-family: var(--font-display); font-size: 20px; }
+.modal-head { padding: 22px 24px 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+.modal-head h3 { font-family: var(--font-head); font-size: 18px; font-weight: 600; }
 .modal-body { padding: 20px 24px; }
-.modal-footer { padding: 16px 24px; border-top: 1px solid var(--border-light); display: flex; justify-content: flex-end; gap: 10px; }
+.modal-foot { padding: 14px 24px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 10px; }
 
 /* FORM */
-.form-group { margin-bottom: 16px; }
-.form-label { display: block; font-size: 12px; font-weight: 500; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.04em; }
-.form-input, .form-select, .form-textarea {
-  width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm);
-  font-family: var(--font-body); font-size: 14px; background: var(--surface); color: var(--text);
-  transition: border-color .15s; outline: none;
+.fg { margin-bottom: 16px; }
+.fl { display: block; font-size: 11px; font-weight: 500; color: var(--hint); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; }
+.fi, .fs, .fta {
+  width: 100%; padding: 10px 14px; background: var(--surface2); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); color: var(--text); font-family: var(--font-body); font-size: 14px; outline: none; transition: border-color .15s;
 }
-.form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--accent-mid); }
-.form-textarea { resize: vertical; min-height: 72px; }
-.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-.parcelas-container { margin-top: 8px; }
-.parcela-row { display: grid; grid-template-columns: 48px 1fr 1fr; gap: 10px; align-items: center; margin-bottom: 8px; }
-.parcela-row .parcela-num { font-size: 12px; color: var(--text-muted); font-weight: 500; text-align: center; }
+.fi:focus, .fs:focus, .fta:focus { border-color: var(--accent); }
+.fta { resize: vertical; min-height: 64px; }
+.frow { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.frow3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+.hint-box { background: var(--accent-dim); border: 1px solid var(--accent-dim2); border-radius: var(--radius-sm); padding: 10px 14px; font-size: 12px; color: var(--accent); margin-top: -8px; margin-bottom: 14px; }
 
-/* PARCELAS LIST */
-.parcelas-list { padding: 16px 20px; }
-.parcela-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border-light); }
-.parcela-item:last-child { border-bottom: none; }
-.parcela-check { width: 18px; height: 18px; accent-color: var(--accent); cursor: pointer; }
-.parcela-info { flex: 1; }
-.parcela-info .p-num { font-size: 11px; color: var(--text-hint); }
-.parcela-info .p-val { font-size: 14px; font-weight: 500; }
-.parcela-date { font-size: 12px; color: var(--text-muted); }
+/* DEVEDOR DETAIL */
+.devedor-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; margin-bottom: 20px; }
+.devedor-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
+.devedor-title { font-family: var(--font-head); font-size: 22px; font-weight: 600; }
+.devedor-sub-info { color: var(--muted); font-size: 13px; margin-top: 4px; }
+.info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 16px; margin-bottom: 20px; }
+.info-item .info-label { font-size: 10px; text-transform: uppercase; letter-spacing: .08em; color: var(--hint); margin-bottom: 4px; }
+.info-item .info-val { font-size: 15px; font-weight: 500; }
+.parcelas-timeline { }
+.pt-item { display: flex; align-items: center; gap: 14px; padding: 12px 0; border-bottom: 1px solid var(--border); }
+.pt-item:last-child { border-bottom: none; }
+.pt-num { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; flex-shrink: 0; }
+.pt-num.pago    { background: var(--success-dim); color: var(--success); }
+.pt-num.atrasado { background: var(--danger-dim);  color: var(--danger); }
+.pt-num.pendente { background: rgba(255,255,255,0.06); color: var(--muted); }
+.pt-info { flex: 1; }
+.pt-info .pt-val { font-weight: 500; }
+.pt-info .pt-date { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.pt-actions { display: flex; gap: 6px; }
 
-/* PENDÊNCIAS */
-.pendencias-list { padding: 0; }
-.pendencia-item { display: flex; align-items: center; gap: 16px; padding: 14px 20px; border-bottom: 1px solid var(--border-light); }
-.pendencia-item:last-child { border-bottom: none; }
-.pendencia-badge { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; flex-shrink: 0; }
-.pendencia-badge.atrasado { background: var(--danger-light); color: var(--danger); }
-.pendencia-badge.pendente { background: var(--warning-light); color: var(--warning); }
-.pendencia-info { flex: 1; }
-.pendencia-info .p-forn { font-weight: 500; font-size: 14px; }
-.pendencia-info .p-desc { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
-.pendencia-valor { font-weight: 600; font-size: 15px; }
-.pendencia-valor.atrasado { color: var(--danger); }
-.pendencia-valor.pendente { color: var(--warning); }
+/* PENDENCIAS */
+.pend-item { display: flex; align-items: center; gap: 16px; padding: 14px 20px; border-bottom: 1px solid var(--border); }
+.pend-item:last-child { border-bottom: none; }
+.pend-avatar { width: 38px; height: 38px; border-radius: 50%; background: var(--danger-dim); color: var(--danger); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; flex-shrink: 0; }
+.pend-info { flex: 1; }
+.pend-nome { font-weight: 500; cursor: pointer; }
+.pend-nome:hover { color: var(--accent); }
+.pend-desc { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.pend-valor { font-weight: 600; color: var(--danger); font-size: 15px; }
+.dias-atraso { font-size: 11px; color: var(--danger); margin-top: 2px; }
+
+/* CONFIG */
+.config-alert { background: var(--warning-dim); border: 1px solid rgba(255,179,71,0.25); border-radius: var(--radius-sm); padding: 14px 18px; margin-bottom: 24px; font-size: 13px; color: var(--warning); line-height: 1.6; }
+.config-alert strong { color: var(--text); }
 
 /* TOAST */
 .toast-area { position: fixed; bottom: 24px; right: 24px; z-index: 999; display: flex; flex-direction: column; gap: 8px; }
-.toast {
-  background: var(--text); color: #fff; padding: 12px 18px; border-radius: var(--radius-sm);
-  font-size: 13px; box-shadow: var(--shadow); animation: fadeIn .2s ease; max-width: 300px;
-}
-.toast.success { background: var(--accent); }
-.toast.error { background: var(--danger); }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.toast { padding: 11px 18px; border-radius: var(--radius-sm); font-size: 13px; animation: fadeIn .2s ease; max-width: 280px; border: 1px solid; }
+.toast.success { background: var(--success-dim); border-color: rgba(92,255,154,0.25); color: var(--success); }
+.toast.error   { background: var(--danger-dim);  border-color: rgba(255,92,92,0.25);  color: var(--danger); }
+.toast.info    { background: var(--surface); border-color: var(--border2); color: var(--text); }
 
-/* EMPTY */
-.empty { text-align: center; padding: 60px 20px; color: var(--text-muted); }
-.empty-icon { font-size: 40px; margin-bottom: 12px; opacity: 0.3; }
-.empty p { font-size: 14px; }
-
-/* API CONFIG */
-.config-box { background: #FFFDF5; border: 1px solid #E8E0C0; border-radius: var(--radius); padding: 20px 24px; margin-bottom: 24px; }
-.config-box h4 { font-size: 14px; font-weight: 600; margin-bottom: 10px; color: #6B5A20; }
-.config-box p { font-size: 13px; color: #8B7A40; line-height: 1.6; }
-
-/* LOADING */
-.loading { display: flex; align-items: center; gap: 10px; padding: 24px 20px; color: var(--text-muted); font-size: 14px; }
-.spinner { width: 16px; height: 16px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin .7s linear infinite; }
+/* EMPTY / LOADING */
+.empty { text-align: center; padding: 52px 20px; color: var(--hint); }
+.empty-icon { font-size: 36px; margin-bottom: 12px; opacity: .4; }
+.loading { display: flex; align-items: center; gap: 10px; padding: 24px 20px; color: var(--muted); font-size: 13px; }
+.spinner { width: 16px; height: 16px; border: 2px solid var(--border2); border-top-color: var(--accent); border-radius: 50%; animation: spin .7s linear infinite; flex-shrink: 0; }
 @keyframes spin { to { transform: rotate(360deg); } }
+.sep { height: 1px; background: var(--border); margin: 16px 0; }
 
-@media (max-width: 700px) {
+@media (max-width: 680px) {
   .sidebar { display: none; }
   .main { margin-left: 0; padding: 16px; }
-  .metrics { grid-template-columns: 1fr 1fr; }
-  .form-row { grid-template-columns: 1fr; }
+  .frow, .frow3 { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -226,32 +220,32 @@ tr:hover td { background: rgba(0,0,0,0.015); }
 
 <!-- SIDEBAR -->
 <aside class="sidebar">
-  <div class="sidebar-logo">
-    <h1>Controle de<br>Pagamentos</h1>
-    <p>Gestão financeira</p>
+  <div class="logo">
+    <div class="logo-mark">Financeiro</div>
+    <h1>Controle de<br>Recebimentos</h1>
   </div>
   <nav class="nav">
-    <button class="nav-item active" onclick="showPage('dashboard')" id="nav-dashboard">
-      <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+    <button class="nav-btn active" id="nav-dashboard" onclick="ir('dashboard')">
+      <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
       Dashboard
     </button>
-    <button class="nav-item" onclick="showPage('pagamentos')" id="nav-pagamentos">
-      <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M9 12h6M9 16h6M9 8h6M5 4h14a1 1 0 011 1v14a1 1 0 01-1 1H5a1 1 0 01-1-1V5a1 1 0 011-1z"/></svg>
-      Pagamentos
+    <button class="nav-btn" id="nav-devedores" onclick="ir('devedores')">
+      <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/><path d="M19 8v6M22 11h-6"/></svg>
+      Devedores
     </button>
-    <button class="nav-item" onclick="showPage('pendencias')" id="nav-pendencias">
+    <button class="nav-btn" id="nav-pendencias" onclick="ir('pendencias')">
       <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
       Pendências
     </button>
-    <button class="nav-item" onclick="showPage('config')" id="nav-config">
+    <button class="nav-btn" id="nav-config" onclick="ir('config')">
       <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 10 0 000 14.14"/></svg>
       Configuração
     </button>
   </nav>
-  <div class="sidebar-footer">
-    <div class="api-status">
-      <div class="status-dot" id="status-dot"></div>
-      <span id="status-text">Não configurado</span>
+  <div class="sidebar-foot">
+    <div class="conn-status">
+      <div class="dot" id="dot"></div>
+      <span id="dot-txt">Não configurado</span>
     </div>
   </div>
 </aside>
@@ -261,89 +255,88 @@ tr:hover td { background: rgba(0,0,0,0.015); }
 
   <!-- DASHBOARD -->
   <div class="page active" id="page-dashboard">
-    <div class="page-header">
-      <div class="page-header-left">
-        <h2>Dashboard</h2>
-        <p>Visão geral dos pagamentos</p>
-      </div>
+    <div class="ph">
+      <div class="ph-left"><h2>Dashboard</h2><p id="dash-data">—</p></div>
       <button class="btn btn-ghost btn-sm" onclick="carregarDashboard()">↻ Atualizar</button>
     </div>
     <div class="metrics" id="dash-metrics">
-      <div class="metric-card"><div class="metric-label">Carregando...</div></div>
+      <div class="metric"><div class="metric-label">Carregando</div><div class="metric-value">—</div></div>
     </div>
-    <div class="card" style="margin-bottom:20px">
-      <div class="card-header"><h3>Últimos pagamentos</h3></div>
-      <div id="dash-lista"><div class="loading"><div class="spinner"></div>Carregando...</div></div>
+    <div class="card">
+      <div class="card-head"><h3>Devedores ativos</h3></div>
+      <div id="dash-lista"><div class="loading"><div class="spinner"></div>Aguardando...</div></div>
     </div>
   </div>
 
-  <!-- PAGAMENTOS -->
-  <div class="page" id="page-pagamentos">
-    <div class="page-header">
-      <div class="page-header-left">
-        <h2>Pagamentos</h2>
-        <p>Todos os fornecedores e contratos</p>
-      </div>
-      <button class="btn btn-primary" onclick="abrirModalNovo()">
-        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
-        Novo pagamento
+  <!-- DEVEDORES -->
+  <div class="page" id="page-devedores">
+    <div class="ph">
+      <div class="ph-left"><h2>Devedores</h2><p>Gerencie todos os contratos</p></div>
+      <button class="btn btn-accent" onclick="abrirNovo()">
+        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+        Novo devedor
       </button>
     </div>
+    <div class="filtros">
+      <input type="text" class="filter-input" placeholder="Buscar nome..." oninput="aplicarFiltros()" id="f-busca">
+      <select class="filter-select" onchange="aplicarFiltros()" id="f-status">
+        <option value="">Todos os status</option>
+        <option value="atrasado">Com atraso</option>
+        <option value="emdia">Em dia</option>
+        <option value="quitado">Quitado</option>
+      </select>
+      <select class="filter-select" onchange="aplicarFiltros()" id="f-periodo">
+        <option value="">Toda periodicidade</option>
+        <option value="semanal">Semanal</option>
+        <option value="quinzenal">Quinzenal</option>
+        <option value="mensal">Mensal</option>
+      </select>
+      <select class="filter-select" onchange="aplicarFiltros()" id="f-parcelas">
+        <option value="">Todas as parcelas</option>
+        <option value="2">2 parcelas</option>
+        <option value="3">3 parcelas</option>
+        <option value="4">4 parcelas</option>
+        <option value="6">6 parcelas</option>
+        <option value="12">12 parcelas</option>
+      </select>
+    </div>
     <div class="card">
-      <div class="card-header">
-        <h3 id="pag-count">—</h3>
-        <input type="text" class="form-input" style="width:220px;padding:7px 12px;font-size:13px" placeholder="Buscar fornecedor..." oninput="filtrarPagamentos(this.value)" id="busca-input">
-      </div>
-      <div class="table-wrap" id="tabela-pagamentos">
-        <div class="loading"><div class="spinner"></div>Carregando...</div>
-      </div>
+      <div class="card-head"><h3 id="dev-count">—</h3></div>
+      <div id="tbl-devedores"><div class="loading"><div class="spinner"></div>Carregando...</div></div>
     </div>
   </div>
 
   <!-- PENDÊNCIAS -->
   <div class="page" id="page-pendencias">
-    <div class="page-header">
-      <div class="page-header-left">
-        <h2>Pendências</h2>
-        <p>Parcelas em aberto e atrasadas</p>
-      </div>
+    <div class="ph">
+      <div class="ph-left"><h2>Pendências</h2><p>Parcelas em atraso até hoje</p></div>
       <button class="btn btn-ghost btn-sm" onclick="carregarPendencias()">↻ Atualizar</button>
     </div>
     <div class="card">
-      <div class="card-header"><h3 id="pend-count">—</h3></div>
-      <div class="pendencias-list" id="lista-pendencias">
-        <div class="loading"><div class="spinner"></div>Carregando...</div>
-      </div>
+      <div class="card-head"><h3 id="pend-count">—</h3></div>
+      <div id="lista-pend"><div class="loading"><div class="spinner"></div>Carregando...</div></div>
     </div>
   </div>
 
   <!-- CONFIG -->
   <div class="page" id="page-config">
-    <div class="page-header">
-      <div class="page-header-left">
-        <h2>Configuração</h2>
-        <p>Conecte ao Google Sheets</p>
-      </div>
+    <div class="ph"><div class="ph-left"><h2>Configuração</h2><p>Conecte ao Google Sheets via Apps Script</p></div></div>
+    <div class="config-alert">
+      <strong>Como configurar:</strong><br>
+      1. No Google Sheets: <strong>Extensões → Apps Script</strong> → cole o <code>Code.gs</code>.<br>
+      2. Execute <code>inicializarPlanilha()</code> uma vez.<br>
+      3. <strong>Implantar → Nova implantação → Web App</strong> · "Executar como": sua conta · "Acesso": Qualquer pessoa.<br>
+      4. Copie a URL e cole abaixo.
     </div>
-    <div class="config-box">
-      <h4>Como configurar</h4>
-      <p>1. Abra o Google Sheets e vá em <strong>Extensões → Apps Script</strong>.<br>
-         2. Cole o arquivo <code>Code.gs</code> fornecido junto com este app.<br>
-         3. Execute a função <code>inicializarPlanilha()</code> uma vez.<br>
-         4. Vá em <strong>Implantar → Nova implantação → Web App</strong>.<br>
-         &nbsp;&nbsp;&nbsp;• "Executar como": sua conta Google<br>
-         &nbsp;&nbsp;&nbsp;• "Quem tem acesso": Qualquer pessoa<br>
-         5. Copie a URL gerada e cole abaixo.</p>
-    </div>
-    <div class="card" style="max-width:560px">
-      <div class="card-header"><h3>URL da API</h3></div>
+    <div class="card" style="max-width:520px">
+      <div class="card-head"><h3>URL da API</h3></div>
       <div class="modal-body">
-        <div class="form-group">
-          <label class="form-label">URL do Apps Script (Web App)</label>
-          <input type="url" class="form-input" id="api-url-input" placeholder="https://script.google.com/macros/s/.../exec">
+        <div class="fg">
+          <label class="fl">URL do Web App (Apps Script)</label>
+          <input type="url" class="fi" id="api-url-inp" placeholder="https://script.google.com/macros/s/.../exec">
         </div>
-        <button class="btn btn-primary" onclick="salvarConfig()">Salvar e testar conexão</button>
-        <span id="config-feedback" style="font-size:13px;margin-left:12px;color:var(--text-muted)"></span>
+        <button class="btn btn-accent" onclick="salvarConfig()">Salvar e testar conexão</button>
+        <span id="cfg-fb" style="font-size:12px;margin-left:12px;color:var(--muted)"></span>
       </div>
     </div>
   </div>
@@ -351,492 +344,555 @@ tr:hover td { background: rgba(0,0,0,0.015); }
 </main>
 </div>
 
-<!-- MODAL NOVO/EDITAR PAGAMENTO -->
-<div class="overlay" id="modal-pagamento">
+<!-- MODAL NOVO/EDITAR DEVEDOR -->
+<div class="overlay" id="modal-dev">
   <div class="modal">
-    <div class="modal-header">
-      <h3 id="modal-title">Novo Pagamento</h3>
-      <button class="btn-icon" onclick="fecharModal('modal-pagamento')">✕</button>
+    <div class="modal-head">
+      <h3 id="modal-dev-title">Novo Devedor</h3>
+      <button class="btn-icon" onclick="fechar('modal-dev')">✕</button>
     </div>
     <div class="modal-body">
-      <input type="hidden" id="pag-id">
-      <div class="form-group">
-        <label class="form-label">Fornecedor *</label>
-        <input type="text" class="form-input" id="pag-fornecedor" placeholder="Nome do fornecedor">
+      <input type="hidden" id="dev-id">
+      <div class="fg">
+        <label class="fl">Nome do devedor *</label>
+        <input type="text" class="fi" id="dev-nome" placeholder="Nome completo">
       </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">Valor Total (R$) *</label>
-          <input type="number" class="form-input" id="pag-valor" placeholder="0,00" step="0.01" min="0" oninput="atualizarParcelas()">
+      <div class="frow">
+        <div class="fg">
+          <label class="fl">Valor principal (R$) *</label>
+          <input type="number" class="fi" id="dev-valor" placeholder="1000,00" step="0.01" min="0" oninput="calcularPreview()">
         </div>
-        <div class="form-group">
-          <label class="form-label">Nº de Parcelas</label>
-          <input type="number" class="form-input" id="pag-nparcelas" placeholder="1" min="1" max="24" value="1" oninput="atualizarParcelas()">
+        <div class="fg">
+          <label class="fl">Juros (%)</label>
+          <input type="number" class="fi" id="dev-juros" placeholder="0" step="0.1" min="0" value="0" oninput="calcularPreview()">
         </div>
       </div>
-      <div class="form-group">
-        <label class="form-label">Parcelas — vencimentos e valores</label>
-        <div class="parcelas-container" id="parcelas-container"></div>
+      <div id="preview-calc" style="display:none" class="hint-box"></div>
+      <div class="frow">
+        <div class="fg">
+          <label class="fl">Nº de parcelas *</label>
+          <input type="number" class="fi" id="dev-nparc" placeholder="4" min="1" max="52" value="4" oninput="calcularPreview()">
+        </div>
+        <div class="fg">
+          <label class="fl">Periodicidade *</label>
+          <select class="fs" id="dev-periodo" onchange="toggleDiaSemana()">
+            <option value="semanal">Semanal</option>
+            <option value="quinzenal">Quinzenal</option>
+            <option value="mensal">Mensal</option>
+          </select>
+        </div>
       </div>
-      <div class="form-group">
-        <label class="form-label">Observações</label>
-        <textarea class="form-textarea" id="pag-obs" placeholder="Número do processo, nota fiscal, etc."></textarea>
+      <div class="fg" id="fg-diasemana">
+        <label class="fl">Dia da semana</label>
+        <select class="fs" id="dev-diasemana">
+          <option value="Segunda">Segunda-feira</option>
+          <option value="Terça">Terça-feira</option>
+          <option value="Quarta">Quarta-feira</option>
+          <option value="Quinta">Quinta-feira</option>
+          <option value="Sexta">Sexta-feira</option>
+          <option value="Sábado">Sábado</option>
+          <option value="Domingo">Domingo</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label class="fl">Data da 1ª parcela *</label>
+        <input type="date" class="fi" id="dev-data1">
+      </div>
+      <div class="fg">
+        <label class="fl">Observações</label>
+        <textarea class="fta" id="dev-obs" placeholder="Motivo, garantias, etc."></textarea>
       </div>
     </div>
-    <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="fecharModal('modal-pagamento')">Cancelar</button>
-      <button class="btn btn-primary" onclick="salvarPagamento()" id="btn-salvar">Salvar</button>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="fechar('modal-dev')">Cancelar</button>
+      <button class="btn btn-accent" onclick="salvarDevedor()" id="btn-salvar-dev">Salvar</button>
     </div>
   </div>
 </div>
 
-<!-- MODAL PARCELAS -->
-<div class="overlay" id="modal-parcelas">
-  <div class="modal">
-    <div class="modal-header">
-      <h3 id="parcelas-modal-title">Parcelas</h3>
-      <button class="btn-icon" onclick="fecharModal('modal-parcelas')">✕</button>
+<!-- MODAL DETALHE DEVEDOR -->
+<div class="overlay" id="modal-detalhe">
+  <div class="modal modal-lg">
+    <div class="modal-head">
+      <h3 id="det-titulo">—</h3>
+      <button class="btn-icon" onclick="fechar('modal-detalhe')">✕</button>
     </div>
-    <div class="parcelas-list" id="parcelas-modal-body">
+    <div class="modal-body" id="det-body">
       <div class="loading"><div class="spinner"></div>Carregando...</div>
     </div>
-    <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="fecharModal('modal-parcelas')">Fechar</button>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="fechar('modal-detalhe')">Fechar</button>
     </div>
   </div>
 </div>
 
-<!-- TOASTS -->
-<div class="toast-area" id="toast-area"></div>
+<!-- MODAL REGISTRAR PAGAMENTO -->
+<div class="overlay" id="modal-pgto">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>Registrar Pagamento</h3>
+      <button class="btn-icon" onclick="fechar('modal-pgto')">✕</button>
+    </div>
+    <div class="modal-body">
+      <p id="pgto-desc" style="color:var(--muted);font-size:13px;margin-bottom:16px"></p>
+      <input type="hidden" id="pgto-parcela-id">
+      <div class="fg">
+        <label class="fl">Data do recebimento</label>
+        <input type="date" class="fi" id="pgto-data">
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="fechar('modal-pgto')">Cancelar</button>
+      <button class="btn btn-accent" onclick="confirmarPgto()">Confirmar recebimento</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-area" id="toasts"></div>
 
 <script>
 // ============================================================
 // ESTADO
 // ============================================================
-let API_URL = localStorage.getItem('api_url') || '';
-let todosOsPagamentos = [];
-let pagamentoAtualId = null;
+let API = localStorage.getItem('api_url') || '';
+let devedores = [];
+let devedorAtualId = null;
+
+const DIAS_SEMANA = ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
 
 // ============================================================
 // INIT
 // ============================================================
 window.onload = () => {
-  if (API_URL) {
-    document.getElementById('api-url-input').value = API_URL;
-    atualizarStatus('ok');
+  if (API) {
+    document.getElementById('api-url-inp').value = API;
+    setStatus('ok');
     carregarTudo();
   } else {
-    atualizarStatus('err');
-    renderDashboardVazio();
+    setStatus('err');
   }
+  // Data de hoje no campo de data 1ª parcela
+  document.getElementById('dev-data1').value = hoje();
+  document.getElementById('pgto-data').value = hoje();
 };
+
+function hoje() {
+  return new Date().toISOString().substring(0,10);
+}
 
 // ============================================================
 // NAVEGAÇÃO
 // ============================================================
-function showPage(nome) {
+function ir(pg) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.getElementById('page-' + nome).classList.add('active');
-  document.getElementById('nav-' + nome).classList.add('active');
-  if (nome === 'dashboard') carregarDashboard();
-  if (nome === 'pagamentos') carregarPagamentos();
-  if (nome === 'pendencias') carregarPendencias();
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + pg).classList.add('active');
+  document.getElementById('nav-' + pg).classList.add('active');
+  if (pg === 'dashboard')  carregarDashboard();
+  if (pg === 'devedores')  carregarDevedores();
+  if (pg === 'pendencias') carregarPendencias();
 }
 
 // ============================================================
 // API
 // ============================================================
 async function apiGet(params) {
-  if (!API_URL) { toast('Configure a URL da API primeiro.', 'error'); throw new Error('no api'); }
-  const url = API_URL + '?' + new URLSearchParams(params);
-  const r = await fetch(url);
-  const data = await r.json();
-  if (data.erro) throw new Error(data.erro);
-  return data;
+  if (!API) { toast('Configure a URL da API primeiro.', 'error'); throw new Error('no api'); }
+  const r = await fetch(API + '?' + new URLSearchParams(params));
+  const d = await r.json();
+  if (d.erro) throw new Error(d.erro);
+  return d;
 }
-
 async function apiPost(body) {
-  if (!API_URL) { toast('Configure a URL da API primeiro.', 'error'); throw new Error('no api'); }
-  const r = await fetch(API_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body)
-  });
-  const data = await r.json();
-  if (data.erro) throw new Error(data.erro);
-  return data;
+  if (!API) { toast('Configure a URL da API primeiro.', 'error'); throw new Error('no api'); }
+  const r = await fetch(API, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) });
+  const d = await r.json();
+  if (d.erro) throw new Error(d.erro);
+  return d;
 }
 
 // ============================================================
 // CONFIG
 // ============================================================
 async function salvarConfig() {
-  const url = document.getElementById('api-url-input').value.trim();
-  const fb = document.getElementById('config-feedback');
-  fb.textContent = 'Testando…';
+  const url = document.getElementById('api-url-inp').value.trim();
+  const fb  = document.getElementById('cfg-fb');
+  fb.textContent = 'Testando…'; fb.style.color = 'var(--muted)';
   try {
     const r = await fetch(url + '?action=dashboard');
     const d = await r.json();
     if (d.erro) throw new Error(d.erro);
-    API_URL = url;
+    API = url;
     localStorage.setItem('api_url', url);
-    atualizarStatus('ok');
-    fb.textContent = '✓ Conectado!';
-    fb.style.color = 'var(--success)';
+    setStatus('ok');
+    fb.textContent = '✓ Conectado!'; fb.style.color = 'var(--success)';
     carregarTudo();
   } catch(e) {
-    atualizarStatus('err');
-    fb.textContent = '✗ Falha: ' + e.message;
-    fb.style.color = 'var(--danger)';
+    setStatus('err');
+    fb.textContent = '✗ Falhou: ' + e.message; fb.style.color = 'var(--danger)';
   }
 }
 
-function atualizarStatus(s) {
-  const dot = document.getElementById('status-dot');
-  const txt = document.getElementById('status-text');
-  dot.className = 'status-dot ' + s;
-  txt.textContent = s === 'ok' ? 'Conectado' : 'Desconectado';
+function setStatus(s) {
+  document.getElementById('dot').className = 'dot ' + s;
+  document.getElementById('dot-txt').textContent = s === 'ok' ? 'Conectado' : 'Desconectado';
 }
 
 // ============================================================
-// CARREGAR TUDO
+// CARREGAR
 // ============================================================
-function carregarTudo() {
-  carregarDashboard();
-  carregarPagamentos();
+function carregarTudo() { carregarDashboard(); carregarDevedores(); }
+
+async function carregarDashboard() {
+  try {
+    const d = await apiGet({ action: 'dashboard' });
+    devedores = d.devedores || [];
+    renderDashboard(d);
+  } catch(e) { /* silencioso */ }
+}
+
+async function carregarDevedores() {
+  document.getElementById('tbl-devedores').innerHTML = '<div class="loading"><div class="spinner"></div>Carregando...</div>';
+  try {
+    const lista = await apiGet({ action: 'listar' });
+    devedores = lista;
+    aplicarFiltros();
+  } catch(e) {
+    document.getElementById('tbl-devedores').innerHTML = '<div class="empty"><p>Erro ao carregar. Configure a API.</p></div>';
+  }
+}
+
+async function carregarPendencias() {
+  document.getElementById('lista-pend').innerHTML = '<div class="loading"><div class="spinner"></div>Carregando...</div>';
+  try {
+    const pends = await apiGet({ action: 'pendencias' });
+    renderPendencias(pends);
+  } catch(e) {
+    document.getElementById('lista-pend').innerHTML = '<div class="empty"><p>Erro ao carregar.</p></div>';
+  }
 }
 
 // ============================================================
 // DASHBOARD
 // ============================================================
-async function carregarDashboard() {
-  try {
-    const d = await apiGet({ action: 'dashboard' });
-    renderDashboard(d);
-    const pags = await apiGet({ action: 'listar' });
-    renderDashLista(pags.slice(0, 5));
-  } catch(e) {
-    renderDashboardVazio();
-  }
-}
-
 function renderDashboard(d) {
-  const fmt = v => 'R$ ' + Number(v).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const hoje_str = new Date().toLocaleDateString('pt-BR', { weekday:'long', day:'numeric', month:'long' });
+  document.getElementById('dash-data').textContent = hoje_str.charAt(0).toUpperCase() + hoje_str.slice(1);
+
   document.getElementById('dash-metrics').innerHTML = `
-    <div class="metric-card">
-      <div class="metric-label">Total Geral</div>
-      <div class="metric-value">${fmt(d.totalGeral)}</div>
-      <div class="metric-sub">${d.countPagamentos} pagamento(s)</div>
+    <div class="metric">
+      <div class="metric-label">Total a Receber</div>
+      <div class="metric-value accent">${fmt(d.totalAReceber)}</div>
+      <div class="metric-sub">${d.countDevedores} devedor(es)</div>
     </div>
-    <div class="metric-card">
-      <div class="metric-label">Total Pago</div>
-      <div class="metric-value success">${fmt(d.totalPago)}</div>
+    <div class="metric">
+      <div class="metric-label">Já Recebido</div>
+      <div class="metric-value success">${fmt(d.totalRecebido)}</div>
     </div>
-    <div class="metric-card">
-      <div class="metric-label">A Vencer</div>
-      <div class="metric-value warning">${fmt(d.totalPendente)}</div>
+    <div class="metric">
+      <div class="metric-label">Saldo Pendente</div>
+      <div class="metric-value">${fmt(d.saldoDevedor)}</div>
     </div>
-    <div class="metric-card">
-      <div class="metric-label">Atrasado</div>
+    <div class="metric">
+      <div class="metric-label">Em Atraso</div>
       <div class="metric-value danger">${fmt(d.totalAtrasado)}</div>
-      <div class="metric-sub">${d.countAtrasados} parcela(s)</div>
+      <div class="metric-sub">${d.countAtrasados} devedor(es) com atraso</div>
     </div>
   `;
-}
 
-function renderDashboardVazio() {
-  document.getElementById('dash-metrics').innerHTML = `
-    <div class="metric-card"><div class="metric-label">Total Geral</div><div class="metric-value">—</div></div>
-    <div class="metric-card"><div class="metric-label">Total Pago</div><div class="metric-value">—</div></div>
-    <div class="metric-card"><div class="metric-label">A Vencer</div><div class="metric-value">—</div></div>
-    <div class="metric-card"><div class="metric-label">Atrasado</div><div class="metric-value">—</div></div>
-  `;
-  document.getElementById('dash-lista').innerHTML = '<div class="empty"><div class="empty-icon">☁</div><p>Configure a API para ver os dados</p></div>';
-}
-
-function renderDashLista(pags) {
-  if (!pags || pags.length === 0) {
-    document.getElementById('dash-lista').innerHTML = '<div class="empty"><div class="empty-icon">📋</div><p>Nenhum pagamento cadastrado</p></div>';
+  if (!d.devedores || !d.devedores.length) {
+    document.getElementById('dash-lista').innerHTML = '<div class="empty"><div class="empty-icon">👤</div><p>Nenhum devedor cadastrado</p></div>';
     return;
   }
-  const fmt = v => 'R$ ' + Number(v).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+  const lista = [...d.devedores].sort((a,b) => b.nAtrasadas - a.nAtrasadas || b.saldoDevedor - a.saldoDevedor);
   document.getElementById('dash-lista').innerHTML = `
     <table>
-      <thead><tr><th>Fornecedor</th><th>Valor Total</th><th>Progresso</th><th>Status</th></tr></thead>
-      <tbody>
-        ${pags.map(p => {
-          const pct = p.valorTotal > 0 ? Math.round((p.totalPago / p.valorTotal) * 100) : 0;
-          const badge = p.temAtrasadas
-            ? '<span class="badge badge-danger">Atrasado</span>'
-            : pct === 100 ? '<span class="badge badge-success">Quitado</span>'
-            : '<span class="badge badge-neutral">Em dia</span>';
-          return `<tr>
-            <td><div class="fornecedor-name">${esc(p.fornecedor)}</div></td>
-            <td>${fmt(p.valorTotal)}</td>
-            <td>
-              <div class="progress-wrap">
-                <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
-                <span class="progress-pct">${pct}%</span>
-              </div>
-            </td>
-            <td>${badge}</td>
-          </tr>`;
-        }).join('')}
-      </tbody>
+      <thead><tr><th>Devedor</th><th>Total</th><th>Parcelas</th><th>Progresso</th><th>Status</th></tr></thead>
+      <tbody>${lista.map(dv => renderDevedorRow(dv)).join('')}</tbody>
     </table>`;
 }
 
-// ============================================================
-// PAGAMENTOS
-// ============================================================
-async function carregarPagamentos() {
-  document.getElementById('tabela-pagamentos').innerHTML = '<div class="loading"><div class="spinner"></div>Carregando...</div>';
-  try {
-    const pags = await apiGet({ action: 'listar' });
-    todosOsPagamentos = pags;
-    renderTabela(pags);
-  } catch(e) {
-    document.getElementById('tabela-pagamentos').innerHTML = '<div class="empty"><p>Erro ao carregar. Configure a API.</p></div>';
-  }
+function renderDevedorRow(dv) {
+  const pct = dv.valorTotal > 0 ? Math.round((dv.totalPago / dv.valorTotal) * 100) : 0;
+  const badge = dv.quitado ? '<span class="badge badge-success">Quitado</span>'
+    : dv.nAtrasadas > 0 ? `<span class="badge badge-danger">${dv.nAtrasadas} atrasada(s)</span>`
+    : '<span class="badge badge-accent">Em dia</span>';
+  const periodo = dv.periodicidade || '';
+  return `<tr>
+    <td>
+      <div class="devedor-nome" onclick="abrirDetalhe('${dv.id}')">${esc(dv.nome)}</div>
+      <div class="devedor-sub">${periodo}${dv.diaSemana ? ' · ' + dv.diaSemana : ''}</div>
+    </td>
+    <td>${fmt(dv.valorTotal)}<br><span style="font-size:11px;color:var(--hint)">${dv.jurosPct > 0 ? dv.jurosPct + '% juros' : 'sem juros'}</span></td>
+    <td style="font-size:13px">${dv.nPagas}/${dv.numParcelas}</td>
+    <td>
+      <div class="progress-wrap">
+        <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+        <span class="progress-pct">${pct}%</span>
+      </div>
+    </td>
+    <td>${badge}</td>
+  </tr>`;
 }
 
-function filtrarPagamentos(texto) {
-  const filtrado = todosOsPagamentos.filter(p =>
-    p.fornecedor.toLowerCase().includes(texto.toLowerCase()) ||
-    (p.observacoes || '').toLowerCase().includes(texto.toLowerCase())
-  );
-  renderTabela(filtrado);
-}
+// ============================================================
+// DEVEDORES — FILTROS E TABELA
+// ============================================================
+function aplicarFiltros() {
+  const busca   = (document.getElementById('f-busca').value || '').toLowerCase();
+  const status  = document.getElementById('f-status').value;
+  const periodo = document.getElementById('f-periodo').value;
+  const nparc   = document.getElementById('f-parcelas').value;
 
-function renderTabela(pags) {
-  const fmt = v => 'R$ ' + Number(v).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  document.getElementById('pag-count').textContent = pags.length + ' pagamento(s)';
+  let lista = devedores.filter(d => {
+    if (busca   && !d.nome.toLowerCase().includes(busca)) return false;
+    if (periodo && d.periodicidade !== periodo) return false;
+    if (nparc   && String(d.numParcelas) !== nparc) return false;
+    if (status === 'atrasado' && (d.nAtrasadas === 0 || d.quitado)) return false;
+    if (status === 'emdia'    && (d.nAtrasadas > 0 || d.quitado))  return false;
+    if (status === 'quitado'  && !d.quitado) return false;
+    return true;
+  });
 
-  if (!pags.length) {
-    document.getElementById('tabela-pagamentos').innerHTML = '<div class="empty"><div class="empty-icon">📋</div><p>Nenhum registro encontrado</p></div>';
+  document.getElementById('dev-count').textContent = lista.length + ' devedor(es)';
+  if (!lista.length) {
+    document.getElementById('tbl-devedores').innerHTML = '<div class="empty"><div class="empty-icon">🔍</div><p>Nenhum resultado</p></div>';
     return;
   }
-
-  document.getElementById('tabela-pagamentos').innerHTML = `
-    <table>
-      <thead><tr><th>Fornecedor</th><th>Valor Total</th><th>Parcelas</th><th>Pago</th><th>Status</th><th></th></tr></thead>
-      <tbody>
-        ${pags.map(p => {
-          const pct = p.valorTotal > 0 ? Math.round((p.totalPago / p.valorTotal) * 100) : 0;
-          const pagas = p.parcelas.filter(x => x.status === 'Pago').length;
-          const badge = p.temAtrasadas
-            ? '<span class="badge badge-danger">Atrasado</span>'
-            : pct === 100 ? '<span class="badge badge-success">Quitado</span>'
-            : '<span class="badge badge-neutral">Em dia</span>';
-          return `<tr>
-            <td>
-              <div class="fornecedor-name">${esc(p.fornecedor)}</div>
-              ${p.observacoes ? `<div class="fornecedor-obs">${esc(p.observacoes)}</div>` : ''}
-            </td>
-            <td>${fmt(p.valorTotal)}</td>
-            <td>
-              <button class="btn btn-ghost btn-sm" onclick="abrirParcelas('${p.id}','${esc(p.fornecedor)}')">
-                ${pagas}/${p.numParcelas} parcelas
-              </button>
-            </td>
-            <td>
-              <div class="progress-wrap">
-                <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
-                <span class="progress-pct">${pct}%</span>
-              </div>
-            </td>
-            <td>${badge}</td>
-            <td>
-              <div class="actions">
-                <button class="btn-icon" title="Editar" onclick="abrirModalEditar(${JSON.stringify(p).replace(/"/g,'&quot;')})">✏️</button>
-                <button class="btn-icon" title="Excluir" onclick="excluirPagamento('${p.id}','${esc(p.fornecedor)}')">🗑️</button>
-              </div>
-            </td>
-          </tr>`;
-        }).join('')}
-      </tbody>
-    </table>`;
+  document.getElementById('tbl-devedores').innerHTML = `
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>Devedor</th><th>Valor Total</th><th>Periodicidade</th><th>Parcelas</th><th>Saldo</th><th>Status</th><th></th></tr></thead>
+      <tbody>${lista.map(dv => {
+        const pct = dv.valorTotal > 0 ? Math.round((dv.totalPago / dv.valorTotal) * 100) : 0;
+        const badge = dv.quitado ? '<span class="badge badge-success">Quitado</span>'
+          : dv.nAtrasadas > 0 ? `<span class="badge badge-danger">${dv.nAtrasadas} em atraso</span>`
+          : '<span class="badge badge-accent">Em dia</span>';
+        return `<tr>
+          <td>
+            <div class="devedor-nome" onclick="abrirDetalhe('${dv.id}')">${esc(dv.nome)}</div>
+            ${dv.observacoes ? `<div class="devedor-sub">${esc(dv.observacoes)}</div>` : ''}
+          </td>
+          <td>${fmt(dv.valorTotal)}<br><span style="font-size:11px;color:var(--hint)">${dv.jurosPct > 0 ? dv.jurosPct + '% juros' : ''}</span></td>
+          <td style="font-size:13px;text-transform:capitalize">${dv.periodicidade || '—'}${dv.diaSemana ? '<br><span style="color:var(--hint);font-size:11px">'+dv.diaSemana+'</span>' : ''}</td>
+          <td>
+            <div class="progress-wrap">
+              <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+              <span class="progress-pct">${dv.nPagas}/${dv.numParcelas}</span>
+            </div>
+          </td>
+          <td style="font-weight:500">${fmt(dv.saldoDevedor)}</td>
+          <td>${badge}</td>
+          <td>
+            <div style="display:flex;gap:6px">
+              <button class="btn-icon" title="Ver detalhes" onclick="abrirDetalhe('${dv.id}')">👁</button>
+              <button class="btn-icon" title="Excluir" onclick="excluirDevedor('${dv.id}','${esc(dv.nome)}')">🗑️</button>
+            </div>
+          </td>
+        </tr>`;
+      }).join('')}</tbody>
+    </table></div>`;
 }
 
 // ============================================================
 // PENDÊNCIAS
 // ============================================================
-async function carregarPendencias() {
-  document.getElementById('lista-pendencias').innerHTML = '<div class="loading"><div class="spinner"></div>Carregando...</div>';
-  try {
-    const pags = await apiGet({ action: 'listar' });
-    const hoje = new Date(); hoje.setHours(0,0,0,0);
-    const itens = [];
-
-    pags.forEach(p => {
-      p.parcelas.filter(pa => pa.status !== 'Pago').forEach(pa => {
-        const venc = pa.vencimento ? new Date(pa.vencimento + 'T00:00:00') : null;
-        const atrasado = venc && venc < hoje;
-        itens.push({ ...pa, fornecedor: p.fornecedor, atrasado, venc });
-      });
-    });
-
-    itens.sort((a, b) => {
-      if (a.atrasado !== b.atrasado) return a.atrasado ? -1 : 1;
-      if (a.venc && b.venc) return a.venc - b.venc;
-      return 0;
-    });
-
-    document.getElementById('pend-count').textContent = itens.length + ' pendência(s)';
-
-    if (!itens.length) {
-      document.getElementById('lista-pendencias').innerHTML = '<div class="empty"><div class="empty-icon">✅</div><p>Sem pendências! Tudo em dia.</p></div>';
-      return;
-    }
-
-    const fmt = v => 'R$ ' + Number(v).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    const fmtData = d => d ? d.toLocaleDateString('pt-BR') : '—';
-
-    document.getElementById('lista-pendencias').innerHTML = itens.map(it => `
-      <div class="pendencia-item">
-        <div class="pendencia-badge ${it.atrasado ? 'atrasado' : 'pendente'}">${it.numero}</div>
-        <div class="pendencia-info">
-          <div class="p-forn">${esc(it.fornecedor)}</div>
-          <div class="p-desc">Parcela ${it.numero} · Vence ${it.venc ? fmtData(it.venc) : 'sem data'}
-            ${it.atrasado ? ' · <strong style="color:var(--danger)">ATRASADO</strong>' : ''}
-          </div>
-        </div>
-        <div class="pendencia-valor ${it.atrasado ? 'atrasado' : 'pendente'}">${fmt(it.valor)}</div>
-      </div>
-    `).join('');
-  } catch(e) {
-    document.getElementById('lista-pendencias').innerHTML = '<div class="empty"><p>Erro ao carregar. Configure a API.</p></div>';
+function renderPendencias(pends) {
+  document.getElementById('pend-count').textContent = pends.length + ' pendência(s) em atraso';
+  if (!pends.length) {
+    document.getElementById('lista-pend').innerHTML = '<div class="empty"><div class="empty-icon">✅</div><p>Nenhuma parcela em atraso. Tudo certo!</p></div>';
+    return;
   }
+  const hojeDate = new Date(); hojeDate.setHours(0,0,0,0);
+  document.getElementById('lista-pend').innerHTML = pends.map(p => {
+    const vDate = new Date(p.vencimento + 'T12:00:00');
+    const dias = Math.round((hojeDate - vDate) / 86400000);
+    return `<div class="pend-item">
+      <div class="pend-avatar">${p.numero}</div>
+      <div class="pend-info">
+        <div class="pend-nome" onclick="abrirDetalhe('${p.devedorId}')">${esc(p.nome)}</div>
+        <div class="pend-desc">Parcela ${p.numero} · Venceu em ${fmtDataBR(p.vencimento)}</div>
+        <div class="dias-atraso">${dias} dia(s) em atraso</div>
+      </div>
+      <div>
+        <div class="pend-valor">${fmt(p.valor)}</div>
+        <button class="btn btn-ghost btn-sm" style="margin-top:6px" onclick="abrirPgto('${p.id}','${esc(p.nome)}',${p.numero},${p.valor},'${p.vencimento}')">Receber</button>
+      </div>
+    </div>`;
+  }).join('');
 }
 
 // ============================================================
-// MODAL PARCELAS
+// DETALHE DEVEDOR
 // ============================================================
-async function abrirParcelas(id, fornecedor) {
-  pagamentoAtualId = id;
-  document.getElementById('parcelas-modal-title').textContent = 'Parcelas — ' + fornecedor;
-  document.getElementById('modal-parcelas').classList.add('open');
-  document.getElementById('parcelas-modal-body').innerHTML = '<div class="loading"><div class="spinner"></div>Carregando...</div>';
-
+async function abrirDetalhe(id) {
+  devedorAtualId = id;
+  document.getElementById('det-titulo').textContent = '…';
+  document.getElementById('det-body').innerHTML = '<div class="loading"><div class="spinner"></div>Carregando...</div>';
+  document.getElementById('modal-detalhe').classList.add('open');
   try {
-    const parcelas = await apiGet({ action: 'listarParcelas', pagamentoId: id });
-    renderParcelasModal(parcelas, id);
+    const dv = await apiGet({ action: 'devedor', id });
+    document.getElementById('det-titulo').textContent = dv.nome;
+    renderDetalhe(dv);
   } catch(e) {
-    document.getElementById('parcelas-modal-body').innerHTML = '<p style="padding:20px;color:var(--danger)">Erro: ' + e.message + '</p>';
+    document.getElementById('det-body').innerHTML = '<p style="color:var(--danger)">Erro: ' + e.message + '</p>';
   }
 }
 
-function renderParcelasModal(parcelas, pagId) {
-  const fmt = v => 'R$ ' + Number(v).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  const fmtData = s => s ? new Date(s + 'T00:00:00').toLocaleDateString('pt-BR') : '—';
+function renderDetalhe(dv) {
+  const statusBadge = dv.quitado
+    ? '<span class="badge badge-success">Quitado</span>'
+    : dv.nAtrasadas > 0 ? `<span class="badge badge-danger">${dv.nAtrasadas} parcela(s) em atraso</span>`
+    : '<span class="badge badge-accent">Em dia</span>';
 
-  document.getElementById('parcelas-modal-body').innerHTML = parcelas.map(p => `
-    <div class="parcela-item" id="pitem-${p.id}">
-      <input type="checkbox" class="parcela-check" ${p.status === 'Pago' ? 'checked' : ''}
-        onchange="toggleParcela('${p.id}', '${pagId}', this.checked)">
-      <div class="parcela-info">
-        <div class="p-num">Parcela ${p.numero}</div>
-        <div class="p-val">${fmt(p.valor)}</div>
+  const pct = dv.valorTotal > 0 ? Math.round((dv.totalPago / dv.valorTotal) * 100) : 0;
+
+  const parcelasHtml = dv.parcelas.map(p => {
+    const cls = p.pago ? 'pago' : p.atrasado ? 'atrasado' : 'pendente';
+    const label = p.pago ? `Recebido em ${fmtDataBR(p.dataPagamento)}` : p.atrasado ? 'ATRASADO' : 'Pendente';
+    const btn = p.pago
+      ? `<button class="btn btn-ghost btn-sm" onclick="desfazer('${p.id}', '${dv.id}')">↩ Desfazer</button>`
+      : `<button class="btn btn-accent btn-sm" onclick="abrirPgto('${p.id}','${esc(dv.nome)}',${p.numero},${p.valor},'${p.vencimento}')">Receber</button>`;
+    return `<div class="pt-item">
+      <div class="pt-num ${cls}">${p.numero}</div>
+      <div class="pt-info">
+        <div class="pt-val">${fmt(p.valor)}</div>
+        <div class="pt-date">Vence ${fmtDataBR(p.vencimento)} · ${label}</div>
       </div>
-      <div class="parcela-date">${fmtData(p.vencimento)}</div>
-      <span class="badge ${p.status === 'Pago' ? 'badge-success' : 'badge-neutral'}" id="pbadge-${p.id}">${p.status}</span>
+      <div class="pt-actions">${btn}</div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('det-body').innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px">
+      <div>${statusBadge}</div>
+      <div style="text-align:right">
+        <div style="font-size:11px;color:var(--hint);text-transform:uppercase;letter-spacing:.06em">Saldo devedor</div>
+        <div style="font-family:var(--font-head);font-size:22px;font-weight:600;color:${dv.saldoDevedor > 0 ? 'var(--accent)' : 'var(--success)'}">${fmt(dv.saldoDevedor)}</div>
+      </div>
     </div>
-  `).join('');
+    <div class="info-grid" style="margin-bottom:20px">
+      <div class="info-item"><div class="info-label">Valor principal</div><div class="info-val">${fmt(dv.valorPrincipal)}</div></div>
+      <div class="info-item"><div class="info-label">Juros</div><div class="info-val">${dv.jurosPct}%</div></div>
+      <div class="info-item"><div class="info-label">Total com juros</div><div class="info-val">${fmt(dv.valorTotal)}</div></div>
+      <div class="info-item"><div class="info-label">Valor por parcela</div><div class="info-val">${fmt(dv.valorParcela)}</div></div>
+      <div class="info-item"><div class="info-label">Periodicidade</div><div class="info-val" style="text-transform:capitalize">${dv.periodicidade}${dv.diaSemana ? ' · ' + dv.diaSemana : ''}</div></div>
+      <div class="info-item"><div class="info-label">1ª parcela</div><div class="info-val">${fmtDataBR(dv.dataPrimeira)}</div></div>
+    </div>
+    ${dv.observacoes ? `<div style="background:var(--surface2);border-radius:var(--radius-sm);padding:10px 14px;font-size:13px;color:var(--muted);margin-bottom:20px">${esc(dv.observacoes)}</div>` : ''}
+    <div style="margin-bottom:12px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+        <span style="font-size:12px;color:var(--hint)">${dv.nPagas} de ${dv.numParcelas} recebidas</span>
+        <div class="progress-bar" style="flex:1"><div class="progress-fill" style="width:${pct}%"></div></div>
+        <span style="font-size:12px;color:var(--muted)">${pct}%</span>
+      </div>
+    </div>
+    <div class="parcelas-timeline">${parcelasHtml}</div>
+  `;
 }
 
-async function toggleParcela(parcelaId, pagId, pago) {
-  const status = pago ? 'Pago' : 'Pendente';
+// ============================================================
+// MODAL PAGAMENTO
+// ============================================================
+function abrirPgto(parcelaId, nome, numero, valor, vencimento) {
+  document.getElementById('pgto-parcela-id').value = parcelaId;
+  document.getElementById('pgto-data').value = hoje();
+  document.getElementById('pgto-desc').textContent =
+    `${nome} · Parcela ${numero} · ${fmt(valor)} · Vencimento: ${fmtDataBR(vencimento)}`;
+  document.getElementById('modal-pgto').classList.add('open');
+}
+
+async function confirmarPgto() {
+  const parcelaId   = document.getElementById('pgto-parcela-id').value;
+  const dataPgto    = document.getElementById('pgto-data').value;
   try {
-    await apiPost({ action: 'marcarParcela', parcelaId, status });
-    const badge = document.getElementById('pbadge-' + parcelaId);
-    if (badge) {
-      badge.textContent = status;
-      badge.className = 'badge ' + (pago ? 'badge-success' : 'badge-neutral');
+    await apiPost({ action: 'registrarPgto', parcelaId, dataPagamento: dataPgto });
+    fechar('modal-pgto');
+    toast('Pagamento registrado!', 'success');
+    if (document.getElementById('modal-detalhe').classList.contains('open')) {
+      abrirDetalhe(devedorAtualId);
     }
-    toast(pago ? 'Parcela marcada como paga!' : 'Parcela reaberta.', 'success');
+    carregarDevedores();
     carregarDashboard();
-  } catch(e) {
-    toast('Erro: ' + e.message, 'error');
-  }
+    if (document.getElementById('page-pendencias').classList.contains('active')) carregarPendencias();
+  } catch(e) { toast('Erro: ' + e.message, 'error'); }
+}
+
+async function desfazer(parcelaId, devedorId) {
+  if (!confirm('Desfazer este recebimento?')) return;
+  try {
+    await apiPost({ action: 'desfazerPgto', parcelaId });
+    toast('Recebimento desfeito.', 'info');
+    abrirDetalhe(devedorId);
+    carregarDevedores();
+    carregarDashboard();
+  } catch(e) { toast('Erro: ' + e.message, 'error'); }
 }
 
 // ============================================================
-// MODAL CRIAR/EDITAR
+// MODAL NOVO/EDITAR
 // ============================================================
-function abrirModalNovo() {
-  document.getElementById('modal-title').textContent = 'Novo Pagamento';
-  document.getElementById('pag-id').value = '';
-  document.getElementById('pag-fornecedor').value = '';
-  document.getElementById('pag-valor').value = '';
-  document.getElementById('pag-nparcelas').value = '1';
-  document.getElementById('pag-obs').value = '';
-  document.getElementById('btn-salvar').textContent = 'Salvar';
-  atualizarParcelas();
-  document.getElementById('modal-pagamento').classList.add('open');
+function abrirNovo() {
+  document.getElementById('modal-dev-title').textContent = 'Novo Devedor';
+  document.getElementById('dev-id').value = '';
+  document.getElementById('dev-nome').value = '';
+  document.getElementById('dev-valor').value = '';
+  document.getElementById('dev-juros').value = '0';
+  document.getElementById('dev-nparc').value = '4';
+  document.getElementById('dev-periodo').value = 'semanal';
+  document.getElementById('dev-data1').value = hoje();
+  document.getElementById('dev-obs').value = '';
+  document.getElementById('btn-salvar-dev').textContent = 'Salvar';
+  toggleDiaSemana();
+  calcularPreview();
+  document.getElementById('modal-dev').classList.add('open');
 }
 
-function abrirModalEditar(p) {
-  document.getElementById('modal-title').textContent = 'Editar Pagamento';
-  document.getElementById('pag-id').value = p.id;
-  document.getElementById('pag-fornecedor').value = p.fornecedor;
-  document.getElementById('pag-valor').value = p.valorTotal;
-  document.getElementById('pag-nparcelas').value = p.numParcelas;
-  document.getElementById('pag-obs').value = p.observacoes || '';
-  document.getElementById('btn-salvar').textContent = 'Atualizar';
-  atualizarParcelas(p.parcelas);
-  document.getElementById('modal-pagamento').classList.add('open');
+function toggleDiaSemana() {
+  const p = document.getElementById('dev-periodo').value;
+  document.getElementById('fg-diasemana').style.display = p === 'semanal' ? 'block' : 'none';
 }
 
-function atualizarParcelas(existentes) {
-  const n = parseInt(document.getElementById('pag-nparcelas').value) || 1;
-  const valorTotal = parseFloat(document.getElementById('pag-valor').value) || 0;
-  const valorParcela = n > 0 ? (valorTotal / n).toFixed(2) : 0;
-  const cont = document.getElementById('parcelas-container');
-  let html = '';
-  for (let i = 0; i < n; i++) {
-    const ex = existentes && existentes[i] ? existentes[i] : {};
-    html += `
-      <div class="parcela-row">
-        <div class="parcela-num">${i + 1}</div>
-        <input type="number" class="form-input" placeholder="R$" step="0.01"
-          id="pval-${i}" value="${ex.valor !== undefined ? ex.valor : valorParcela}" min="0">
-        <input type="date" class="form-input" id="pvenc-${i}" value="${ex.vencimento || ''}">
-      </div>`;
-  }
-  cont.innerHTML = html;
+function calcularPreview() {
+  const principal = parseFloat(document.getElementById('dev-valor').value) || 0;
+  const juros     = parseFloat(document.getElementById('dev-juros').value) || 0;
+  const nparc     = parseInt(document.getElementById('dev-nparc').value) || 1;
+  const box       = document.getElementById('preview-calc');
+  if (!principal) { box.style.display = 'none'; return; }
+  const total    = principal * (1 + juros/100);
+  const parcela  = total / nparc;
+  box.style.display = 'block';
+  box.innerHTML = `Total com juros: <strong>${fmt(total)}</strong> · Valor por parcela: <strong>${fmt(parcela)}</strong>`;
 }
 
-async function salvarPagamento() {
-  const id = document.getElementById('pag-id').value;
-  const fornecedor = document.getElementById('pag-fornecedor').value.trim();
-  const valorTotal = parseFloat(document.getElementById('pag-valor').value);
-  const numParcelas = parseInt(document.getElementById('pag-nparcelas').value) || 1;
-  const observacoes = document.getElementById('pag-obs').value.trim();
+async function salvarDevedor() {
+  const id     = document.getElementById('dev-id').value;
+  const nome   = document.getElementById('dev-nome').value.trim();
+  const valor  = parseFloat(document.getElementById('dev-valor').value);
+  const juros  = parseFloat(document.getElementById('dev-juros').value) || 0;
+  const nparc  = parseInt(document.getElementById('dev-nparc').value) || 1;
+  const periodo = document.getElementById('dev-periodo').value;
+  const diaSem = document.getElementById('dev-diasemana').value;
+  const data1  = document.getElementById('dev-data1').value;
+  const obs    = document.getElementById('dev-obs').value.trim();
 
-  if (!fornecedor) { toast('Informe o nome do fornecedor.', 'error'); return; }
-  if (!valorTotal || valorTotal <= 0) { toast('Informe um valor válido.', 'error'); return; }
+  if (!nome)  { toast('Informe o nome do devedor.', 'error'); return; }
+  if (!valor || valor <= 0) { toast('Informe um valor válido.', 'error'); return; }
+  if (!data1) { toast('Informe a data da 1ª parcela.', 'error'); return; }
 
-  const parcelas = [];
-  for (let i = 0; i < numParcelas; i++) {
-    parcelas.push({
-      valor: parseFloat(document.getElementById('pval-' + i)?.value) || (valorTotal / numParcelas),
-      vencimento: document.getElementById('pvenc-' + i)?.value || ''
-    });
-  }
-
-  const btn = document.getElementById('btn-salvar');
+  const btn = document.getElementById('btn-salvar-dev');
   btn.textContent = 'Salvando…'; btn.disabled = true;
-
   try {
     if (id) {
-      await apiPost({ action: 'editar', id, fornecedor, observacoes });
+      await apiPost({ action: 'editar', id, nome, observacoes: obs });
     } else {
-      await apiPost({ action: 'criar', fornecedor, valorTotal, numParcelas, observacoes, parcelas });
+      await apiPost({ action: 'criar', nome, valorPrincipal: valor, jurosPct: juros,
+        numParcelas: nparc, periodicidade: periodo, diaSemana: periodo === 'semanal' ? diaSem : '',
+        dataPrimeira: data1, observacoes: obs });
     }
-    fecharModal('modal-pagamento');
-    toast(id ? 'Pagamento atualizado!' : 'Pagamento criado!', 'success');
-    carregarPagamentos();
+    fechar('modal-dev');
+    toast(id ? 'Devedor atualizado!' : 'Devedor cadastrado!', 'success');
+    carregarDevedores();
     carregarDashboard();
   } catch(e) {
     toast('Erro: ' + e.message, 'error');
@@ -846,41 +902,33 @@ async function salvarPagamento() {
   }
 }
 
-async function excluirPagamento(id, nome) {
-  if (!confirm(`Excluir o pagamento de "${nome}"? Esta ação não pode ser desfeita.`)) return;
+async function excluirDevedor(id, nome) {
+  if (!confirm(`Excluir "${nome}" e todas as suas parcelas?`)) return;
   try {
     await apiPost({ action: 'excluir', id });
-    toast('Pagamento excluído.', 'success');
-    carregarPagamentos();
+    toast('Devedor excluído.', 'info');
+    carregarDevedores();
     carregarDashboard();
-  } catch(e) {
-    toast('Erro: ' + e.message, 'error');
-  }
+  } catch(e) { toast('Erro: ' + e.message, 'error'); }
 }
 
 // ============================================================
-// UTILITÁRIOS
+// UTILS
 // ============================================================
-function fecharModal(id) {
-  document.getElementById(id).classList.remove('open');
-}
-
+function fechar(id) { document.getElementById(id).classList.remove('open'); }
 document.querySelectorAll('.overlay').forEach(el => {
   el.addEventListener('click', e => { if (e.target === el) el.classList.remove('open'); });
 });
-
+function fmt(v) { return 'R$ ' + Number(v).toLocaleString('pt-BR', { minimumFractionDigits:2, maximumFractionDigits:2 }); }
+function fmtDataBR(s) { if (!s) return '—'; return new Date(s + 'T12:00:00').toLocaleDateString('pt-BR'); }
+function esc(s) { if (!s) return ''; return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 function toast(msg, tipo) {
-  const area = document.getElementById('toast-area');
+  const a = document.getElementById('toasts');
   const t = document.createElement('div');
-  t.className = 'toast ' + (tipo || '');
+  t.className = 'toast ' + (tipo||'info');
   t.textContent = msg;
-  area.appendChild(t);
+  a.appendChild(t);
   setTimeout(() => t.remove(), 3500);
-}
-
-function esc(s) {
-  if (!s) return '';
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 </script>
 </body>
