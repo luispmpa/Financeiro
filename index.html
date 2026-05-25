@@ -319,7 +319,7 @@ tr:hover td{background:rgba(255,255,255,0.02)}
       <button class="btn btn-ghost btn-sm" onclick="carrPends()">↻ Atualizar</button>
     </div>
     <div class="card">
-      <div class="card-head"><h3 id="pend-count">—</h3></div>
+      <div class="card-head"><h3 id="pend-count">—</h3><button class="btn btn-accent btn-sm" id="btn-receber-todos" style="display:none" onclick="receberTodos()">Receber todos</button></div>
       <div id="lista-pend"><div class="loading"><div class="spin"></div>Carregando...</div></div>
     </div>
   </div>
@@ -655,6 +655,7 @@ function aplicarFiltros() {
   }).join('');
 }
 
+let pendsAtual = [];
 async function carrPends() {
   document.getElementById('lista-pend').innerHTML = '<div class="loading"><div class="spin"></div>Carregando...</div>';
   try {
@@ -669,9 +670,12 @@ async function carrPends() {
       .map(p => ({ ...p, nome: devedoresMap[p.devedor_id].nome }))
       .sort((a,b) => (a.vencimento||'').localeCompare(b.vencimento||''));
 
+    pendsAtual = pends;
     const pd = document.getElementById('pend-dot');
     if (pd) pd.style.display = pends.length>0?'block':'none';
     document.getElementById('pend-count').textContent = pends.length+' parcela(s) em atraso';
+    const btnRT = document.getElementById('btn-receber-todos');
+    if (btnRT) btnRT.style.display = pends.length>0?'inline-flex':'none';
 
     if (!pends.length) {
       document.getElementById('lista-pend').innerHTML = '<div class="empty"><p>✅ Nenhuma parcela em atraso!</p></div>';
@@ -776,6 +780,26 @@ async function confirmarPgto() {
     if (document.getElementById('page-pendencias').classList.contains('active')) carrPends();
     if (document.getElementById('page-transacoes').classList.contains('active')) carrTransacoes();
   } catch(e) { toast('Erro: '+e.message,'error'); }
+}
+
+async function receberTodos() {
+  if (!pendsAtual.length) return;
+  if (!confirm(`Receber todas as ${pendsAtual.length} parcela(s) pendentes? A data de recebimento será hoje.`)) return;
+  const btnRT = document.getElementById('btn-receber-todos');
+  if (btnRT) btnRT.disabled = true;
+  const data = hj();
+  try {
+    await Promise.all(pendsAtual.map(p =>
+      sb(`parcelas?id=eq.${p.id}`, { method:'PATCH', body: JSON.stringify({ data_pagamento: data }) })
+    ));
+    toast('Todos os recebimentos foram registrados!', 'success');
+    carrDash(); carrDevs(); carrPends();
+    if (document.getElementById('page-transacoes').classList.contains('active')) carrTransacoes();
+  } catch(e) {
+    toast('Erro: '+e.message,'error');
+  } finally {
+    if (btnRT) btnRT.disabled = false;
+  }
 }
 
 async function desfazer(pid, did) {
