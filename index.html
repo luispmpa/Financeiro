@@ -509,7 +509,7 @@ function enriquecerDevedor(dv, todasParcelas) {
     .map(p => {
       const pago = !!p.data_pagamento;
       const vd = p.vencimento ? new Date(p.vencimento+'T12:00:00') : null;
-      const atrasado = !pago && vd && vd < hoje;
+      const atrasado = !pago && vd && vd <= hoje;
       return { ...p, pago, atrasado };
     })
     .sort((a,b) => a.numero - b.numero);
@@ -662,7 +662,7 @@ async function carrPends() {
     const hoje = hj();
     const [devedoresRaw, parcelas] = await Promise.all([
       sb('devedores?ativo=eq.true'),
-      sb(`parcelas?data_pagamento=is.null&vencimento=lt.${hoje}&select=*`)
+      sb(`parcelas?data_pagamento=is.null&vencimento=lte.${hoje}&select=*`)
     ]);
     const devedoresMap = Object.fromEntries(devedoresRaw.map(d=>[d.id,d]));
     const pends = parcelas
