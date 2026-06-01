@@ -455,7 +455,7 @@ window.onload = () => {
   carrTudo();
 };
 
-function hj() { return new Date().toISOString().substring(0,10); }
+function hj() { const d=new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
 
 // ── NAVEGAÇÃO ──
 function ir(pg) {
@@ -508,7 +508,7 @@ function enriquecerDevedor(dv, todasParcelas) {
     .filter(p => p.devedor_id === dv.id)
     .map(p => {
       const pago = !!p.data_pagamento;
-      const vd = p.vencimento ? new Date(p.vencimento+'T12:00:00') : null;
+      const vd = p.vencimento ? new Date(p.vencimento+'T00:00:00') : null;
       const atrasado = !pago && vd && vd <= hoje;
       return { ...p, pago, atrasado };
     })
@@ -683,7 +683,7 @@ async function carrPends() {
     }
     const hoj = new Date(); hoj.setHours(0,0,0,0);
     document.getElementById('lista-pend').innerHTML = pends.map(p => {
-      const vd = new Date(p.vencimento+'T12:00:00');
+      const vd = new Date(p.vencimento+'T00:00:00');
       const dias = Math.round((hoj-vd)/86400000);
       return `<div class="pitem">
         <div class="pavatar">${p.numero}</div>
