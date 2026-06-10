@@ -41,7 +41,7 @@ body{font-family:var(--fb);background:var(--bg);color:var(--text);min-height:100
 
 /* BOTTOM NAV */
 .bnav{display:none;position:fixed;bottom:0;left:0;right:0;height:var(--bnh);background:var(--surface);border-top:1px solid var(--border2);z-index:200}
-.bnav-inner{display:grid;grid-template-columns:repeat(5,1fr);height:100%}
+.bnav-inner{display:grid;grid-template-columns:repeat(6,1fr);height:100%}
 .bb{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;background:none;border:none;color:var(--hint);cursor:pointer;font-family:var(--fb);font-size:9px;letter-spacing:.04em;text-transform:uppercase;transition:color .15s;position:relative;padding:0}
 .bb.active{color:var(--accent)}
 .bb svg{width:20px;height:20px;flex-shrink:0}
@@ -152,6 +152,9 @@ tr:hover td{background:rgba(255,255,255,0.02)}
 .patraso{font-size:11px;color:var(--danger);margin-top:2px}
 .pright{text-align:right;flex-shrink:0}
 .pvalor{font-weight:600;color:var(--danger);font-size:14px}
+.pend-check{width:18px;height:18px;accent-color:var(--accent);cursor:pointer;flex-shrink:0}
+.sel-todos{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);cursor:pointer;user-select:none}
+.pitem.sel{background:var(--accent-dim)}
 
 .tarea{position:fixed;bottom:calc(var(--bnh) + 12px);right:16px;z-index:999;display:flex;flex-direction:column;gap:8px}
 .toast{padding:10px 16px;border-radius:var(--radius-sm);font-size:13px;animation:fadeIn .2s ease;max-width:260px;border:1px solid}
@@ -219,6 +222,10 @@ tr:hover td{background:rgba(255,255,255,0.02)}
       <svg class="ni" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/><path d="M19 8v6M22 11h-6"/></svg>
       Devedores
     </button>
+    <button class="nb" id="nav-quitados" onclick="ir('quitados')">
+      <svg class="ni" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+      Quitados
+    </button>
     <button class="nb" id="nav-pendencias" onclick="ir('pendencias')">
       <svg class="ni" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
       Pendências
@@ -248,6 +255,11 @@ tr:hover td{background:rgba(255,255,255,0.02)}
       <div class="bb-dot"></div>
       <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/><path d="M19 8v6M22 11h-6"/></svg>
       <span>Devedores</span>
+    </button>
+    <button class="bb" id="bn-quitados" onclick="ir('quitados')">
+      <div class="bb-dot"></div>
+      <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+      <span>Quitados</span>
     </button>
     <button class="bb" id="bn-pendencias" onclick="ir('pendencias')">
       <div class="bb-dot" id="pend-dot"></div>
@@ -296,7 +308,6 @@ tr:hover td{background:rgba(255,255,255,0.02)}
         <option value="">Todos</option>
         <option value="atrasado">Com atraso</option>
         <option value="emdia">Em dia</option>
-        <option value="quitado">Quitado</option>
       </select>
       <select class="fsel" onchange="aplicarFiltros()" id="f-periodo">
         <option value="">Período</option>
@@ -312,6 +323,22 @@ tr:hover td{background:rgba(255,255,255,0.02)}
     </div>
   </div>
 
+  <!-- QUITADOS -->
+  <div class="page" id="page-quitados">
+    <div class="ph">
+      <div><h2>Quitados</h2><p id="quit-sub">—</p></div>
+      <button class="btn btn-ghost btn-sm" onclick="carrQuitados()">↻ Atualizar</button>
+    </div>
+    <div class="filtros">
+      <input type="text" class="finp" placeholder="Buscar nome..." oninput="renderQuitados()" id="fq-busca">
+    </div>
+    <div class="card">
+      <div class="card-head"><h3 id="quit-count">—</h3></div>
+      <div class="tblw" id="tbl-quit"><div class="loading"><div class="spin"></div>Carregando...</div></div>
+      <div class="dcards" id="quit-cards"><div class="loading"><div class="spin"></div>Carregando...</div></div>
+    </div>
+  </div>
+
   <!-- PENDÊNCIAS -->
   <div class="page" id="page-pendencias">
     <div class="ph">
@@ -319,7 +346,14 @@ tr:hover td{background:rgba(255,255,255,0.02)}
       <button class="btn btn-ghost btn-sm" onclick="carrPends()">↻ Atualizar</button>
     </div>
     <div class="card">
-      <div class="card-head"><h3 id="pend-count">—</h3><button class="btn btn-accent btn-sm" id="btn-receber-todos" style="display:none" onclick="receberTodos()">Receber todos</button></div>
+      <div class="card-head">
+        <h3 id="pend-count">—</h3>
+        <div style="display:flex;gap:8px;align-items:center">
+          <label class="sel-todos" id="lbl-sel-todos" style="display:none"><input type="checkbox" class="pend-check" id="check-todos" onchange="toggleTodos()"> Todos</label>
+          <button class="btn btn-accent btn-sm" id="btn-receber-sel" style="display:none" onclick="receberSelecionados()">Receber selecionados</button>
+          <button class="btn btn-ghost btn-sm" id="btn-receber-todos" style="display:none" onclick="receberTodos()">Receber todos</button>
+        </div>
+      </div>
       <div id="lista-pend"><div class="loading"><div class="spin"></div>Carregando...</div></div>
     </div>
   </div>
@@ -465,6 +499,7 @@ function ir(pg) {
   ['nav-'+pg,'bn-'+pg].forEach(id => { const el=document.getElementById(id); if(el) el.classList.add('active'); });
   if (pg==='dashboard')   carrDash();
   if (pg==='devedores')   carrDevs();
+  if (pg==='quitados')    carrQuitados();
   if (pg==='pendencias')  carrPends();
   if (pg==='transacoes')  carrTransacoes();
 }
@@ -538,17 +573,19 @@ async function carrDash() {
       sb('parcelas?select=*')
     ]);
     devs = devedoresRaw.map(d => enriquecerDevedor(d, parcelas));
+    // Devedores quitados migram para o menu "Quitados" e saem do Dashboard
+    const ativos = devs.filter(d => !d.quitado);
 
     const ds = new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'});
     document.getElementById('dash-data').textContent = ds.charAt(0).toUpperCase()+ds.slice(1);
 
-    const totalAReceber = devs.reduce((s,d)=>s+d.valorTotal,0);
-    const totalRecebido = devs.reduce((s,d)=>s+d.totalPago,0);
-    const totalAtrasado = devs.reduce((s,d)=>s+d.parcelas.filter(p=>p.atrasado).reduce((a,p)=>a+Number(p.valor),0),0);
-    const countAtrasados = devs.filter(d=>d.nAtrasadas>0).length;
+    const totalAReceber = ativos.reduce((s,d)=>s+d.valorTotal,0);
+    const totalRecebido = ativos.reduce((s,d)=>s+d.totalPago,0);
+    const totalAtrasado = ativos.reduce((s,d)=>s+d.parcelas.filter(p=>p.atrasado).reduce((a,p)=>a+Number(p.valor),0),0);
+    const countAtrasados = ativos.filter(d=>d.nAtrasadas>0).length;
 
     document.getElementById('dash-metrics').innerHTML = `
-      <div class="metric"><div class="mlabel">A Receber</div><div class="mval a">${fmt(totalAReceber)}</div><div class="msub">${devs.length} devedor(es)</div></div>
+      <div class="metric"><div class="mlabel">A Receber</div><div class="mval a">${fmt(totalAReceber)}</div><div class="msub">${ativos.length} devedor(es)</div></div>
       <div class="metric"><div class="mlabel">Recebido</div><div class="mval s">${fmt(totalRecebido)}</div></div>
       <div class="metric"><div class="mlabel">Saldo</div><div class="mval">${fmt(totalAReceber-totalRecebido)}</div></div>
       <div class="metric"><div class="mlabel">Em Atraso</div><div class="mval d">${fmt(totalAtrasado)}</div><div class="msub">${countAtrasados} com atraso</div></div>`;
@@ -556,11 +593,11 @@ async function carrDash() {
     const pd = document.getElementById('pend-dot');
     if (pd) pd.style.display = countAtrasados > 0 ? 'block' : 'none';
 
-    if (!devs.length) {
-      document.getElementById('dash-lista').innerHTML = '<div class="empty"><p>Nenhum devedor cadastrado ainda.</p></div>';
+    if (!ativos.length) {
+      document.getElementById('dash-lista').innerHTML = '<div class="empty"><p>Nenhum devedor ativo.</p></div>';
       return;
     }
-    const lista = [...devs].sort((a,b)=>b.nAtrasadas-a.nAtrasadas||b.saldoDevedor-a.saldoDevedor);
+    const lista = [...ativos].sort((a,b)=>b.nAtrasadas-a.nAtrasadas||b.saldoDevedor-a.saldoDevedor);
     document.getElementById('dash-lista').innerHTML = `<table>
       <thead><tr><th>Devedor</th><th>Total</th><th>Prog.</th><th>Status</th></tr></thead>
       <tbody>${lista.map(dv => {
@@ -597,11 +634,11 @@ function aplicarFiltros() {
   const st    = document.getElementById('f-status').value;
   const per   = document.getElementById('f-periodo').value;
   let lista = devs.filter(d => {
+    if (d.quitado) return false; // quitados ficam no menu "Quitados"
     if (busca && !d.nome.toLowerCase().includes(busca)) return false;
     if (per   && d.periodicidade !== per) return false;
-    if (st==='atrasado' && (!d.nAtrasadas||d.quitado)) return false;
-    if (st==='emdia'    && (d.nAtrasadas>0||d.quitado)) return false;
-    if (st==='quitado'  && !d.quitado) return false;
+    if (st==='atrasado' && !d.nAtrasadas) return false;
+    if (st==='emdia'    && d.nAtrasadas>0) return false;
     return true;
   });
 
@@ -655,6 +692,78 @@ function aplicarFiltros() {
   }).join('');
 }
 
+// ── QUITADOS ──
+let quitadosAll = [];
+async function carrQuitados() {
+  document.getElementById('tbl-quit').innerHTML = '<div class="loading"><div class="spin"></div>Carregando...</div>';
+  document.getElementById('quit-cards').innerHTML = '<div class="loading"><div class="spin"></div>Carregando...</div>';
+  try {
+    const [devedoresRaw, parcelas] = await Promise.all([
+      sb('devedores?ativo=eq.true&order=criado_em.desc'),
+      sb('parcelas?select=*')
+    ]);
+    quitadosAll = devedoresRaw.map(d => enriquecerDevedor(d, parcelas)).filter(d => d.quitado);
+    renderQuitados();
+  } catch(e) {
+    const msg = '<div class="empty"><p>Erro ao carregar.</p></div>';
+    document.getElementById('tbl-quit').innerHTML = msg;
+    document.getElementById('quit-cards').innerHTML = msg;
+  }
+}
+
+function quitadoEm(dv) {
+  const pagos = dv.parcelas.filter(p => p.pago).map(p => p.data_pagamento).filter(Boolean).sort();
+  return pagos.length ? pagos[pagos.length-1] : null;
+}
+
+function renderQuitados() {
+  const busca = (document.getElementById('fq-busca').value||'').toLowerCase();
+  const lista = quitadosAll.filter(d => !busca || d.nome.toLowerCase().includes(busca));
+
+  document.getElementById('quit-count').textContent = lista.length+' quitado(s)';
+  document.getElementById('quit-sub').textContent   = quitadosAll.length+' devedor(es) quitado(s)';
+
+  if (!lista.length) {
+    const msg = '<div class="empty"><p>Nenhum devedor quitado.</p></div>';
+    document.getElementById('tbl-quit').innerHTML = msg;
+    document.getElementById('quit-cards').innerHTML = msg;
+    return;
+  }
+
+  document.getElementById('tbl-quit').innerHTML = `<table>
+    <thead><tr><th>Devedor</th><th>Valor total</th><th>Parcelas</th><th>Quitado em</th><th>Status</th><th></th></tr></thead>
+    <tbody>${lista.map(dv => {
+      return `<tr>
+        <td><div class="dname" onclick="abrirDet('${dv.id}')">${esc(dv.nome)}</div>${dv.observacoes?`<div class="dsub">${esc(dv.observacoes)}</div>`:''}</td>
+        <td style="white-space:nowrap">${fmt(dv.valorTotal)}</td>
+        <td><div class="pw"><div class="pb"><div class="pf" style="width:100%"></div></div><span class="pp">${dv.nPagas}/${dv.num_parcelas}</span></div></td>
+        <td style="white-space:nowrap">${fmtBR(quitadoEm(dv))}</td>
+        <td><span class="badge bs">Quitado</span></td>
+        <td><div style="display:flex;gap:4px">
+          <button class="bicon" onclick="abrirDet('${dv.id}')">👁</button>
+          <button class="bicon" onclick="excluirDev('${dv.id}','${esc(dv.nome)}')">🗑️</button>
+        </div></td></tr>`;
+    }).join('')}</tbody></table>`;
+
+  document.getElementById('quit-cards').innerHTML = lista.map(dv => {
+    return `<div class="dcard">
+      <div class="dcard-top">
+        <div><div class="dcard-nome" onclick="abrirDet('${dv.id}')">${esc(dv.nome)}</div>
+        <div class="dcard-info">${dv.periodicidade||''} · ${dv.num_parcelas}x de ${fmt(dv.valorParcela)}</div></div>
+        <span class="badge bs">Quitado</span>
+      </div>
+      <div class="dcard-bot">
+        <div><div style="font-size:10px;color:var(--hint);text-transform:uppercase;letter-spacing:.06em">Valor total</div>
+        <div style="font-weight:600;font-size:16px">${fmt(dv.valorTotal)}</div></div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span style="font-size:11px;color:var(--muted)">Quitado ${fmtBR(quitadoEm(dv))}</span>
+          <button class="btn btn-ghost btn-sm" onclick="abrirDet('${dv.id}')">Ver</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
 let pendsAtual = [];
 async function carrPends() {
   document.getElementById('lista-pend').innerHTML = '<div class="loading"><div class="spin"></div>Carregando...</div>';
@@ -676,9 +785,12 @@ async function carrPends() {
     document.getElementById('pend-count').textContent = pends.length+' parcela(s) em atraso';
     const btnRT = document.getElementById('btn-receber-todos');
     if (btnRT) btnRT.style.display = pends.length>0?'inline-flex':'none';
+    const lblST = document.getElementById('lbl-sel-todos');
+    if (lblST) lblST.style.display = pends.length>0?'inline-flex':'none';
 
     if (!pends.length) {
       document.getElementById('lista-pend').innerHTML = '<div class="empty"><p>✅ Nenhuma parcela em atraso!</p></div>';
+      atualizarSelecao();
       return;
     }
     const hoj = new Date(); hoj.setHours(0,0,0,0);
@@ -686,6 +798,7 @@ async function carrPends() {
       const vd = new Date(p.vencimento+'T00:00:00');
       const dias = Math.round((hoj-vd)/86400000);
       return `<div class="pitem">
+        <input type="checkbox" class="pend-check" data-id="${p.id}" onchange="atualizarSelecao()">
         <div class="pavatar">${p.numero}</div>
         <div style="flex:1;min-width:0">
           <div class="pnome" onclick="abrirDet('${p.devedor_id}')">${esc(p.nome)}</div>
@@ -699,6 +812,7 @@ async function carrPends() {
         </div>
       </div>`;
     }).join('');
+    atualizarSelecao();
   } catch(e) {
     document.getElementById('lista-pend').innerHTML = '<div class="empty"><p>Erro ao carregar.</p></div>';
   }
@@ -778,6 +892,7 @@ async function confirmarPgto() {
     if (document.getElementById('modal-det').classList.contains('open')) abrirDet(did);
     carrDash(); carrDevs();
     if (document.getElementById('page-pendencias').classList.contains('active')) carrPends();
+    if (document.getElementById('page-quitados').classList.contains('active')) carrQuitados();
     if (document.getElementById('page-transacoes').classList.contains('active')) carrTransacoes();
   } catch(e) { toast('Erro: '+e.message,'error'); }
 }
@@ -794,11 +909,57 @@ async function receberTodos() {
     ));
     toast('Todos os recebimentos foram registrados!', 'success');
     carrDash(); carrDevs(); carrPends();
+    if (document.getElementById('page-quitados').classList.contains('active')) carrQuitados();
     if (document.getElementById('page-transacoes').classList.contains('active')) carrTransacoes();
   } catch(e) {
     toast('Erro: '+e.message,'error');
   } finally {
     if (btnRT) btnRT.disabled = false;
+  }
+}
+
+// ── SELEÇÃO DE PENDÊNCIAS ──
+function atualizarSelecao() {
+  const checks = [...document.querySelectorAll('.pend-check[data-id]')];
+  const sel = checks.filter(c => c.checked);
+  checks.forEach(c => c.closest('.pitem')?.classList.toggle('sel', c.checked));
+  const btnSel = document.getElementById('btn-receber-sel');
+  if (btnSel) {
+    btnSel.style.display = sel.length ? 'inline-flex' : 'none';
+    btnSel.textContent = `Receber selecionados (${sel.length})`;
+  }
+  const checkTodos = document.getElementById('check-todos');
+  if (checkTodos) {
+    checkTodos.checked = checks.length > 0 && sel.length === checks.length;
+    checkTodos.indeterminate = sel.length > 0 && sel.length < checks.length;
+  }
+}
+
+function toggleTodos() {
+  const on = document.getElementById('check-todos').checked;
+  document.querySelectorAll('.pend-check[data-id]').forEach(c => c.checked = on);
+  atualizarSelecao();
+}
+
+async function receberSelecionados() {
+  const ids = [...document.querySelectorAll('.pend-check[data-id]:checked')].map(c => c.dataset.id);
+  if (!ids.length) return;
+  if (!confirm(`Receber ${ids.length} parcela(s) selecionada(s)? A data de recebimento será hoje.`)) return;
+  const btn = document.getElementById('btn-receber-sel');
+  if (btn) btn.disabled = true;
+  const data = hj();
+  try {
+    await Promise.all(ids.map(id =>
+      sb(`parcelas?id=eq.${id}`, { method:'PATCH', body: JSON.stringify({ data_pagamento: data }) })
+    ));
+    toast(`${ids.length} recebimento(s) registrado(s)!`, 'success');
+    carrDash(); carrDevs(); carrPends();
+    if (document.getElementById('page-quitados').classList.contains('active')) carrQuitados();
+    if (document.getElementById('page-transacoes').classList.contains('active')) carrTransacoes();
+  } catch(e) {
+    toast('Erro: '+e.message,'error');
+  } finally {
+    if (btn) btn.disabled = false;
   }
 }
 
@@ -808,6 +969,7 @@ async function desfazer(pid, did) {
     await sb(`parcelas?id=eq.${pid}`, { method:'PATCH', body: JSON.stringify({ data_pagamento: null }) });
     toast('Desfeito.', 'info');
     abrirDet(did); carrDash(); carrDevs();
+    if (document.getElementById('page-quitados').classList.contains('active')) carrQuitados();
     if (document.getElementById('page-transacoes').classList.contains('active')) carrTransacoes();
   } catch(e) { toast('Erro: '+e.message,'error'); }
 }
