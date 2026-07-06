@@ -102,6 +102,10 @@ tr:hover td{background:rgba(255,255,255,0.02)}
 .fsel,.finp{background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius-sm);color:var(--text);font-family:var(--fb);font-size:13px;padding:7px 10px;outline:none;-webkit-appearance:none}
 .fsel:focus,.finp:focus{border-color:var(--accent)}
 .finp{width:180px}
+.fdate-wrap{display:inline-flex;align-items:center;gap:4px;background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:0 6px 0 10px}
+.fdate-wrap:focus-within{border-color:var(--accent)}
+.fdate-lbl{font-size:12px;color:var(--muted);white-space:nowrap}
+.fdate-wrap input{background:none;border:none;color:var(--text);font-family:var(--fb);font-size:13px;padding:7px 2px;outline:none;-webkit-appearance:none;color-scheme:dark}
 
 .dcards{display:none;flex-direction:column;gap:10px;padding:12px}
 .dcard{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px}
@@ -318,6 +322,11 @@ tr:hover td{background:rgba(255,255,255,0.02)}
         <option value="quinzenal">Quinzenal</option>
         <option value="mensal">Mensal</option>
       </select>
+      <label class="fdate-wrap" title="Mostra apenas devedores com parcelas vencidas (não pagas) até a data escolhida">
+        <span class="fdate-lbl">Atraso até</span>
+        <input type="date" id="f-atraso-ate" onchange="aplicarFiltros()">
+      </label>
+      <button class="btn btn-ghost btn-sm" id="btn-limpar-atraso" style="display:none" onclick="limparAtrasoAte()">✕ Limpar data</button>
     </div>
     <div class="card">
       <div class="card-head"><h3 id="dev-count">—</h3></div>
@@ -633,21 +642,45 @@ async function carrDevs() {
   }
 }
 
+// Conta parcelas em atraso (não pagas e vencidas) até uma data de corte.
+// Sem corte, usa o total de atrasadas até hoje já calculado no devedor.
+function atrasadasAte(dv, corte) {
+  if (!corte) return dv.nAtrasadas;
+  return dv.parcelas.filter(p => !p.pago && p.vencimento && p.vencimento <= corte).length;
+}
+
+function limparAtrasoAte() {
+  document.getElementById('f-atraso-ate').value = '';
+  aplicarFiltros();
+}
+
 function aplicarFiltros() {
   const busca = (document.getElementById('f-busca').value||'').toLowerCase();
   const st    = document.getElementById('f-status').value;
   const per   = document.getElementById('f-periodo').value;
+  const ate   = document.getElementById('f-atraso-ate').value;
+
+  const btnLimpar = document.getElementById('btn-limpar-atraso');
+  if (btnLimpar) btnLimpar.style.display = ate ? 'inline-flex' : 'none';
+
   let lista = devs.filter(d => {
     if (d.quitado) return false; // quitados ficam no menu "Quitados"
     if (busca && !d.nome.toLowerCase().includes(busca)) return false;
     if (per   && d.periodicidade !== per) return false;
-    if (st==='atrasado' && !d.nAtrasadas) return false;
-    if (st==='emdia'    && d.nAtrasadas>0) return false;
+    const nAtr = atrasadasAte(d, ate);
+    // Com data de corte, mostra só quem tem parcela vencida até ela
+    if (ate && nAtr === 0) return false;
+    if (st==='atrasado' && !nAtr) return false;
+    if (st==='emdia'    && nAtr>0) return false;
     return true;
   });
 
+  // Guarda a contagem de atraso conforme a data de corte para exibição
+  lista.forEach(d => d._nAtr = atrasadasAte(d, ate));
+
   document.getElementById('dev-count').textContent = lista.length+' devedor(es)';
-  document.getElementById('dev-sub').textContent   = lista.length+' resultado(s)';
+  document.getElementById('dev-sub').textContent   = lista.length+' resultado(s)'
+    + (ate ? ' · atraso até '+fmtBR(ate) : '');
 
   if (!lista.length) {
     const msg = '<div class="empty"><p>Nenhum resultado.</p></div>';
@@ -660,7 +693,7 @@ function aplicarFiltros() {
     <thead><tr><th>Devedor</th><th>Valor</th><th>Periodicidade</th><th>Parcelas</th><th>Saldo</th><th>Status</th><th></th></tr></thead>
     <tbody>${lista.map(dv => {
       const pct = dv.valorTotal>0?Math.round((dv.totalPago/dv.valorTotal)*100):0;
-      const b = dv.quitado?'<span class="badge bs">Quitado</span>':dv.nAtrasadas>0?`<span class="badge bd">${dv.nAtrasadas} em atraso</span>`:'<span class="badge ba">Em dia</span>';
+      const b = dv.quitado?'<span class="badge bs">Quitado</span>':dv._nAtr>0?`<span class="badge bd">${dv._nAtr} em atraso</span>`:'<span class="badge ba">Em dia</span>';
       return `<tr>
         <td><div class="dname" onclick="abrirDet('${dv.id}')">${esc(dv.nome)}</div>${dv.observacoes?`<div class="dsub">${esc(dv.observacoes)}</div>`:''}</td>
         <td style="white-space:nowrap">${fmt(dv.valorTotal)}<br><span style="font-size:11px;color:var(--hint)">${dv.juros_pct>0?dv.juros_pct+'% juros':''}</span></td>
@@ -676,7 +709,7 @@ function aplicarFiltros() {
 
   document.getElementById('dev-cards').innerHTML = lista.map(dv => {
     const pct = dv.valorTotal>0?Math.round((dv.totalPago/dv.valorTotal)*100):0;
-    const b = dv.quitado?'<span class="badge bs">Quitado</span>':dv.nAtrasadas>0?`<span class="badge bd">${dv.nAtrasadas} atr.</span>`:'<span class="badge ba">Em dia</span>';
+    const b = dv.quitado?'<span class="badge bs">Quitado</span>':dv._nAtr>0?`<span class="badge bd">${dv._nAtr} atr.</span>`:'<span class="badge ba">Em dia</span>';
     return `<div class="dcard">
       <div class="dcard-top">
         <div><div class="dcard-nome" onclick="abrirDet('${dv.id}')">${esc(dv.nome)}</div>
