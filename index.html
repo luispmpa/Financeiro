@@ -156,9 +156,15 @@ tr:hover td{background:rgba(255,255,255,0.02)}
 .patraso{font-size:11px;color:var(--danger);margin-top:2px}
 .pright{text-align:right;flex-shrink:0}
 .pvalor{font-weight:600;color:var(--danger);font-size:14px}
-.pend-check{width:18px;height:18px;accent-color:var(--accent);cursor:pointer;flex-shrink:0}
+.pend-check,.atr-check{width:18px;height:18px;accent-color:var(--accent);cursor:pointer;flex-shrink:0}
 .sel-todos{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);cursor:pointer;user-select:none}
 .pitem.sel{background:var(--accent-dim)}
+
+/* Bloco de métrica clicável (Em Atraso → parcelas que somam o valor) */
+.metric.clickable{cursor:pointer;transition:border-color .15s,background .15s}
+.metric.clickable:hover{border-color:rgba(255,92,92,0.45);background:rgba(255,92,92,0.04)}
+.mlink{font-size:11px;color:var(--danger);margin-top:6px}
+.atr-bar{padding:10px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
 
 .tarea{position:fixed;bottom:calc(var(--bnh) + 12px);right:16px;z-index:999;display:flex;flex-direction:column;gap:8px}
 .toast{padding:10px 16px;border-radius:var(--radius-sm);font-size:13px;animation:fadeIn .2s ease;max-width:260px;border:1px solid}
@@ -467,6 +473,28 @@ tr:hover td{background:rgba(255,255,255,0.02)}
   </div>
 </div>
 
+<!-- MODAL PARCELAS EM ATRASO (bloco "Em Atraso" do dashboard) -->
+<div class="overlay" id="modal-atraso">
+  <div class="modal" style="max-width:600px">
+    <div class="mhead">
+      <div>
+        <h3 style="font-size:16px">Parcelas em atraso</h3>
+        <p id="atr-sub" style="font-size:12px;color:var(--muted);margin-top:3px">—</p>
+      </div>
+      <button class="bicon" onclick="fechar('modal-atraso')">✕</button>
+    </div>
+    <div class="atr-bar">
+      <label class="sel-todos" id="atr-lbl-todos"><input type="checkbox" class="atr-check" id="atr-check-todos" onchange="toggleTodosAtraso()"> Selecionar todas</label>
+      <button class="btn btn-accent btn-sm" id="atr-btn-receber" style="display:none" onclick="receberAtrasadasSel()">Receber selecionadas</button>
+    </div>
+    <div id="atr-lista"><div class="loading"><div class="spin"></div>Carregando...</div></div>
+    <div class="mfoot" style="justify-content:space-between;align-items:center">
+      <span style="font-size:12px;color:var(--muted)">Selecionado: <strong id="atr-total-sel" style="color:var(--danger)">R$ 0,00</strong></span>
+      <button class="btn btn-ghost" onclick="fechar('modal-atraso')">Fechar</button>
+    </div>
+  </div>
+</div>
+
 <!-- MODAL PAGAMENTO -->
 <div class="overlay" id="modal-pgto">
   <div class="modal" style="max-width:420px">
@@ -601,7 +629,11 @@ async function carrDash() {
       <div class="metric"><div class="mlabel">A Receber</div><div class="mval a">${fmt(totalAReceber)}</div><div class="msub">${ativos.length} devedor(es)</div></div>
       <div class="metric"><div class="mlabel">Recebido</div><div class="mval s">${fmt(totalRecebido)}</div></div>
       <div class="metric"><div class="mlabel">Saldo</div><div class="mval">${fmt(totalAReceber-totalRecebido)}</div></div>
-      <div class="metric"><div class="mlabel">Em Atraso</div><div class="mval d">${fmt(totalAtrasado)}</div><div class="msub">${countAtrasados} com atraso</div></div>`;
+      <div class="metric${countAtrasados?' clickable':''}"${countAtrasados?' onclick="abrirAtrasadas()" title="Ver as parcelas que somam este valor"':''}>
+        <div class="mlabel">Em Atraso</div><div class="mval d">${fmt(totalAtrasado)}</div>
+        <div class="msub">${countAtrasados} com atraso</div>
+        ${countAtrasados?'<div class="mlink">Ver parcelas ›</div>':''}
+      </div>`;
 
     const pd = document.getElementById('pend-dot');
     if (pd) pd.style.display = countAtrasados > 0 ? 'block' : 'none';
@@ -927,7 +959,10 @@ async function confirmarPgto() {
     fechar('modal-pgto');
     toast('Recebimento registrado!', 'success');
     if (document.getElementById('modal-det').classList.contains('open')) abrirDet(did);
-    carrDash(); carrDevs();
+    carrDevs();
+    // Se o modal de atraso estiver aberto, recarrega o dashboard e a lista dele
+    if (document.getElementById('modal-atraso').classList.contains('open')) refreshAtrasadas();
+    else carrDash();
     if (document.getElementById('page-pendencias').classList.contains('active')) carrPends();
     if (document.getElementById('page-quitados').classList.contains('active')) carrQuitados();
     if (document.getElementById('page-transacoes').classList.contains('active')) carrTransacoes();
@@ -957,7 +992,7 @@ async function receberTodos() {
 
 // ── SELEÇÃO DE PENDÊNCIAS ──
 function atualizarSelecao() {
-  const checks = [...document.querySelectorAll('.pend-check[data-id]')];
+  const checks = [...document.querySelectorAll('#lista-pend .pend-check[data-id]')];
   const sel = checks.filter(c => c.checked);
   checks.forEach(c => c.closest('.pitem')?.classList.toggle('sel', c.checked));
   const btnSel = document.getElementById('btn-receber-sel');
@@ -974,12 +1009,12 @@ function atualizarSelecao() {
 
 function toggleTodos() {
   const on = document.getElementById('check-todos').checked;
-  document.querySelectorAll('.pend-check[data-id]').forEach(c => c.checked = on);
+  document.querySelectorAll('#lista-pend .pend-check[data-id]').forEach(c => c.checked = on);
   atualizarSelecao();
 }
 
 async function receberSelecionados() {
-  const ids = [...document.querySelectorAll('.pend-check[data-id]:checked')].map(c => c.dataset.id);
+  const ids = [...document.querySelectorAll('#lista-pend .pend-check[data-id]:checked')].map(c => c.dataset.id);
   if (!ids.length) return;
   if (!confirm(`Receber ${ids.length} parcela(s) selecionada(s)? A data de recebimento será hoje.`)) return;
   const btn = document.getElementById('btn-receber-sel');
@@ -991,6 +1026,130 @@ async function receberSelecionados() {
     ));
     toast(`${ids.length} recebimento(s) registrado(s)!`, 'success');
     carrDash(); carrDevs(); carrPends();
+    if (document.getElementById('page-quitados').classList.contains('active')) carrQuitados();
+    if (document.getElementById('page-transacoes').classList.contains('active')) carrTransacoes();
+  } catch(e) {
+    toast('Erro: '+e.message,'error');
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+}
+
+// ── PARCELAS EM ATRASO (bloco do dashboard) ──
+// A lista é montada a partir dos MESMOS dados que somam o bloco "Em Atraso":
+// parcelas não pagas e vencidas de devedores ativos ainda não quitados.
+let atrasadasAtual = [];
+
+function montarAtrasadas() {
+  const lista = [];
+  devs.filter(d => !d.quitado).forEach(d => {
+    d.parcelas.filter(p => p.atrasado).forEach(p => lista.push({ ...p, nome: d.nome }));
+  });
+  lista.sort((a,b) => (a.vencimento||'').localeCompare(b.vencimento||''));
+  atrasadasAtual = lista;
+}
+
+function abrirAtrasadas() {
+  montarAtrasadas();
+  renderAtrasadas();
+  document.getElementById('modal-atraso').classList.add('open');
+}
+
+function renderAtrasadas() {
+  const cont = document.getElementById('atr-lista');
+  const total = atrasadasAtual.reduce((s,p) => s + Number(p.valor), 0);
+  document.getElementById('atr-sub').textContent =
+    `${atrasadasAtual.length} parcela(s) · ${fmt(total)}`;
+
+  const lbl = document.getElementById('atr-lbl-todos');
+  if (lbl) lbl.style.display = atrasadasAtual.length ? 'inline-flex' : 'none';
+
+  if (!atrasadasAtual.length) {
+    cont.innerHTML = '<div class="empty"><p>✅ Nenhuma parcela em atraso!</p></div>';
+    atualizarSelAtraso();
+    return;
+  }
+
+  const hoj = new Date(); hoj.setHours(0,0,0,0);
+  cont.innerHTML = atrasadasAtual.map(p => {
+    const vd = new Date(p.vencimento+'T00:00:00');
+    const dias = Math.round((hoj-vd)/86400000);
+    return `<div class="pitem">
+      <input type="checkbox" class="atr-check" data-id="${p.id}" onchange="atualizarSelAtraso()">
+      <div class="pavatar">${p.numero}</div>
+      <div style="flex:1;min-width:0">
+        <div class="pnome" onclick="verDevedorAtraso('${p.devedor_id}')">${esc(p.nome)}</div>
+        <div class="pdesc">Parcela ${p.numero} · Venceu ${fmtBR(p.vencimento)}</div>
+        <div class="patraso">${dias} dia(s) em atraso</div>
+      </div>
+      <div class="pright">
+        <div class="pvalor">${fmt(p.valor)}</div>
+        <button class="btn btn-ghost btn-sm" style="margin-top:6px"
+          onclick="abrirPgto('${p.id}','${p.devedor_id}','${esc(p.nome)}',${p.numero},${p.valor},'${p.vencimento}')">Receber</button>
+      </div>
+    </div>`;
+  }).join('');
+  atualizarSelAtraso();
+}
+
+function atualizarSelAtraso() {
+  const checks = [...document.querySelectorAll('#atr-lista .atr-check[data-id]')];
+  const sel = checks.filter(c => c.checked);
+  checks.forEach(c => c.closest('.pitem')?.classList.toggle('sel', c.checked));
+
+  const btn = document.getElementById('atr-btn-receber');
+  if (btn) {
+    btn.style.display = sel.length ? 'inline-flex' : 'none';
+    btn.textContent = `Receber selecionadas (${sel.length})`;
+  }
+  const ct = document.getElementById('atr-check-todos');
+  if (ct) {
+    ct.checked = checks.length > 0 && sel.length === checks.length;
+    ct.indeterminate = sel.length > 0 && sel.length < checks.length;
+  }
+  const ids = new Set(sel.map(c => c.dataset.id));
+  const totalSel = atrasadasAtual.filter(p => ids.has(p.id)).reduce((s,p) => s + Number(p.valor), 0);
+  const el = document.getElementById('atr-total-sel');
+  if (el) el.textContent = fmt(totalSel);
+}
+
+function toggleTodosAtraso() {
+  const on = document.getElementById('atr-check-todos').checked;
+  document.querySelectorAll('#atr-lista .atr-check[data-id]').forEach(c => c.checked = on);
+  atualizarSelAtraso();
+}
+
+// Abrir o detalhe do devedor: fecha este modal para não ficar por baixo
+function verDevedorAtraso(id) {
+  fechar('modal-atraso');
+  abrirDet(id);
+}
+
+// Recarrega o dashboard e reconstrói a lista do modal com os dados novos
+async function refreshAtrasadas() {
+  await carrDash();
+  montarAtrasadas();
+  renderAtrasadas();
+}
+
+async function receberAtrasadasSel() {
+  const ids = [...document.querySelectorAll('#atr-lista .atr-check[data-id]:checked')].map(c => c.dataset.id);
+  if (!ids.length) return;
+  const idSet = new Set(ids);
+  const total = atrasadasAtual.filter(p => idSet.has(p.id)).reduce((s,p) => s + Number(p.valor), 0);
+  if (!confirm(`Receber ${ids.length} parcela(s) — ${fmt(total)}? A data de recebimento será hoje.`)) return;
+
+  const btn = document.getElementById('atr-btn-receber');
+  if (btn) btn.disabled = true;
+  const data = hj();
+  try {
+    await Promise.all(ids.map(id =>
+      sb(`parcelas?id=eq.${id}`, { method:'PATCH', body: JSON.stringify({ data_pagamento: data }) })
+    ));
+    toast(`${ids.length} recebimento(s) registrado(s)!`, 'success');
+    await refreshAtrasadas();
+    carrDevs();
+    if (document.getElementById('page-pendencias').classList.contains('active')) carrPends();
     if (document.getElementById('page-quitados').classList.contains('active')) carrQuitados();
     if (document.getElementById('page-transacoes').classList.contains('active')) carrTransacoes();
   } catch(e) {
