@@ -2,7 +2,7 @@ name: Supabase Keep-Alive
 
 # Projetos do plano Free do Supabase são pausados após ~7 dias sem
 # nenhuma requisição. Este workflow faz uma consulta leve à API REST
-# todos os dias, mantendo o projeto sempre ativo.
+# a cada 3 dias, mantendo o projeto sempre ativo com folga.
 #
 # Configuração opcional (Settings → Secrets and variables → Actions):
 #   SUPABASE_URL       → URL do projeto (default: o projeto atual)
@@ -14,7 +14,10 @@ name: Supabase Keep-Alive
 
 on:
   schedule:
-    - cron: '17 12 * * *'   # todos os dias às 12:17 UTC (09:17 em Brasília)
+    # Dias 1, 4, 7, ... 31 de cada mês às 12:17 UTC (09:17 em Brasília).
+    # O intervalo entre execuções nunca passa de 3 dias — na virada do mês
+    # ele encurta (ex.: dia 31 → dia 1), nunca alonga.
+    - cron: '17 12 */3 * *'
   workflow_dispatch:         # permite rodar manualmente pela aba Actions
 
 permissions:
