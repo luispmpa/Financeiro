@@ -1,0 +1,61 @@
+name: Supabase Keep-Alive
+
+# Projetos do plano Free do Supabase são pausados após ~7 dias sem
+# nenhuma requisição. Este workflow faz uma consulta leve à API REST
+# todos os dias, mantendo o projeto sempre ativo.
+#
+# Configuração opcional (Settings → Secrets and variables → Actions):
+#   SUPABASE_URL       → URL do projeto (default: o projeto atual)
+#   SUPABASE_ANON_KEY  → chave anon (default: a mesma já usada no index.html)
+#
+# Atenção: o GitHub desativa workflows agendados após 60 dias sem
+# atividade no repositório. Se isso acontecer, basta reativar em
+# Actions → Supabase Keep-Alive → "Enable workflow".
+
+on:
+  schedule:
+    - cron: '17 12 * * *'   # todos os dias às 12:17 UTC (09:17 em Brasília)
+  workflow_dispatch:         # permite rodar manualmente pela aba Actions
+
+permissions:
+  contents: read
+
+jobs:
+  ping:
+    name: Ping Supabase
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Consultar API REST
+        env:
+          SB_URL: ${{ secrets.SUPABASE_URL || 'https://ityrkysliksvvhpvweft.supabase.co' }}
+          SB_KEY: ${{ secrets.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml0eXJreXNsaWtzdnZocHZ3ZWZ0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU3MzAyMjMsImV4cCI6MjA5MTMwNjIyM30.mWBSzqgB-AYi1XWGmevMmxrm5xUFJ87uefMqwYC184w' }}
+        run: |
+          set -uo pipefail
+
+          echo "Alvo: $SB_URL"
+
+          # Tenta até 3 vezes — falhas de rede não devem derrubar o keep-alive
+          for tentativa in 1 2 3; do
+            code=$(curl -sS -o /tmp/resposta.json -w '%{http_code}' \
+              --max-time 30 \
+              -H "apikey: $SB_KEY" \
+              -H "Authorization: Bearer $SB_KEY" \
+              "$SB_URL/rest/v1/devedores?select=id&limit=1") || code="000"
+
+            echo "Tentativa $tentativa → HTTP $code"
+
+            if [ "$code" = "200" ]; then
+              echo "✅ Supabase respondeu — projeto mantido ativo."
+              exit 0
+            fi
+
+            if [ "$tentativa" -lt 3 ]; then
+              echo "Aguardando 15s antes de tentar novamente..."
+              sleep 15
+            fi
+          done
+
+          echo "::error::Keep-alive falhou após 3 tentativas (último HTTP $code)"
+          cat /tmp/resposta.json || true
+          exit 1
